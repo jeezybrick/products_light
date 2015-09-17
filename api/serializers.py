@@ -39,7 +39,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class ItemViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.all()
+    queryset = ProductCache().get()
     serializer_class = ItemSerializer
 
 
