@@ -1,0 +1,13 @@
+{% extends 'products/layout.html' %}
+
+{% block title %}
+    Успех
+{% endblock %}
+
+{% block content %}
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        Вы успешно зарегистрированы!Теперь вы можете <a href="{% url 'login' %}">войти на сайт.</a>
+    </div>
+
+{% endblock %}

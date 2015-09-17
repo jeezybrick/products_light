@@ -1,0 +1,65 @@
+{% extends 'products/layout.html' %}
+{% load staticfiles %}
+{% block title %}
+    Список категорий
+{% endblock %}
+
+{% block content %}
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
+                        <h1 id="test">Список категорий</h1>
+                    </div>
+                    <div class="col-lg-6 col-md-3 col-sm-3 col-xs-12" style="margin-top: 25px;">
+                        <a href="{% url 'categories_add' %}"
+                           class="btn btn-warning pull-right">Добавить категорию</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'home' %}">Главная</a></li>
+            <li class="active">Список категорий</li>
+        </ol>
+        <hr>
+        <div class="row" ng-controller="categoryListCtrl">
+            {% if messages %}
+                    {% for message in messages %}
+                        <div class="messenger alert alert-success" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% verbatim %}
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h4>
+                        Фильтр по имени:<input ng-model="search.name" type="text"/>
+                    </h4>
+                </div>
+                    <div class="lal col-lg-4 col-ms-4 col-sm-6 col-xs-12" ng-repeat="category in categories | filter:search"
+                         style="margin-bottom: 20px;padding: 0 10px;">
+
+                        <div class="notes">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h2>ID:<small>{{ category.id }}</small></h2>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h3 style="word-break: break-all;">Name:<small>{{ category.name}}</small></h3>
+                                </div>
+                            </div>
+                            <h3 ng-show="category.category_set.length">Sub:</h3>
+                            <ul>
+                                <li ng-repeat="sub in category.category_set">
+                                    {{ sub }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+            {% endverbatim %}
+                </div>
+
+
+{% endblock %}
