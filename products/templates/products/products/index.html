@@ -39,7 +39,7 @@
             <div>
                 <dl>
                     {% if facets.fields.categories %}
-                        <dt>Author</dt>
+                        <dt>Category:</dt>
                         {# Provide only the top 5 categories #}
                         {% for category in facets.fields.categories|slice:":5" %}
                             <dd>

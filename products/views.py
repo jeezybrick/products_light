@@ -25,6 +25,7 @@ class ItemListView(View):
 
     def get(self, request, *args, **kwargs):
         products = SearchQuerySet().models(Item).facet('categories')
+        facets = products.facet_counts()
         # products = Item.objects.all()
         paginator = Paginator(products, 6)
         page = request.GET.get('page')
@@ -36,7 +37,7 @@ class ItemListView(View):
         except EmptyPage:
             products = paginator.page(paginator.num_pages)
 
-        return render(request, self.template_name, {'products': products})
+        return render(request, self.template_name, {'products': products, 'facets': facets})
 
 
 class ItemDetailView(DetailView):
