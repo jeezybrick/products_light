@@ -6,13 +6,13 @@ from products.cache import ProductCache, CategoryCache
 from haystack.query import SearchQuerySet
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelField):
     class Meta:
         model = User
         fields = ('url', 'username', 'email', 'is_staff', )
 
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
+class CategorySerializer(serializers.ModelField):
 
     category_set = serializers.StringRelatedField(many=True)
 
@@ -35,8 +35,11 @@ class RateSerializer(serializers.ModelSerializer):
         fields = ('value', 'user', 'item')
 
 
-class ItemSerializer(serializers.ModelSerializer):
+class ItemSerializer(serializers.Serializer):
 
+    name = serializers.CharField()
+    price = serializers.IntegerField()
+    description = serializers.CharField()
     categories = serializers.StringRelatedField(many=True)
     fav = serializers.SerializerMethodField('get_rate')
     comments = CommentSerializer(many=True, read_only=True)
@@ -45,7 +48,6 @@ class ItemSerializer(serializers.ModelSerializer):
         return Rate.objects.filter(item_id=obj.id).aggregate(Avg('value'))
 
     class Meta:
-        model = Item
         fields = ('id', 'url', 'name', 'price', 'description', 'image_url', 'categories', 'fav', 'comments', )
 
 

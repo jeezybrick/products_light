@@ -43,7 +43,7 @@
                         {# Provide only the top 5 categories #}
                         {% for category in facets.fields.categories|slice:":5" %}
                             <dd>
-                                <a href="{{ request.get_full_path }}&amp;selected_facets=category_exact:{{ category.0|urlencode }}">{{ category.0 }}</a>
+                                <a href="/products/?category={{ category.0|urlencode }}">{{ category.0 }}</a>
                                 ({{ category.1 }})
                             </dd>
                         {% endfor %}

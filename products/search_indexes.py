@@ -6,6 +6,9 @@ from products.models import Item, Comment, Rate, Category
 
 class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    name = indexes.CharField()
+    price = indexes.IntegerField()
+    description = indexes.CharField()
     categories = indexes.MultiValueField(faceted=True)
 
     def get_model(self):
