@@ -1,0 +1,90 @@
+{% extends 'products/layout.html' %}
+{% load staticfiles %}
+{% block title %}
+    Список продуктов
+{% endblock %}
+
+{% block content %}
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
+                        <h1 id="test">Список продуктов</h1>
+                    </div>
+                    <div class="col-lg-6 col-md-3 col-sm-3 col-xs-12" style="margin-top: 25px;">
+                        <a href="{% url 'products_add' %}"
+                           class="btn btn-warning pull-right">Добавить товар</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ol class="breadcrumb">
+            <li><a href="{% url 'home' %}">Главная</a></li>
+            <li class="active">Список продуктов</li>
+        </ol>
+        <hr>
+        <div class="row">
+        {% if messages %}
+                {% for message in messages %}
+                    <div class="messenger alert alert-success" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% for product in products %}
+                    <div class="lal col-lg-4 col-ms-4 col-sm-6 col-xs-12"
+                         style="margin-bottom: 20px;padding: 0 10px;">
+
+                        <div class="notes animated bounceInDown">
+                            <div class="row">
+                                <div class="notes_labels col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                     style="height: 48px;overflow: hidden;">
+                                    <h2>ID:{{ product.object.id }}</h2>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h4 style="word-break: break-all;">Имя:{{ product.object.name|truncatechars:35 }}</h4>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h4 style="word-break: break-all;">Цена:{{ product.object.price|truncatechars:35 }} грн.</h4>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h4 style="word-break: break-all;">image_url: {{ product.object.image_url|default:'Отсутствует' }}</h4>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <ul>
+                                    {% for category in product.object.categories.all %}
+                                        <li>{{ category }}</li>
+                                    {% empty %}
+                                        <small>Категории не выбраны.</small>
+                                    {% endfor %}
+                                </ul>
+
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <h4 style="word-break: break-all;"><a href="{% url 'products_show' product.object.id %}">Детали</a></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            {% empty %}
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    Продукты пока не добавлены
+                </div>
+            {% endfor %}
+        </div>
+            <nav>
+                <ul class="pager">
+                    {% if products.has_previous %}
+                        <li><a href="?page={{ products.previous_page_number }}">Previous</a></li>
+                    {% endif %}
+                    {% if products.has_next %}
+                        <li><a href="?page={{ products.next_page_number }}">Next</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+{% endblock %}

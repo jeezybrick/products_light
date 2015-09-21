@@ -1,0 +1,42 @@
+{% extends 'products/layout.html' %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+{% block title %}
+    {{ foo }} товар
+{% endblock %}
+
+{% block content %}
+
+    <h1>{{ foo }} товар</h1>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'home' %}">Главная</a></li>
+        <li><a href="#">Товары</a></li>
+        <li class="active">{{ foo }} товар</li>
+    </ol>
+    <hr>
+    <div class="col-md-8 col-sm-10">
+        <form class="form-horizontal"
+              name="add_comment_form" role="form" method="POST"
+              action="#" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="col-md-12">
+                    <div class="panel-body">
+                        <div class="alert alert-danger">
+                            <ul>
+                                {{ form.errors }}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% bootstrap_form form layout='horizontal' size='medium' horizontal_label_class='col-md-2' horizontal_field_class='col-md-7' %}
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-2 text-center">
+                    <input type="submit" class="btn btn-primary" name="submit" value="{{ foo }} товар">
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

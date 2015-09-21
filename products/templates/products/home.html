@@ -1,0 +1,19 @@
+{% extends 'products/layout.html' %}
+{% load staticfiles %}
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+
+                 <div class="starter-template">
+                     <p class="lead animated zoomIn">
+                     {% if user.is_authenticated %}
+                         <h2>Привет,{{ user }}!</h2>
+                     {% else %}
+                        Добро пожаловать!<br><a href="{% url 'register' %}">Зарегистрируйтесь</a> или <a href="{% url 'login' %}"> войдите</a> на сайт.
+                     {% endif %}
+                     </p>
+                 </div>
+
+{% endblock %}
