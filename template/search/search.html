@@ -17,7 +17,26 @@
         {% if query %}
 
             <h3>Results</h3>
+<!-- Begin faceting. -->
+            <h2>By Category</h2>
 
+            <div>
+                <dl>
+                    {% if facets.fields.categories %}
+                        <dt>Author</dt>
+                        {# Provide only the top 5 categories #}
+                        {% for category in facets.fields.categories|slice:":5" %}
+                            <dd>
+                                <a href="{{ request.get_full_path }}&amp;selected_facets=category_exact:{{ category.0|urlencode }}">{{ category.0 }}</a>
+                                ({{ category.1 }})
+                            </dd>
+                        {% endfor %}
+                    {% else %}
+                        <p>No category facets.</p>
+                    {% endif %}
+                </dl>
+            </div>
+            <!-- End faceting -->
             {% for product in page.object_list %}
                  <div class="lal col-lg-4 col-ms-4 col-sm-6 col-xs-12"
                          style="margin-bottom: 20px;padding: 0 10px;">

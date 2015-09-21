@@ -24,7 +24,7 @@ class ItemListView(View):
     template_name = 'products/products/index.html'
 
     def get(self, request, *args, **kwargs):
-        products = SearchQuerySet().models(Item).all()
+        products = SearchQuerySet().models(Item).facet('categories')
         # products = Item.objects.all()
         paginator = Paginator(products, 6)
         page = request.GET.get('page')
