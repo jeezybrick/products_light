@@ -42,7 +42,7 @@ class ItemSerializer(serializers.Serializer):
     description = serializers.CharField()
     image_url = serializers.CharField()
     categories = serializers.StringRelatedField(many=True)
-    comments = CommentSerializer(many=True, read_only=True)
+    comments = serializers.StringRelatedField(many=True)
 
     class Meta:
 

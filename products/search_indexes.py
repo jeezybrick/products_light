@@ -12,13 +12,25 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     description = indexes.CharField(model_attr='name')
     image_url = indexes.CharField(model_attr='image_url')
     categories = indexes.MultiValueField(faceted=True)
-    #comments = indexes.MultiValueField()
+    comments = indexes.MultiValueField()
 
     def get_model(self):
         return Item
 
     def prepare_categories(self, obj):
         return [category.name for category in obj.categories.order_by('-id')]
+
+    def prepare_comments(self, obj):
+        return [comment.name for comment in obj.comment_set.order_by('-id')]
+
+    def prepare_description(self, obj):
+
+        description = None
+
+        if 'description' in self.prepared_data:
+            description = 'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT'
+            
+        return description
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
