@@ -29,7 +29,7 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
 
         if 'description' in self.prepared_data:
             description = 'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT'
-            
+
         return description
 
     def index_queryset(self, using=None):
