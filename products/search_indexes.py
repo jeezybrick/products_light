@@ -21,16 +21,7 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
         return [category.name for category in obj.categories.order_by('-id')]
 
     def prepare_comments(self, obj):
-        return [comment.name for comment in obj.comment_set.order_by('-id')]
-
-    def prepare_description(self, obj):
-
-        description = None
-
-        if 'description' in self.prepared_data:
-            description = 'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT'
-
-        return description
+        return [comment.name for comment in obj.comments.order_by('-id')]
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
