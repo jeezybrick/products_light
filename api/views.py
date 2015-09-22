@@ -18,6 +18,9 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 class ItemList(generics.GenericAPIView):
 
+    def __init__(self):
+        self.facets = SearchQuerySet().models(Item).facet('categories').facet_counts()
+
     # pagination_class = StandardResultsSetPagination
 
     def get(self, request, format=None):
@@ -30,7 +33,7 @@ class ItemList(generics.GenericAPIView):
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = self.get_serializer(page, facets=self.facets, many=True)
             return self.get_paginated_response(serializer.data)
 
         serializer = serializers.ItemSerializer(queryset, many=True)

@@ -19,3 +19,15 @@
     overflow: visible;
 }
 */
+
+.splash{
+    display: none;
+}
+
+[ng-cloak].splash {
+  background-color: #428bca;
+  width: 100%;
+  text-align: center;
+  color: white;
+  display: block !important;
+}
