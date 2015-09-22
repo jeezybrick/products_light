@@ -1,3 +1,5 @@
-{{ object.value }}
-{{ object.user }}
-{{ object.item }}
+{{ object.name }}
+{{ object.price }}
+{{ object.description }}
+{{ object.image_url }}
+{{ object.categories }}

@@ -103,7 +103,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-hide="showDetailOfItem;items.length <= 6">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-hide="showDetailOfItem || items.length <= 6">
             <pagination total-items="items.length" ng-model="currentPage" items-per-page="pageSize"></pagination>
         </div>
 

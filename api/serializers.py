@@ -41,7 +41,7 @@ class ItemSerializer(serializers.Serializer):
     name = serializers.CharField()
     price = serializers.IntegerField()
     description = serializers.CharField()
-    image_url = serializers.CharField()
+    image_url = serializers.URLField()
     categories = serializers.StringRelatedField(many=True)
     comments = CommentSerializer(many=True)
     facet = serializers.SerializerMethodField()
@@ -52,7 +52,6 @@ class ItemSerializer(serializers.Serializer):
 
     def get_rate(self, obj):
         return Rate.objects.filter(item_id=obj.pk).aggregate(Avg('value'))
-
 
     class Meta:
 

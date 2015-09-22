@@ -2,6 +2,7 @@ __author__ = 'user'
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import generics, viewsets, status
+from rest_framework.pagination import PageNumberPagination
 from products.models import Item, Category, Rate, Comment
 from api import serializers
 from rest_framework.response import Response
@@ -9,7 +10,15 @@ from haystack.query import SearchQuerySet
 from django.http import QueryDict
 
 
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 2
+    page_size_query_param = 'page_size'
+    max_page_size = 2
+
+
 class ItemList(generics.GenericAPIView):
+
+    # pagination_class = StandardResultsSetPagination
 
     def get(self, request, format=None):
         try:
@@ -25,7 +34,8 @@ class ItemList(generics.GenericAPIView):
             return self.get_paginated_response(serializer.data)
 
         serializer = serializers.ItemSerializer(queryset, many=True)
-        return Response(serializer.data)
+        headers = {'faceting': SearchQuerySet().models(Item).facet('categories').facet_counts()}
+        return Response(serializer.data, headers=headers)
 
 
 class ItemDetail(generics.RetrieveAPIView):
