@@ -36,6 +36,7 @@ class RateSerializer(serializers.ModelSerializer):
 
 class ItemSerializer(serializers.Serializer):
 
+    id = serializers.CharField()
     name = serializers.CharField()
     price = serializers.IntegerField()
     description = serializers.CharField()
@@ -45,4 +46,4 @@ class ItemSerializer(serializers.Serializer):
 
 
     class Meta:
-        fields = ('name', 'price', 'description', 'categories', 'comments', )
+        fields = ('id', 'name', 'price', 'description', 'categories', 'comments', )
