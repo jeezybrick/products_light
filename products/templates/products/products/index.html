@@ -1,7 +1,8 @@
 {% extends 'products/layout.html' %}
+{% load i18n %}
 {% load staticfiles %}
 {% block title %}
-    Список продуктов
+    {% trans "list of items" %}
 {% endblock %}
 
 {% block content %}
@@ -9,18 +10,18 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="row">
                     <div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
-                        <h1 id="test">Список продуктов</h1>
+                        <h1 id="test">{% trans "list of items" %}</h1>
                     </div>
                     <div class="col-lg-6 col-md-3 col-sm-3 col-xs-12" style="margin-top: 25px;">
                         <a href="{% url 'products_add' %}"
-                           class="btn btn-warning pull-right">Добавить товар</a>
+                           class="btn btn-warning pull-right">{% trans "add item" %}</a>
                     </div>
                 </div>
             </div>
         </div>
         <ol class="breadcrumb">
-            <li><a href="{% url 'home' %}">Главная</a></li>
-            <li class="active">Список продуктов</li>
+            <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+            <li class="active">{% trans "list of items" %}</li>
         </ol>
         <hr>
         <div class="row">
@@ -65,15 +66,15 @@
                                     <h2>ID:{{ product.object.id }}</h2>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h4 style="word-break: break-all;">Имя:{{ product.object.name|truncatechars:35 }}</h4>
+                                    <h4 style="word-break: break-all;">{% trans "name" %}:{{ product.object.name|truncatechars:35 }}</h4>
                                 </div>
 
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h4 style="word-break: break-all;">Цена:{{ product.object.price|truncatechars:35 }} грн.</h4>
+                                    <h4 style="word-break: break-all;">{% trans "price" %}:{{ product.object.price|truncatechars:35 }} $.</h4>
                                 </div>
 
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h4 style="word-break: break-all;">image_url: {{ product.object.image_url|default:'Отсутствует' }}</h4>
+                                    <h4 style="word-break: break-all;">{% trans "image_url" %}: {{ product.object.image_url|default:'No image url' }}</h4>
                                 </div>
 
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -81,20 +82,20 @@
                                     {% for category in product.object.categories.all %}
                                         <li>{{ category }}</li>
                                     {% empty %}
-                                        <small>Категории не выбраны.</small>
+                                        <small>Categories doesn't picked.</small>
                                     {% endfor %}
                                 </ul>
 
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h4 style="word-break: break-all;"><a href="{% url 'products_show' product.object.id %}">Детали</a></h4>
+                                    <h4 style="word-break: break-all;"><a href="{% url 'products_show' product.object.id %}">{% trans "Details" %}</a></h4>
                                 </div>
                             </div>
                         </div>
                     </div>
             {% empty %}
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    Продукты пока не добавлены
+                    Items no added
                 </div>
             {% endfor %}
         </div>

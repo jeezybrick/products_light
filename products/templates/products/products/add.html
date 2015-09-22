@@ -1,17 +1,18 @@
 {% extends 'products/layout.html' %}
+{% load i18n %}
 {% load bootstrap3 %}
 {% load staticfiles %}
 {% block title %}
-    {{ foo }} товар
+    {{ foo }} {% trans "item" %}
 {% endblock %}
 
 {% block content %}
 
-    <h1>{{ foo }} товар</h1>
+    <h1>{{ foo }} {% trans "item" %}</h1>
     <ol class="breadcrumb">
-        <li><a href="{% url 'home' %}">Главная</a></li>
-        <li><a href="#">Товары</a></li>
-        <li class="active">{{ foo }} товар</li>
+        <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+        <li><a href="#">{% trans "items" %}</a></li>
+        <li class="active">{{ foo }} {% trans "item" %}</li>
     </ol>
     <hr>
     <div class="col-md-8 col-sm-10">
@@ -33,7 +34,7 @@
             {% bootstrap_form form layout='horizontal' size='medium' horizontal_label_class='col-md-2' horizontal_field_class='col-md-7' %}
             <div class="form-group">
                 <div class="col-md-6 col-md-offset-2 text-center">
-                    <input type="submit" class="btn btn-primary" name="submit" value="{{ foo }} товар">
+                    <input type="submit" class="btn btn-primary" name="submit" value="{{ foo }} {% trans "item" %}">
                 </div>
             </div>
         </form>

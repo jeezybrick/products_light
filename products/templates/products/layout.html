@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load i18n %}
 
 <!DOCTYPE html>
 <html lang="">
@@ -39,26 +40,26 @@
                 </button>
                 {% if not user.is_authenticated %}
                     <ul id="login_nav" class="nav navbar-nav hidden-lg hidden-md hidden-sm pull-right">
-                        <li><a href="{% url 'login' %}">Войти</a>
+                        <li><a href="{% url 'login' %}">{% trans "Sign In" %}</a>
                         </li>
                     </ul>
                 {% endif %}
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li {% if request.path == '/' %} class="active" {% endif %}><a href="{% url 'home' %}">Главная</a>
+                    <li {% if request.path == '/' %} class="active" {% endif %}><a href="{% url 'home' %}">{% trans "Home" %}</a>
                     </li>
                     <li {% if '/products/' in request.path and not '/products_ang/' in request.path %} class="active"{% endif %}>
-                        <a href="{% url 'products_list' %}">Продукты</a>
+                        <a href="{% url 'products_list' %}">{% trans "Items" %}</a>
                     </li>
                     <li {% if '/products_ang/' in request.path and not '/product/' in request.path %} class="active"{% endif %}>
-                        <a href="{% url 'products_list_ang' %}">Продукты Angular</a>
+                        <a href="{% url 'products_list_ang' %}">{% trans "Items-Angular" %}</a>
                     </li>
                     <li {% if '/categories/' in request.path %} class="active"{% endif %}>
-                        <a href="{% url 'categories_list' %}">Категории</a>
+                        <a href="{% url 'categories_list' %}">{% trans "Categories" %}</a>
                     </li>
                     <li {% if '/categories_ang/' in request.path and not '/categories/' in request.path %} class="active"{% endif %}>
-                        <a href="{% url 'categories_list_ang' %}">Категории Angular</a>
+                        <a href="{% url 'categories_list_ang' %}">{% trans "Categories-Angular" %}</a>
                     </li>
                     {% if user.is_staff %}
                         <li class="hidden-sm"><a href="/admin/">Admin</a>
@@ -67,11 +68,11 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'logout' %}">Выйти</a>
+                        <li><a href="{% url 'logout' %}">{% trans "Sign out" %}</a>
                         </li>
                     {% else %}
                         <li>
-                            <a href="{% url 'login' %}">Войти</a>
+                            <a href="{% url 'login' %}">{% trans "Sign In" %}</a>
                         </li>
                     {% endif %}
                 </ul>

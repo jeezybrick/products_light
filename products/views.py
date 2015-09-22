@@ -6,6 +6,7 @@ from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteVi
 from django.contrib import messages
 from django.db.models import Avg
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils.translation import ugettext_lazy as _
 from .cache import Item, Category
 from .models import Rate
 from .forms import MyRegForm, AddComment, AddRate, AddItem
@@ -67,11 +68,11 @@ class ItemAddView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ItemAddView, self).get_context_data(**kwargs)
-        context['foo'] = 'Добавить'
+        context['foo'] = _('Add')
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, 'Товар добавлен!')
+        messages.success(self.request, _('Item add!'))
         return super(ItemAddView, self).form_valid(form)
 
 
@@ -94,11 +95,11 @@ class CategoryAddView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CategoryAddView, self).get_context_data(**kwargs)
-        context['foo'] = 'Добавить'
+        context['foo'] = _('Add')
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, 'Категория добавлена!')
+        messages.success(self.request, _('Category add!'))
         return super(CategoryAddView, self).form_valid(form)
 
 
@@ -123,17 +124,13 @@ class AddCommentView(View):
 
     form_class = AddComment
 
-    def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
-
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
             first = form.save(commit=False)
             first.item = get_object_or_404(Item, id=kwargs["pk"])
             first.save()
-            messages.success(self.request, 'Ваш комментарий добавлен!')
+            messages.success(self.request, _('Your comment add!'))
             return HttpResponseRedirect('/products/'+kwargs["pk"]+'/')
         return render(request, 'products/products/show.html', {'form': form})
 
@@ -142,10 +139,6 @@ class AddRateView(LoginRequiredMixin, View):
 
     form_class = AddRate
 
-    def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
-
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -153,6 +146,6 @@ class AddRateView(LoginRequiredMixin, View):
             first.item = get_object_or_404(Item, id=kwargs["pk"])
             first.user = request.user
             first.save()
-            messages.success(self.request, 'Вы поставили оценку!')
+            messages.success(self.request, _('Thanks for rate!'))
             return HttpResponseRedirect('/products/'+kwargs["pk"]+'/')
         return render(request, 'products/products/show.html', {'form': form})

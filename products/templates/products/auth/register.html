@@ -1,7 +1,8 @@
 {% extends 'products/layout.html' %}
+{% load i18n %}
 {% load bootstrap3 %}
 {% block title %}
-    Регистрация
+    {% trans "Sign Up" %}
 {% endblock %}
 
 {% block content %}
@@ -26,7 +27,7 @@
                      {% bootstrap_form form layout='horizontal' size='medium' horizontal_label_class='col-md-2' horizontal_field_class='col-md-7'%}
                     <div class="form-group">
                         <div class="col-md-6 col-md-offset-2 text-center">
-                            <input type="submit" class="btn btn-primary" name="submit" value="Зарегистрироваться">
+                            <input type="submit" class="btn btn-primary" name="submit" value="{% trans "Sign Up" %}">
                         </div>
                     </div>
                 </form>

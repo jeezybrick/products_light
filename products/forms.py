@@ -5,49 +5,42 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core import validators
 from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 from .cache import Item
 from .models import Comment, Rate
 
 
 class MyLoginForm(AuthenticationForm):
 
-    username = forms.CharField(label='Логин', max_length=254,
+    username = forms.CharField(label=_('username'), max_length=254,
                                widget=forms.TextInput({
                                    'class': 'form-control',
-                                   'placeholder': 'Введите ваш логин'}))
-    password = forms.CharField(label="Пароль",
+                                   'placeholder': 'Enter username'}))
+    password = forms.CharField(label=_("password"),
                                widget=forms.PasswordInput({
                                    'class': 'form-control',
-                                   'placeholder': 'Введите ваш пароль'}))
+                                   'placeholder': 'Enter password'}))
 
 
 class MyRegForm(UserCreationForm):
     form_name = 'reg_form'
     error_messages = {
-        'password_mismatch': "Пароли не совпадают!",
+        'password_mismatch': "Passwords mismatch",
     }
-    username = forms.CharField(help_text='Максимум 30 символов',
+    username = forms.CharField(help_text='Max 30 characters',
                                validators=[
                                    validators.RegexValidator(r'^[\w.@+-]+$',
-                                                             'Введите правильный логин. '
-                                                             'Логин может состоять из букв,цифр'
-                                                             'и  @/./+/-/_ символов.',
-                                                             'invalid'),
-                                   ],
-                               error_messages={'required': 'Это поле обязательное к запонению',
-                                               'unique': 'Пользователь с таким логином уже существует'}
-                               )
-    password1 = forms.CharField(min_length=6, label='Пароль', widget=forms.PasswordInput,
-                                help_text="Минимум 6 символов",)
-    password2 = forms.CharField(min_length=6, label='Введите пароль еще раз',
-                                help_text="Введите повторно пароль для проверки",
+                                      _('Enter a valid username. '
+                                        'This value may contain only letters, numbers '
+                                        'and @/./+/-/_ characters.'), 'invalid'),
+                                   ])
+    password1 = forms.CharField(min_length=6, label=_('password'), widget=forms.PasswordInput,
+                                help_text=_("Min 6 characters"))
+    password2 = forms.CharField(min_length=6, label=_('password again'),
                                 widget=forms.PasswordInput)
-    last_name = forms.CharField(max_length=50, label='Фамилия',
-                                error_messages={'required': 'Это поле обязательное к запонению'})
-    first_name = forms.CharField(max_length=50, label='Имя',
-                                 error_messages={'required': 'Это поле обязательное к запонению'})
-    email = forms.EmailField(label='Email', required=True,
-                             error_messages={'unique': 'Пользователь с таким email уже существует'})
+    last_name = forms.CharField(max_length=50, label=_('last name'))
+    first_name = forms.CharField(max_length=50, label=_('first name'))
+    email = forms.EmailField(label=_('Email'), required=True,)
 
     class Meta:
         model = User
@@ -63,7 +56,7 @@ class MyRegForm(UserCreationForm):
 
 
 class AddComment(forms.ModelForm):
-    message = forms.CharField(widget=forms.Textarea, label='Ваш комментарий')
+    message = forms.CharField(widget=forms.Textarea, label=_('comment'))
 
     class Meta:
         model = Comment
@@ -71,7 +64,7 @@ class AddComment(forms.ModelForm):
 
 
 class AddRate(forms.ModelForm):
-    value = forms.IntegerField(max_value=10, min_value=1, label='Ваша оценка товару')
+    value = forms.IntegerField(max_value=10, min_value=1, label=_('rate item'))
 
     class Meta:
         model = Rate
@@ -79,8 +72,8 @@ class AddRate(forms.ModelForm):
 
 
 class AddItem(forms.ModelForm):
-    price = forms.IntegerField(max_value=10000000, min_value=0, label='Цена')
-    description = forms.CharField(widget=forms.Textarea, label='Описание товара')
+    price = forms.IntegerField(max_value=10000000, min_value=0, label=_('price'))
+    description = forms.CharField(widget=forms.Textarea, label=_('description'))
 
     class Meta:
         model = Item

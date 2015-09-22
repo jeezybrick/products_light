@@ -1,4 +1,5 @@
 {% extends 'products/layout.html' %}
+{% load i18n %}
 {% load staticfiles %}
 {% load bootstrap3 %}
 {% block title %}
@@ -13,8 +14,8 @@
 
         <div class="col-lg-12 col-md--12 col-sm-12 col-xs-12">
             <ol class="breadcrumb">
-                <li><a href="{% url 'home' %}">Главная</a></li>
-                <li class="active">Список продуктов</li>
+                <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+                <li class="active">{% trans "list of items" %}</li>
             </ol>
             <hr>
             {% if messages %}
@@ -28,32 +29,32 @@
             <h3 style="margin: 0;">
                 ID:{{ item.id }}
             </h3>
-            <h3>Имя:{{ item.name }}</h3>
-            <h3>Цена:{{ item.price }} грн.</h3>
+            <h3>{% trans "Name" %}:{{ item.name }}</h3>
+            <h3>{% trans "price" %}:{{ item.price }} грн.</h3>
             <pre>{{ item.description }}</pre>
 
             <h3>
-                Категории:
+                {% trans "Categories" %}:
                 {% for category in item.categories.all %}
-                    <small>Name:{{ category.name }}</small>
-                    <small>Id:{{ category.id }}</small><br>
+                    <small>{% trans "Name" %}:{{ category.name }}</small>
+                    <small>{% trans "id" %}:{{ category.id }}</small><br>
                 {% empty %}
-                    <small>Категории не выбраны.</small>
+                    <small>Categories doesn't picked.</small>
                 {% endfor %}
             </h3>
             <hr/>
-            <h3>Ссылка на изображение:
+            <h3>{% trans "Image url" %}:
                 <small>{{ item.image_url }}</small>
             </h3>
-            <h3>Средний рейтинг:
-                <small>{{ average_rating.value__avg | default:'Этот товар еще не оценивали'}}</small>
+            <h3>{% trans "Avarage rating" %}:
+                <small>{{ average_rating.value__avg | default:"This product doesn't rate yeat"}}</small>
             </h3>
             <hr/>
         </div>
         <hr>
     <hr>
     <div class="col-md-8 col-sm-10">
-    <h2>Комментарии</h2>
+    <h2>{% trans "Comments" %}</h2>
     {% for comment in item.comment_set.all %}
         <h3>{{ comment.username }}</h3>
         <h4>{{ comment.message }}</h4>
@@ -77,16 +78,16 @@
             {% bootstrap_form comment_form layout='horizontal' size='medium' horizontal_label_class='col-md-2' horizontal_field_class='col-md-7' %}
             <div class="form-group">
                 <div class="col-md-6 col-md-offset-2 text-center">
-                    <input type="submit" class="btn btn-primary" name="submit" value="Добавить комментарий">
+                    <input type="submit" class="btn btn-primary" name="submit" value="{% trans "Add comment" %}">
                 </div>
             </div>
         </form>
     </div>
       {% if not user.is_authenticated %}
-        <h2><a href="{% url 'register' %}">Зарегистрируйтесь</a> или <a href="{% url 'login' %}"> войдите</a> на сайт, чтобы оценить товар</h2>
+        <h2><a href="{% url 'register' %}">{% trans "Sign Up" %}</a> or <a href="{% url 'login' %}"> {% trans "Sign In" %}</a> on web site, so yoy can rate items.</h2>
       {% else %}
     <div class="col-md-8 col-sm-10">
-    <h2>Оценить товар</h2>
+    <h2>Rate this item</h2>
         <form class="form-horizontal"
               name="add_comment_form" role="form" method="POST"
               action="{% url 'rate_add' item.id %}" enctype="multipart/form-data">
@@ -105,7 +106,7 @@
             {% bootstrap_form rating_form layout='horizontal' size='medium' horizontal_label_class='col-md-2' horizontal_field_class='col-md-7' %}
             <div class="form-group">
                 <div class="col-md-6 col-md-offset-2 text-center">
-                    <input type="submit" class="btn btn-primary" name="submit" value="Поставить">
+                    <input type="submit" class="btn btn-primary" name="submit" value="Rate">
                 </div>
             </div>
         </form>
