@@ -27,9 +27,9 @@ class ItemListView(View):
         try:
             request.GET["category"]
         except:
-            products = SearchQuerySet().models(Item).facet('categories')
+            products = SearchQuerySet().models(Item).order_by('-id')
         else:
-            products = SearchQuerySet().models(Item).filter(categories__name=request.GET["category"]).facet('categories')
+            products = SearchQuerySet().models(Item).filter(categories__name=request.GET["category"]).order_by('-id')
         facets = SearchQuerySet().models(Item).facet('categories').facet_counts()
         paginator = Paginator(products, 6)
         page = request.GET.get('page')

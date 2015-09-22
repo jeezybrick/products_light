@@ -6,16 +6,20 @@ from products.models import Item, Comment, Rate, Category
 
 class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    name = indexes.CharField()
-    price = indexes.IntegerField()
-    description = indexes.CharField()
+    name = indexes.CharField(model_attr='name')
+    price = indexes.IntegerField(model_attr='price')
+    description = indexes.CharField(model_attr='name')
     categories = indexes.MultiValueField(faceted=True)
+    comments = indexes.MultiValueField(faceted=True)
 
     def get_model(self):
         return Item
 
     def prepare_categories(self, obj):
         return [category.name for category in obj.categories.order_by('-id')]
+
+    def prepare_comments(self, obj):
+        return [comment.name for comment in obj.comments.order_by('-id')]
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()

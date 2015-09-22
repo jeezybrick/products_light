@@ -24,14 +24,6 @@
         </ol>
         <hr>
         <div class="row" ng-controller="categoryListCtrl">
-            {% if messages %}
-                    {% for message in messages %}
-                        <div class="messenger alert alert-success" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
             {% verbatim %}
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <h4>

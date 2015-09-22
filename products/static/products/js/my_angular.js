@@ -41,10 +41,26 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
         $scope.items = data;
 
+        $http.get('/api/categories/').success(function (data) {
+
+            $scope.categories = data;
+
+        });
+
+
     });
 
     $scope.showItem = function () {
         $scope.showDetailOfItem = true;
+
+    };
+
+    $scope.sortByCategory = function (name) {
+        $http.get('/api/items/?category='+name).success(function (data) {
+
+            $scope.items = data;
+
+        });
 
     };
 

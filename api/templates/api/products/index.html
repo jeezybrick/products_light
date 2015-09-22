@@ -25,9 +25,21 @@
             <li ng-show="showDetailOfItem" class="active">Детали товара</li>
         </ol>
         <hr>
-        {{ fav }}
-
         {% verbatim %}
+        <div class="col-lg-12">
+            <h2>Фильтр по категориям</h2>
+            <ul>
+                <li ng-repeat="category in categories">
+                    <a href="" ng-click="sortByCategory(category.name)">{{ category.name }}</a>
+                    <ul>
+                        <li ng-repeat="sub in category.category_set">
+                            <a href="" ng-click="sortByCategory(sub)">{{ sub }}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem">
             <h4>
                 Сортировать по: <a href=""
