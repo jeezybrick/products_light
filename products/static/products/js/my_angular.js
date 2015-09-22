@@ -30,7 +30,7 @@ myApp.filter('startFrom', function () {
 
 myApp.controller('itemCtrl', function ($scope, $http) {
 
-    $scope.sortField = '-id';
+    $scope.sortField = 'pk';
     $scope.reverse = true;
     $scope.showTriangle = false;
     $scope.showDetailOfItem = false;
@@ -57,6 +57,15 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
     $scope.sortByCategory = function (name) {
         $http.get('/api/items/?category='+name).success(function (data) {
+
+            $scope.items = data;
+
+        });
+
+    };
+
+    $scope.showAllItems = function () {
+        $http.get('/api/items/').success(function (data) {
 
             $scope.items = data;
 

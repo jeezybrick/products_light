@@ -36,14 +36,14 @@ class RateSerializer(serializers.ModelSerializer):
 
 class ItemSerializer(serializers.Serializer):
 
-    id = serializers.CharField()
+    pk = serializers.CharField()
     name = serializers.CharField()
     price = serializers.IntegerField()
     description = serializers.CharField()
+    image_url = serializers.CharField()
     categories = serializers.StringRelatedField(many=True)
-    # fav = serializers.SerializerMethodField('get_rate')
-    comments = serializers.CharField()
-
+    comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
-        fields = ('id', 'name', 'price', 'description', 'categories', 'comments', )
+
+        fields = ('pk', 'name', 'price', 'description', 'categories', 'comments', 'image_url', )

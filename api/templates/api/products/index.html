@@ -26,7 +26,7 @@
         </ol>
         <hr>
         {% verbatim %}
-        <div class="col-lg-12">
+        <div class="col-lg-12" ng-show="items.length" ng-hide="showDetailOfItem">
             <h2>Фильтр по категориям</h2>
             <ul>
                 <li ng-repeat="category in categories">
@@ -40,7 +40,7 @@
             </ul>
 
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.length">
             <h4>
                 Сортировать по: <a href=""
                                    ng-click="sortField = 'price'; reverse = !reverse;showTriangle = true">цене</a>
@@ -49,12 +49,13 @@
                 <span ng-show="!reverse" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
             </h4>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.length">
             <h4>
                 Фильтр по категориям:<input ng-model="search.categories" type="text"/>
             </h4>
         </div>
         <div ng-view></div>
+        <h2 ng-hide="items.length">Ничего не найдено:( <a href="" ng-click="showAllItems()">Показать все товары.</a></h2>
         <div class="lal col-lg-4 col-ms-4 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
              ng-repeat="item in items | filter:search | orderBy:sortField:reverse |
              startFrom:(currentPage - 1) * pageSize | limitTo:pageSize">
@@ -62,10 +63,10 @@
             <div class="notes animated bounceInDown">
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
-                        <h2>ID:{{ item.id.slice(-1) }}</h2>
+                        <h2>ID:{{ item.pk}}</h2>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-7 col-xs-6">
-                        <h2><a href="#/{{item.id.slice(-1)}}" ng-click="showItem()">Детали</a></h2>
+                        <h2><a href="#/{{ item.pk }}" ng-click="showItem()">Детали</a></h2>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <h4 style="word-break: break-all;">Имя:{{ item.name}}</h4>
@@ -102,7 +103,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-hide="showDetailOfItem">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-hide="showDetailOfItem;items.length <= 6">
             <pagination total-items="items.length" ng-model="currentPage" items-per-page="pageSize"></pagination>
         </div>
 

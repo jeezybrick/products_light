@@ -2,7 +2,7 @@
      <div class="col-lg-12">
          {{ userId }}
             <h3 style="margin: 0;">
-                ID:{{ itemDetail.id }}
+                ID:{{ itemDetail.pk }}
             </h3>
 
             <h3>Имя:{{ itemDetail.name }}</h3>
@@ -13,7 +13,7 @@
                 <small>{{ itemDetail.image_url }}</small>
             </h3>
 
-            <h4 ng-show="itemDetail.fav.value__avg">Рейтинг:{{ itemDetail.fav.value__avg | limitTo:3 }}</h4>
+            <h4 ng-show="itemDetail.fav">Рейтинг:{{ itemDetail.fav | limitTo:3 }}</h4>
 {% endverbatim %}
 
             {% if user.is_authenticated %}
