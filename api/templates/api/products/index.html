@@ -27,7 +27,7 @@
         </ol>
         <hr>
         {% verbatim %}
-        <div class="col-lg-12" ng-show="items.length" ng-hide="showDetailOfItem">
+        <div class="col-lg-12" ng-show="items.results.length" ng-hide="showDetailOfItem">
             <div class="splash" ng-cloak="">
                 <p>Loading</p>
             </div>
@@ -45,7 +45,7 @@
         </div>
         <hr>
 
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.length">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.results.length">
             <h4>
                 Sort by: <a href=""ng-click="sortField = 'price'; reverse = !reverse;showTriangle = true">price</a>
                 <span ng-show="reverse && showTriangle" class="glyphicon glyphicon-triangle-top"
@@ -53,7 +53,7 @@
                 <span ng-show="!reverse" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
             </h4>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.length">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.results.length">
             <h4>
                 Category filter two:<input ng-model="search.categories" type="text"/>
             </h4>
@@ -106,7 +106,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.results.length">
             <nav>
                 <ul class="pager">
                     <li ng-class="{disabled:!items.previous}"><a href="" ng-click="pagination(items.previous)">Previous</a></li>
