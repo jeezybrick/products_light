@@ -86,9 +86,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
     $scope.maxx = 100;
     $scope.dynamic = 0;
 
-    $http.get('/api/items/' + $routeParams.itemId + '?format=json').success(function (data) {
+    $http.get('/api/items/' + $routeParams.itemId + '/?format=json').success(function (data) {
 
-        $scope.itemDetail = data;
+        $scope.itemDetail = data[0];
 
     });
     $scope.rate = 5;
