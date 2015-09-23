@@ -7,9 +7,12 @@ from django.contrib import messages
 from django.db.models import Avg
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
+from django.template.response import TemplateResponse
+from django.utils.http import is_safe_url
+from django.contrib.auth import login as auth_login, logout as auth_logout
 from .cache import Item, Category
 from .models import Rate
-from .forms import MyRegForm, AddComment, AddRate, AddItem
+from .forms import MyRegForm, AddComment, AddRate, AddItem, MyLoginForm
 from haystack.query import SearchQuerySet
 # Create your views here.
 
@@ -21,10 +24,33 @@ class LoginRequiredMixin(object):
         return login_required(view, login_url='/auth/login/')
 
 
+class LoginView(View):
+
+    form_class = MyLoginForm
+    template_name = 'products/auth/login.html'
+    success_url = '/'
+
+    def get(self, request):
+
+        form = self.form_class(request)
+        context = {
+            'form': form,
+            'title': 'Sign In',
+        }
+        return TemplateResponse(request, self.template_name, context)
+
+    def post(self, request):
+
+        form = MyLoginForm(request, data=request.POST)
+        if form.is_valid():
+            auth_login(request, form.get_user())
+            return HttpResponseRedirect(self.success_url)
+
+
 class ItemListView(View):
     template_name = 'products/products/index.html'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         try:
             request.GET["category"]
         except:
@@ -149,3 +175,8 @@ class AddRateView(LoginRequiredMixin, View):
             messages.success(self.request, _('Thanks for rate!'))
             return HttpResponseRedirect('/products/'+kwargs["pk"]+'/')
         return render(request, 'products/products/show.html', {'form': form})
+
+
+def get_logout(request):
+    auth_logout(request)
+    return HttpResponseRedirect('/')

@@ -9,23 +9,9 @@ urlpatterns = [
     url(r"^$", TemplateView.as_view(
         template_name='products/home.html'
     ), name='home'),
-    url(r'^auth/login/$',
-        'django.contrib.auth.views.login',
-        {
-            'template_name': 'products/auth/login.html',
-            'authentication_form': MyLoginForm,
-            'extra_context':
-            {
-                'title': 'Sign In',
-            }
-        },
+    url(r'^auth/login/$', views.LoginView.as_view(),
         name='login'),
-    url(r'^auth/logout/$',
-        'django.contrib.auth.views.logout',
-        {
-            'next_page': '/',
-        },
-        name='logout'),
+    url(r'^auth/logout/$', views.get_logout, name='logout'),
     url(r"^auth/register/$", views.RegisterView.as_view(), name='register'),
     url(r"^auth/register/success/$", TemplateView.as_view(
         template_name='products/auth/register_success.html'
