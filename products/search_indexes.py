@@ -13,6 +13,7 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     description = indexes.CharField(model_attr='name')
     image_url = indexes.CharField(model_attr='image_url')
     categories = indexes.MultiValueField(faceted=True)
+    comments = indexes.MultiValueField()
     rate = indexes.FloatField()
 
     def get_model(self):
@@ -20,6 +21,9 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_categories(self, obj):
         return [category.name for category in obj.categories.order_by('-id')]
+
+    def prepare_comments(self, obj):
+        return [comment.message for comment in obj.comments.order_by('-id')]
 
     def prepare_rate(self, obj):
         return obj.rates.aggregate(Avg('value'))['value__avg']
