@@ -34,7 +34,7 @@
             <h2>Category filter</h2>
             <ul>
                 <li ng-repeat="category in categories">
-                    <a href="" ng-click="sortByCategory(category.name)">{{ category.name }}</a>
+                    <a href="" ng-click="sortByCategory(category.name)">{{ category.name }} <span class="badge">{{ category.count }}</span></a>
                     <ul>
                         <li ng-repeat="sub in category.category_set">
                             <a href="" ng-click="sortByCategory(sub)">{{ sub }}</a>

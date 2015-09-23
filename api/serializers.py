@@ -1,4 +1,5 @@
 from rest_framework import routers, serializers, viewsets, generics
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from products.models import Item, Category, Rate, Comment
 from haystack.query import SearchQuerySet
@@ -15,10 +16,20 @@ class UserSerializer(serializers.ModelField):
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
 
     category_set = serializers.StringRelatedField(many=True)
+    count = serializers.SerializerMethodField()
 
+    def get_count(self, obj):
+        category = get_object_or_404(Category, id=obj.pk)
+        return category.item_set.count()
+    '''
+    def get_count_sub(self, obj):
+        category = get_object_or_404(Category, id=obj.pk)
+        sub = category.category_set.all()
+        return sub.item_set.count()
+    '''
     class Meta:
         model = Category
-        fields = ('name', 'id', 'category_set')
+        fields = ('name', 'id', 'category_set', 'count', )
 
 
 class CommentSerializer(serializers.ModelSerializer):
