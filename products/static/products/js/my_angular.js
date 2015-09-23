@@ -22,11 +22,6 @@ myApp.config(function ($routeProvider) {
      })*/;
 });
 
-myApp.filter('startFrom', function () {
-    return function (data, start) {
-        return data.slice(start)
-    }
-});
 
 myApp.controller('itemCtrl', function ($scope, $http) {
 
@@ -66,6 +61,16 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
     $scope.showAllItems = function () {
         $http.get('/api/items/').success(function (data) {
+
+            $scope.items = data;
+
+        });
+
+    };
+
+    $scope.pagination = function (page) {
+
+        $http.get(page).success(function (data) {
 
             $scope.items = data;
 

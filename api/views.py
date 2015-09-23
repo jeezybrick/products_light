@@ -11,17 +11,15 @@ from django.http import QueryDict
 
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 2
+    page_size = 9
     page_size_query_param = 'page_size'
-    max_page_size = 2
+    max_page_size = 1
 
 
 class ItemList(generics.GenericAPIView):
 
-    def __init__(self):
-        self.facets = SearchQuerySet().models(Item).facet('categories').facet_counts()
-
-    # pagination_class = StandardResultsSetPagination
+    pagination_class = StandardResultsSetPagination
+    serializer_class = serializers.ItemSerializer
 
     def get(self, request, format=None):
         try:
@@ -33,12 +31,11 @@ class ItemList(generics.GenericAPIView):
 
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, facets=self.facets, many=True)
+            serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
         serializer = serializers.ItemSerializer(queryset, many=True)
-        headers = {'faceting': SearchQuerySet().models(Item).facet('categories').facet_counts()}
-        return Response(serializer.data, headers=headers)
+        return Response(serializer.data)
 
 
 class ItemDetail(generics.RetrieveAPIView):

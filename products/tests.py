@@ -4,9 +4,10 @@ from django.test import TestCase
 
 import factory
 from products import models
+from factory.django import DjangoModelFactory
 
 
-class UserFactory(factory.Factory):
+class UserFactory(DjangoModelFactory):
     class Meta:
         model = models.User
 
@@ -24,8 +25,23 @@ class ItemFactory(factory.Factory):
     description = '1ddddddddddddddddddddddddddddddddddddddddddddddddddddddd23'
 
 
-users = UserFactory.build_batch(1000000, first_name="Joe")
-items = ItemFactory.build_batch(10000000000)
+users = UserFactory.build_batch(10000, first_name="Joe")
+items = ItemFactory.create()
 
 print([user.first_name for user in users])
-print([item.name for item in items])
+# print([item.name for item in items])
+
+name = factory.Sequence(lambda n: 'item-{0}'.format(n))
+price = factory.Sequence(lambda n: '123-{0}'.format(n))
+image_url = 'https://github.com/jeezybrick/products_light'
+description = '1ddddddddddddddddddddddddddddddddddddddddddddddddddddddd23'
+
+
+#/////////////////////////////////////////////////////////
+i = 0
+while i < 10000:
+
+    item = models.Item.objects.create(name='PC', price=11111, image_url='https://github.com/jeezybrick/products_light',
+                                      description='1ddddddddddddddddddddddddddddddddddddddddddddddddddddddd23')
+    item.save()
+    i += 1
