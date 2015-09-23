@@ -7,7 +7,6 @@ from products.models import Item, Comment, Rate, Category
 
 class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
-    # id = indexes.CharField(model_attr='id')
     name = indexes.CharField(model_attr='name')
     price = indexes.IntegerField(model_attr='price')
     description = indexes.CharField(model_attr='name')
@@ -21,8 +20,19 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_categories(self, obj):
         return [category.name for category in obj.categories.order_by('-id')]
-
+    '''
+    doesnt work
     def prepare_comments(self, obj):
+        list = []
+        dict = {}
+        for comment in obj.comments.order_by('-id'):
+            dict[comment.username] = comment.message
+            list.append(dict)
+        return list
+    '''
+    def prepare_comments(self, obj):
+        #return object
+        # return [comment for comment in obj.comments.order_by('-id')]
         return [comment.message for comment in obj.comments.order_by('-id')]
 
     def prepare_rate(self, obj):

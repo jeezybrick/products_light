@@ -33,6 +33,7 @@
             </div>
             <h2>Category filter</h2>
             <ul>
+                <li><a href="" ng-click="showAllItems()" style="color: red;">All categories</a></li>
                 <li ng-repeat="category in categories">
                     <a href="" ng-click="sortByCategory(category.name)">{{ category.name }} <span class="badge">{{ category.count }}</span></a>
                     <ul>

@@ -12,7 +12,7 @@
                 <small>{{ itemDetail.image_url }}</small>
             </h3>
 
-            <h4 ng-show="itemDetail.rate">Rating:{{ itemDetail.rate.value__avg | limitTo:3 }}</h4>
+            <h4 ng-show="itemDetail.rate">Rating:{{ itemDetail.rate | limitTo:3 }}</h4>
 {% endverbatim %}
 
             {% if user.is_authenticated %}
