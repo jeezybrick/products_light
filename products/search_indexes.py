@@ -1,8 +1,8 @@
 __author__ = 'user'
-from statistics import mean
 from django.db.models import Avg
 from haystack import indexes
-from products.models import Item, Comment, Rate, Category
+# from celery_haystack.indexes import CelerySearchIndex
+from products.models import Item, Comment, Rate
 
 
 class ItemIndex(indexes.SearchIndex, indexes.Indexable):
@@ -63,19 +63,3 @@ class RateIndex(indexes.SearchIndex, indexes.Indexable):
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
-
-"""
-dddddddddddddddddddddddddddddd
-class CategoryIndex(indexes.SearchIndex, indexes.Indexable):
-    text = indexes.CharField(document=True, use_template=True)
-    items = indexes.MultiValueField(faceted=True)
-
-    def get_model(self):
-        return Category
-
-    def prepare_items(self, obj):
-        return [item.name for item in obj.items.order_by('-id')]
-
-    def index_queryset(self, using=None):
-        return self.get_model().objects.all()
-"""

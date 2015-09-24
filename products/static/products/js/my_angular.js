@@ -101,12 +101,11 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
     };
 
 
-    $scope.addRate = function (userId) {
+    $scope.addRate = function () {
         $scope.dynamic = 100;
         var data = {
             "value": $scope.rate,
-            "item": $scope.id,
-            "user": userId
+            "item": $scope.id
         };
 
         $http.post('/api/rates/', data).success(function (data) {

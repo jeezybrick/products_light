@@ -43,7 +43,7 @@ class RateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rate
-        fields = ('value', 'user', 'item')
+        fields = ('value', 'item')
 
 
 class ItemSerializer(serializers.Serializer):

@@ -42,9 +42,14 @@ class LoginView(View):
     def post(self, request):
 
         form = MyLoginForm(request, data=request.POST)
+        context = {
+            'form': form,
+            'title': 'Sign In',
+        }
         if form.is_valid():
             auth_login(request, form.get_user())
             return HttpResponseRedirect(self.success_url)
+        return TemplateResponse(request, self.template_name, context)
 
 
 class ItemListView(View):

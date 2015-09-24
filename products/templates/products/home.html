@@ -7,14 +7,15 @@
 
 {% block content %}
 
-                 <div class="starter-template">
-                     <p class="lead animated zoomIn">
-                     {% if user.is_authenticated %}
-                         <h2>{% trans "Hello" %},{{ user }}!</h2>
-                     {% else %}
-                        {% trans "Welcome" %}<br><a href="{% url 'register' %}">{% trans "Sign Up" %}</a> or <a href="{% url 'login' %}"> {% trans "Sign In" %}</a> on web site.
-                     {% endif %}
-                     </p>
-                 </div>
+    <div class="starter-template">
+        <p class="lead animated zoomIn">
+            {% if user.is_authenticated %}
+                <h2>{% trans "Hello" %},{{ user }}!</h2>
+            {% else %}
+                {% trans "Welcome" %}<br><a href="{% url 'register' %}">{% trans "Sign Up" %}</a> or
+                <a href="{% url 'login' %}"> {% trans "Sign In" %}</a> on web site.
+            {% endif %}
+        </p>
+    </div>
 
 {% endblock %}

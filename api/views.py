@@ -2,6 +2,7 @@ __author__ = 'user'
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.http import Http404
+from django.db import models
 from rest_framework import generics, viewsets, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
@@ -9,7 +10,7 @@ from products.models import Item, Category, Rate, Comment
 from api import serializers
 from rest_framework.response import Response
 from haystack.query import SearchQuerySet
-from django.http import QueryDict
+from haystack import signals
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -78,3 +79,19 @@ class RateViewSet(viewsets.ModelViewSet):
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     serializer_class = serializers.ItemSerializer
+
+
+class RateList(APIView, signals.BaseSignalProcessor):
+
+    def get(self, request, format=None):
+        rates = Rate.objects.all()
+        serializer = serializers.RateSerializer(rates, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = serializers.RateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+            models.signals.post_save.connect(self.handle_save, sender=Item)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
