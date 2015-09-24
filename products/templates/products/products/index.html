@@ -36,11 +36,11 @@
 
             <!-- Begin faceting. -->
             <h2>By Category</h2>
-
             <div>
                 <dl>
                     {% if facets.fields.categories %}
                         <dt>Category:</dt>
+                        <a href="/products/" style="color: red;">All categories</a>
                         {# Provide only the top 5 categories #}
                         {% for category in facets.fields.categories|slice:":5" %}
                             <dd>

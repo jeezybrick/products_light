@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.response import TemplateResponse
 from django.utils.http import is_safe_url
 from django.contrib.auth import login as auth_login, logout as auth_logout
-from .cache import Item, Category
+from products import cache
 from .models import Rate
 from .forms import MyRegForm, AddComment, AddRate, AddItem, MyLoginForm
 from haystack.query import SearchQuerySet
@@ -59,10 +59,10 @@ class ItemListView(View):
         try:
             request.GET["category"]
         except:
-            products = SearchQuerySet().models(Item).order_by('-id')
+            products = SearchQuerySet().models(cache.ProductCache.model).order_by('-id')
         else:
-            products = SearchQuerySet().models(Item).filter(categories__name=request.GET["category"]).order_by('-id')
-        facets = SearchQuerySet().models(Item).facet('categories').facet_counts()
+            products = SearchQuerySet().models(cache.ProductCache.model).filter(categories__name=request.GET["category"]).order_by('-id')
+        facets = SearchQuerySet().models(cache.ProductCache.model).facet('categories').facet_counts()
         paginator = Paginator(products, 6)
         page = request.GET.get('page')
 
@@ -78,7 +78,7 @@ class ItemListView(View):
 
 class ItemDetailView(DetailView):
 
-    model = Item
+    model = cache.ProductCache.model
     context_object_name = 'item'
     template_name = 'products/products/show.html'
 
@@ -92,7 +92,7 @@ class ItemDetailView(DetailView):
 
 class ItemAddView(CreateView):
 
-    model = Item
+    model = cache.ProductCache.model
     template_name = 'products/products/add.html'
     success_url = '/products/'
     form_class = AddItem
@@ -114,12 +114,12 @@ class CategoryListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Category.objects.filter(parent_category_id__isnull=True)
+        return cache.CategoryCache.model.objects.filter(parent_category_id__isnull=True)
 
 
 class CategoryAddView(CreateView):
 
-    model = Category
+    model = cache.CategoryCache.model
     fields = ('name', 'parent_category')
     template_name = 'products/categories/modify.html'
     success_url = '/categories/'
@@ -159,7 +159,7 @@ class AddCommentView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             first = form.save(commit=False)
-            first.item = get_object_or_404(Item, id=kwargs["pk"])
+            first.item = get_object_or_404(cache.ProductCache.model, id=kwargs["pk"])
             first.save()
             messages.success(self.request, _('Your comment add!'))
             return HttpResponseRedirect('/products/'+kwargs["pk"]+'/')
@@ -174,7 +174,7 @@ class AddRateView(LoginRequiredMixin, View):
         form = self.form_class(request.POST)
         if form.is_valid():
             first = form.save(commit=False)
-            first.item = get_object_or_404(Item, id=kwargs["pk"])
+            first.item = get_object_or_404(cache.ProductCache.model, id=kwargs["pk"])
             first.user = request.user
             first.save()
             messages.success(self.request, _('Thanks for rate!'))

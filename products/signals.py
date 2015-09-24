@@ -1,12 +1,11 @@
 __author__ = 'user'
 from .models import Category, Item, Rate,Comment
-from .cache import ProductCache, CategoryCache, RateCache
+from .cache import ProductCache, CategoryCache, RateCache, CommentCache
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.db import models
-from django.db.models.loading import get_model
 from haystack import signals
-from haystack.management.commands import update_index
+# from haystack.management.commands import update_index
 from products.search_indexes import ItemIndex
 
 invalidate_signals = [post_delete, post_save]
@@ -27,10 +26,9 @@ def invalidate_category(sender, instance, **kwargs):
     RateCache().invalidate()
 
 
-class MySignalProcessor(signals.BaseSignalProcessor):
-    def setup(self):
-        MyModel = get_model('products', 'Item')
-        models.signals.post_save.connect(self.handle_save, sender=MyModel)
+@receiver(post_save, sender=Comment)
+def invalidate_category(sender, instance, **kwargs):
+    CommentCache().invalidate()
 
 
 class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):

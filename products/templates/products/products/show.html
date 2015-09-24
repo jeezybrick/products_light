@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load staticfiles %}
 {% load bootstrap3 %}
+{% load humanize %}
 {% block title %}
     {{ note.title }}
 {% endblock %}
@@ -44,10 +45,10 @@
             </h3>
             <hr/>
             <h3>{% trans "Image url" %}:
-                <small>{{ item.image_url }}</small>
+                <small>{{ item.image_url | default:'No image url' }}</small>
             </h3>
             <h3>{% trans "Avarage rating" %}:
-                <small>{{ average_rating.value__avg | default:"This product doesn't rate yeat"}}</small>
+                <small>{{ average_rating.value__avg |floatformat:1 | default:"This product doesn't rate yeat" }}</small>
             </h3>
             <hr/>
         </div>
@@ -59,6 +60,8 @@
         <h3>{{ comment.username }}</h3>
         <h4>{{ comment.message }}</h4>
         <hr>
+    {% empty %}
+        <h2><small>{% trans "No comments added" %}</small></h2>
     {% endfor %}
         <form class="form-horizontal"
               name="add_comment_form" role="form" method="POST"
@@ -84,7 +87,7 @@
         </form>
     </div>
       {% if not user.is_authenticated %}
-        <h2><a href="{% url 'register' %}">{% trans "Sign Up" %}</a> or <a href="{% url 'login' %}"> {% trans "Sign In" %}</a> on web site, so yoy can rate items.</h2>
+        <h2><a href="{% url 'register' %}">{% trans "Sign Up" %}</a> or <a href="{% url 'login' %}"> {% trans "Sign In" %}</a> on web site, so you can rate items.</h2>
       {% else %}
     <div class="col-md-8 col-sm-10">
     <h2>Rate this item</h2>

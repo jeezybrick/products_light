@@ -7,6 +7,7 @@ from rest_framework import generics, viewsets, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from products.models import Item, Category, Rate, Comment
+from products import cache
 from api import serializers
 from rest_framework.response import Response
 from haystack.query import SearchQuerySet
@@ -28,9 +29,9 @@ class ItemList(generics.GenericAPIView):
         try:
             request.GET["category"]
         except:
-            queryset = SearchQuerySet().models(Item).order_by('-id')
+            queryset = SearchQuerySet().models(cache.ProductCache.model).order_by('-id')
         else:
-            queryset = SearchQuerySet().models(Item).filter(categories__in=[request.GET["category"]])
+            queryset = SearchQuerySet().models(cache.ProductCache.model).filter(categories__in=[request.GET["category"]])
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -45,9 +46,9 @@ class ItemDetail(APIView):
 
     def get_object(self, pk):
         try:
-            return SearchQuerySet().models(Item).filter(id=pk)
+            return SearchQuerySet().models(cache.ProductCache.model).filter(id=pk)
 
-        except SearchQuerySet().models(Item).filter(id=pk).DoesNotExist:
+        except SearchQuerySet().models(cache.ProductCache.model).filter(id=pk).DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
@@ -62,18 +63,15 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.filter(parent_category_id__isnull=True)
+    # queryset = Category.objects.filter(parent_category_id__isnull=True)
+    queryset = cache.CategoryCache().fetch(parent_category_id__isnull=True)
     serializer_class = serializers.CategorySerializer
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
+    # queryset = Comment.objects.all()
+    queryset = cache.CommentCache().fetch()
     serializer_class = serializers.CommentSerializer
-
-
-class RateViewSet(viewsets.ModelViewSet):
-    queryset = Rate.objects.all()
-    serializer_class = serializers.RateSerializer
 
 
 class ItemViewSet(viewsets.ModelViewSet):
