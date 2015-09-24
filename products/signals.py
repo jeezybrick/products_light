@@ -22,29 +22,41 @@ def invalidate_item(sender, instance, **kwargs):
 
 
 @receiver(post_save, sender=Rate)
-def invalidate_category(sender, instance, **kwargs):
+def invalidate_rate(sender, instance, **kwargs):
     RateCache().invalidate()
 
 
 @receiver(post_save, sender=Comment)
-def invalidate_category(sender, instance, **kwargs):
+def invalidate_comment(sender, instance, **kwargs):
     CommentCache().invalidate()
 
 
 class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
+
+    #@receiver(post_save, sender=Rate)
+    def handle_rate_change(self, sender, instance, **kwargs):
+        print('handle work')
+        if instance.item.rates:
+            print('if work')
+            super(RateOnlySignalProcessor, self).handle_save(
+                Item, instance.item.rates, **kwargs
+            )
+
     def setup(self, **kwargs):
         models.signals.post_save.connect(self.handle_save, sender=Item)
+        # models.signals.post_save.connect(self.handle_rate_change, sender=Item)
         models.signals.post_delete.connect(self.handle_delete, sender=Item)
 
     def teardown(self):
         models.signals.post_save.disconnect(self.handle_save, sender=Item)
         models.signals.post_delete.disconnect(self.handle_delete, sender=Item)
 
-
+'''
 @receiver(post_save, sender=Comment)
 @receiver(post_save, sender=Rate)
 def reindex_mymodel(sender, **kwargs):
     ItemIndex().update()
+'''
 
 '''
 #hard reset index

@@ -39,9 +39,10 @@ description = '1ddddddddddddddddddddddddddddddddddddddddddddddddddddddd23'
 
 #/////////////////////////////////////////////////////////
 i = 0
-while i < 10000:
+while i < 1000:
 
     item = models.Item.objects.create(name='PC', price=11111, image_url='https://github.com/jeezybrick/products_light',
                                       description='1ddddddddddddddddddddddddddddddddddddddddddddddddddddddd23')
     item.save()
+    print('item saved!')
     i += 1

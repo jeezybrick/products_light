@@ -63,26 +63,21 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    # queryset = Category.objects.filter(parent_category_id__isnull=True)
-    queryset = cache.CategoryCache().fetch(parent_category_id__isnull=True)
+    queryset = Category.objects.filter(parent_category_id__isnull=True)
+    # queryset = cache.CategoryCache().get(parent_category_id__isnull=True)
     serializer_class = serializers.CategorySerializer
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    # queryset = Comment.objects.all()
-    queryset = cache.CommentCache().fetch()
+    queryset = Comment.objects.all()
+    # queryset = cache.CommentCache().get()
     serializer_class = serializers.CommentSerializer
-
-
-class ItemViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.all()
-    serializer_class = serializers.ItemSerializer
 
 
 class RateList(APIView, signals.BaseSignalProcessor):
 
     def get(self, request, format=None):
-        rates = Rate.objects.all()
+        rates = cache.RateCache().get()
         serializer = serializers.RateSerializer(rates, many=True)
         return Response(serializer.data)
 
@@ -90,6 +85,5 @@ class RateList(APIView, signals.BaseSignalProcessor):
         serializer = serializers.RateSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(user=self.request.user)
-            # models.signals.post_save.connect(self.handle_save, sender=Item)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

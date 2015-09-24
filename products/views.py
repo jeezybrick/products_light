@@ -114,7 +114,7 @@ class CategoryListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return cache.CategoryCache.model.objects.filter(parent_category_id__isnull=True)
+        return cache.CategoryCache().get(parent_category_id__isnull=True)
 
 
 class CategoryAddView(CreateView):

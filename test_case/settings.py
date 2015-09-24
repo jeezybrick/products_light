@@ -130,3 +130,5 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HAYSTACK_SIGNAL_PROCESSOR = 'products.signals.RateOnlySignalProcessor'
+
+CELERY_ALWAYS_EAGER=True

@@ -38,5 +38,5 @@ class Rate(models.Model):
     user = models.ForeignKey(User)
     item = models.ForeignKey(Item, related_name='rates')
 
-    def __str__(self):
+    def __unicode__(self):
         return self.value
