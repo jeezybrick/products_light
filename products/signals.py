@@ -1,5 +1,5 @@
 __author__ = 'user'
-from .models import Category, Item, Rate
+from .models import Category, Item, Rate,Comment
 from .cache import ProductCache, CategoryCache, RateCache
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
@@ -43,6 +43,7 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
         models.signals.post_delete.disconnect(self.handle_delete, sender=Item)
 
 
+@receiver(post_save, sender=Comment)
 @receiver(post_save, sender=Rate)
 def reindex_mymodel(sender, **kwargs):
     ItemIndex().update()
