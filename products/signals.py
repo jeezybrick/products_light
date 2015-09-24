@@ -7,6 +7,7 @@ from django.db import models
 from django.db.models.loading import get_model
 from haystack import signals
 from haystack.management.commands import update_index
+from products.search_indexes import ItemIndex
 
 invalidate_signals = [post_delete, post_save]
 
@@ -43,6 +44,12 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
 
 
 @receiver(post_save, sender=Rate)
+def reindex_mymodel(sender, **kwargs):
+    ItemIndex().update()
+
+'''
+#hard reset index
+@receiver(post_save, sender=Rate)
 def UpdateItemIndex(sender, instance, **kwargs):
     update_index.Command().handle()
-    #models.signals.post_save.connect(receiver=Item, sender=Item)
+'''

@@ -1,4 +1,5 @@
 __author__ = 'user'
+from statistics import mean
 from django.db.models import Avg
 from haystack import indexes
 # from celery_haystack.indexes import CelerySearchIndex
