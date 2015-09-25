@@ -94,6 +94,8 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
 
         $scope.itemDetail = data[0];
         $scope.itemDetailLoad = true;
+        var myEl = angular.element(document.querySelector('.wrapperOnList'));
+        myEl.removeClass('hidden');
 
     });
     $scope.rate = 5;
