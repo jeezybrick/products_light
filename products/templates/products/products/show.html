@@ -8,113 +8,114 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12" style="word-break: break-all;">
-            <h1 style="margin-top: 0;">{{ item.name }}</h1>
-        </div>
+    {% for item in item %}
+        <div class="row">
+            <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12" style="word-break: break-all;">
+                <h1 style="margin-top: 0;">{{ item.name }}</h1>
+            </div>
 
-        <div class="col-lg-12 col-md--12 col-sm-12 col-xs-12">
-            <ol class="breadcrumb">
-                <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-                <li class="active">{% trans "list of items" %}</li>
-            </ol>
+            <div class="col-lg-12 col-md--12 col-sm-12 col-xs-12">
+                <ol class="breadcrumb">
+                    <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+                    <li class="active">{% trans "list of items" %}</li>
+                </ol>
+                <hr>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="messenger alert alert-success" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <h3 style="margin: 0;">
+                    ID:{{ item.id }}
+                </h3>
+                <h3>{% trans "Name" %}:{{ item.name }}</h3>
+                <h3>{% trans "price" %}:{{ item.price }} грн.</h3>
+                <pre>{{ item.description }}</pre>
+
+                <h3>
+                    {% trans "Categories" %}:
+                    {% for category in item.categories.all %}
+                        <small>{% trans "Name" %}:{{ category.name }}</small>
+                        <small>{% trans "id" %}:{{ category.id }}</small><br>
+                    {% empty %}
+                        <small>Categories doesn't picked.</small>
+                    {% endfor %}
+                </h3>
+                <hr/>
+                <h3>{% trans "Image url" %}:
+                    <small>{{ item.image_url | default:'No image url' }}</small>
+                </h3>
+                <h3>{% trans "Avarage rating" %}:
+                    <small>{{ average_rating.value__avg |floatformat:1 | default:"This product doesn't rate yeat" }}</small>
+                </h3>
+                <hr/>
+            </div>
             <hr>
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="messenger alert alert-success" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {{ message }}
+        <hr>
+        <div class="col-md-8 col-sm-10">
+        <h2>{% trans "Comments" %}</h2>
+        {% for comment in item.comment_set.all %}
+            <h3>{{ comment.username }}</h3>
+            <h4>{{ comment.message }}</h4>
+            <hr>
+        {% empty %}
+            <h2><small>{% trans "No comments added" %}</small></h2>
+        {% endfor %}
+            <form class="form-horizontal"
+                  name="add_comment_form" role="form" method="POST"
+                  action="#" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="col-md-12">
+                        <div class="panel-body">
+                            <div class="alert alert-danger">
+                                <ul>
+                                    {{ form.errors }}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                {% endfor %}
-            {% endif %}
-            <h3 style="margin: 0;">
-                ID:{{ item.id }}
-            </h3>
-            <h3>{% trans "Name" %}:{{ item.name }}</h3>
-            <h3>{% trans "price" %}:{{ item.price }} грн.</h3>
-            <pre>{{ item.description }}</pre>
-
-            <h3>
-                {% trans "Categories" %}:
-                {% for category in item.categories.all %}
-                    <small>{% trans "Name" %}:{{ category.name }}</small>
-                    <small>{% trans "id" %}:{{ category.id }}</small><br>
-                {% empty %}
-                    <small>Categories doesn't picked.</small>
-                {% endfor %}
-            </h3>
-            <hr/>
-            <h3>{% trans "Image url" %}:
-                <small>{{ item.image_url | default:'No image url' }}</small>
-            </h3>
-            <h3>{% trans "Avarage rating" %}:
-                <small>{{ average_rating.value__avg |floatformat:1 | default:"This product doesn't rate yeat" }}</small>
-            </h3>
-            <hr/>
+                {% endif %}
+                {% bootstrap_form comment_form layout='horizontal' size='medium' horizontal_label_class='col-md-2' horizontal_field_class='col-md-7' %}
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-2 text-center">
+                        <input type="submit" class="btn btn-primary" name="submit" value="{% trans "Add comment" %}">
+                    </div>
+                </div>
+            </form>
         </div>
-        <hr>
-    <hr>
-    <div class="col-md-8 col-sm-10">
-    <h2>{% trans "Comments" %}</h2>
-    {% for comment in item.comment_set.all %}
-        <h3>{{ comment.username }}</h3>
-        <h4>{{ comment.message }}</h4>
-        <hr>
-    {% empty %}
-        <h2><small>{% trans "No comments added" %}</small></h2>
+          {% if not user.is_authenticated %}
+            <h2><a href="{% url 'register' %}">{% trans "Sign Up" %}</a> or <a href="{% url 'login' %}"> {% trans "Sign In" %}</a> on web site, so you can rate items.</h2>
+          {% else %}
+        <div class="col-md-8 col-sm-10">
+        <h2>Rate this item</h2>
+            <form class="form-horizontal"
+                  name="add_comment_form" role="form" method="POST"
+                  action="#" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="col-md-12">
+                        <div class="panel-body">
+                            <div class="alert alert-danger">
+                                <ul>
+                                    {{ form.errors }}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% bootstrap_form rating_form layout='horizontal' size='medium' horizontal_label_class='col-md-2' horizontal_field_class='col-md-7' %}
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-2 text-center">
+                        <input type="submit" class="btn btn-primary" name="submit" value="Rate">
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+        </div>
     {% endfor %}
-        <form class="form-horizontal"
-              name="add_comment_form" role="form" method="POST"
-              action="{% url 'comment_add' item.id %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% if form.errors %}
-                <div class="col-md-12">
-                    <div class="panel-body">
-                        <div class="alert alert-danger">
-                            <ul>
-                                {{ form.errors }}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-            {% bootstrap_form comment_form layout='horizontal' size='medium' horizontal_label_class='col-md-2' horizontal_field_class='col-md-7' %}
-            <div class="form-group">
-                <div class="col-md-6 col-md-offset-2 text-center">
-                    <input type="submit" class="btn btn-primary" name="submit" value="{% trans "Add comment" %}">
-                </div>
-            </div>
-        </form>
-    </div>
-      {% if not user.is_authenticated %}
-        <h2><a href="{% url 'register' %}">{% trans "Sign Up" %}</a> or <a href="{% url 'login' %}"> {% trans "Sign In" %}</a> on web site, so you can rate items.</h2>
-      {% else %}
-    <div class="col-md-8 col-sm-10">
-    <h2>Rate this item</h2>
-        <form class="form-horizontal"
-              name="add_comment_form" role="form" method="POST"
-              action="{% url 'rate_add' item.id %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% if form.errors %}
-                <div class="col-md-12">
-                    <div class="panel-body">
-                        <div class="alert alert-danger">
-                            <ul>
-                                {{ form.errors }}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-            {% bootstrap_form rating_form layout='horizontal' size='medium' horizontal_label_class='col-md-2' horizontal_field_class='col-md-7' %}
-            <div class="form-group">
-                <div class="col-md-6 col-md-offset-2 text-center">
-                    <input type="submit" class="btn btn-primary" name="submit" value="Rate">
-                </div>
-            </div>
-        </form>
-    </div>
-    {% endif %}
-    </div>
-
 {% endblock %}

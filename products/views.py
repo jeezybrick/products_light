@@ -76,9 +76,24 @@ class ItemListView(View):
         return render(request, self.template_name, {'products': products, 'facets': facets})
 
 
+class ItemDetailView(View):
+    template_name = 'products/products/show.html'
+
+    def get(self, request, *args, **kwargs):
+        item = cache.ProductCache().get(id=kwargs["pk"])
+        context = {
+            'comment_form': AddComment,
+            'rating_form': AddRate,
+            'average_rating': Rate.objects.filter(item_id=self.kwargs["pk"]).aggregate(Avg('value')),
+            'item': item,
+        }
+        return render(request, self.template_name, context)
+
+
+"""
 class ItemDetailView(DetailView):
 
-    model = cache.ProductCache.model
+    # model = cache.ProductCache.model
     context_object_name = 'item'
     template_name = 'products/products/show.html'
 
@@ -89,7 +104,10 @@ class ItemDetailView(DetailView):
         context['average_rating'] = Rate.objects.filter(item_id=self.kwargs["pk"]).aggregate(Avg('value'))
         return context
 
+    def get_queryset(self):
+        return cache.ProductCache().get()
 
+"""
 class ItemAddView(CreateView):
 
     model = cache.ProductCache.model
