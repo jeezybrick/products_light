@@ -29,16 +29,19 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     $scope.reverse = true;
     $scope.showTriangle = false;
     $scope.showDetailOfItem = false;
-    $scope.pageSize = 6;
-    $scope.currentPage = 1;
+    $scope.isCollapsed = true;
+    $scope.itemLoad = false;
 
     $http.get('/api/items/').success(function (data) {
 
         $scope.items = data;
+        var myEl = angular.element( document.querySelector( '.wrapperOnList' ) );
+        myEl.removeClass('hidden');
 
         $http.get('/api/categories/').success(function (data) {
 
             $scope.categories = data;
+            $scope.itemLoad = true;
 
         });
 
@@ -132,6 +135,9 @@ myApp.controller('categoryListCtrl', function ($scope, $http) {
     $http.get('/api/categories/').success(function (data) {
 
         $scope.categories = data;
+        $scope.categoryLoad = true;
+        var myEl = angular.element( document.querySelector( '.wrapperOnList' ) );
+        myEl.removeClass('hidden');
 
     });
 
