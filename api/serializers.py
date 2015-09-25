@@ -60,3 +60,10 @@ class ItemSerializer(serializers.Serializer):
     class Meta:
 
         fields = ('pk', 'name', 'price', 'description', 'categories', 'comments', 'image_url', 'rate', )
+
+
+class ItemDetailSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Item
+        fields = ('id', 'name', 'price', 'description', 'categories', 'comments', 'image_url', 'rates', )

@@ -46,14 +46,14 @@ class ItemDetail(APIView):
 
     def get_object(self, pk):
         try:
-            return SearchQuerySet().models(cache.ProductCache.model).filter(id=pk)
+            return cache.ProductCache().get(id=pk)
 
-        except SearchQuerySet().models(cache.ProductCache.model).filter(id=pk).DoesNotExist:
+        except cache.ProductCache().get(id=pk).DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
         item = self.get_object(pk)
-        serializer = serializers.ItemSerializer(item, many=True)
+        serializer = serializers.ItemDetailSerializer(item, many=True)
         return Response(serializer.data)
 
 

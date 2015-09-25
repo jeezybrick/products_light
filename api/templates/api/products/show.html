@@ -1,7 +1,7 @@
 {% verbatim %}
      <div class="col-lg-12">
             <h3 style="margin: 0;">
-                ID:{{ itemDetail.pk }}
+                ID:{{ itemDetail.id }}
             </h3>
 
             <h3>Name:{{ itemDetail.name }}</h3>
@@ -12,7 +12,7 @@
                 <small>{{ itemDetail.image_url }}</small>
             </h3>
 
-            <h4 ng-show="itemDetail.rate">Rating:{{ itemDetail.rate | limitTo:3 }}</h4>
+            <h4 ng-show="itemDetail.rate">Rating:{{ itemDetail.rates | limitTo:3 }}</h4>
 {% endverbatim %}
 
             {% if user.is_authenticated %}
