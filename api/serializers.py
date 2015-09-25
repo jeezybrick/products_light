@@ -66,6 +66,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
 
     rates = serializers.SerializerMethodField()
     comments = CommentSerializer(many=True)
+    categories = serializers.StringRelatedField(many=True)
 
     def get_rates(self, obj):
          return cache.RateCache().get(item_id=obj.pk).aggregate(Avg('value'))['value__avg']
