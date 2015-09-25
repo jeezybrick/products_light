@@ -63,7 +63,12 @@ class ItemSerializer(serializers.Serializer):
 
 
 class ItemDetailSerializer(serializers.ModelSerializer):
-    
+
+    rates = serializers.SerializerMethodField()
+
+    def get_rates(self, obj):
+         return Rate.objects.filter(item_id=obj.pk).aggregate(Avg('value'))['value__avg']
+
     class Meta:
         model = Item
         fields = ('id', 'name', 'price', 'description', 'categories', 'comments', 'image_url', 'rates', )
