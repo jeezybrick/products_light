@@ -80,8 +80,9 @@ class AddItem(forms.ModelForm):
         fields = ('name', 'price', 'image_url', 'categories', 'description', )
 
 
-# Функция для вывода родительской категории
+# for output only parent category in parent category select
 def categories_as_choices():
+    # Start array for selection within parent
     categories = [['', '---------']]
     new_category = []
     for category in Category.objects.filter(parent_category_id__isnull=True):
