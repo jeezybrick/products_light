@@ -57,8 +57,8 @@
         <hr>
         <div class="col-md-8 col-sm-10">
         <h2>{% trans "Comments" %}</h2>
-        {% for comment in item.comment_set.all %}
-            <h3>{{ comment.username }}</h3>
+        {% for comment in item.comments.all %}
+            <h4><small>{{ comment.username }}</small></h4>
             <h4>{{ comment.message }}</h4>
             <hr>
         {% empty %}

@@ -50,6 +50,8 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
         models.signals.post_delete.connect(self.handle_rate_update, sender=Rate)
         models.signals.post_save.connect(self.handle_comment_update, sender=Comment)
         models.signals.post_delete.connect(self.handle_comment_update, sender=Comment)
+        # models.signals.post_save.connect(self.handle_comment_update, sender=Category)
+        # models.signals.post_delete.connect(self.handle_comment_update, sender=Category)
 
     def teardown(self):
         models.signals.post_save.disconnect(self.handle_save, sender=Item)

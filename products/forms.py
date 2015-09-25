@@ -95,8 +95,15 @@ class AddCategory(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AddCategory, self).__init__(*args, **kwargs)
         self.fields['parent_category'].choices = categories_as_choices()
-        self.fields['parent_category'].label = 'Родительская категория'
 
     class Meta:
         model = Category
         fields = ('name', 'parent_category', )
+
+        help_texts = {
+            'parent_category': _('Выберете родительскую категорию.'),
+        }
+
+        labels = {
+            'parent_category': 'Родительская категория',
+        }

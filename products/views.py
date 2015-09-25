@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.response import TemplateResponse
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from products import cache
-from .models import Rate,Category
+from .models import Rate, Category, Item
 from .forms import MyRegForm, AddComment, AddRate, AddItem, MyLoginForm, AddCategory
 from haystack.query import SearchQuerySet
 # Create your views here.
@@ -58,10 +58,10 @@ class ItemListView(View):
         try:
             request.GET["category"]
         except:
-            products = SearchQuerySet().models(cache.ProductCache.model).order_by('-id')
+            products = SearchQuerySet().models(Item).order_by('-id')
         else:
-            products = SearchQuerySet().models(cache.ProductCache.model).filter(categories__name=request.GET["category"]).order_by('-id')
-        facets = SearchQuerySet().models(cache.ProductCache.model).facet('categories').facet_counts()
+            products = SearchQuerySet().models(Item).filter(categories__name=request.GET["category"]).order_by('-id')
+        facets = SearchQuerySet().models(Item).facet('categories').facet_counts()
         paginator = Paginator(products, 6)
         page = request.GET.get('page')
 
