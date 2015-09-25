@@ -7,7 +7,7 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from .cache import Item
-from .models import Comment, Rate
+from .models import Comment, Rate, Category
 
 
 class MyLoginForm(AuthenticationForm):
@@ -78,3 +78,23 @@ class AddItem(forms.ModelForm):
     class Meta:
         model = Item
         fields = ('name', 'price', 'image_url', 'categories', 'description', )
+
+
+# Функция для вывода родительской категории
+def categories_as_choices():
+    categories = []
+    new_category = []
+    for category in Category.objects.filter(parent_category_id__isnull=True):
+        new_category = [category.id, category.name]
+        categories.append(new_category)
+
+    return categories
+
+
+class AddCategory(forms.ModelForm):
+
+    parent_category = forms.ChoiceField(choices=categories_as_choices())
+
+    class Meta:
+        model = Category
+        fields = ('name', 'parent_category', )

@@ -8,11 +8,10 @@ from django.db.models import Avg
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
 from django.template.response import TemplateResponse
-from django.utils.http import is_safe_url
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from products import cache
-from .models import Rate
-from .forms import MyRegForm, AddComment, AddRate, AddItem, MyLoginForm
+from .models import Rate,Category
+from .forms import MyRegForm, AddComment, AddRate, AddItem, MyLoginForm, AddCategory
 from haystack.query import SearchQuerySet
 # Create your views here.
 
@@ -77,6 +76,7 @@ class ItemListView(View):
 
 
 class ItemDetailView(View):
+
     template_name = 'products/products/show.html'
 
     def get(self, request, *args, **kwargs):
@@ -90,24 +90,6 @@ class ItemDetailView(View):
         return render(request, self.template_name, context)
 
 
-"""
-class ItemDetailView(DetailView):
-
-    # model = cache.ProductCache.model
-    context_object_name = 'item'
-    template_name = 'products/products/show.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(ItemDetailView, self).get_context_data(**kwargs)
-        context['comment_form'] = AddComment
-        context['rating_form'] = AddRate
-        context['average_rating'] = Rate.objects.filter(item_id=self.kwargs["pk"]).aggregate(Avg('value'))
-        return context
-
-    def get_queryset(self):
-        return cache.ProductCache().get()
-
-"""
 class ItemAddView(CreateView):
 
     model = cache.ProductCache.model
@@ -137,10 +119,10 @@ class CategoryListView(ListView):
 
 class CategoryAddView(CreateView):
 
-    model = cache.CategoryCache.model
-    fields = ('name', 'parent_category')
+    model = Category
     template_name = 'products/categories/modify.html'
     success_url = '/categories/'
+    form_class = AddCategory
 
     def get_context_data(self, **kwargs):
         context = super(CategoryAddView, self).get_context_data(**kwargs)
