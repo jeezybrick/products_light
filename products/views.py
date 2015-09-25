@@ -116,6 +116,28 @@ class CategoryListView(ListView):
     def get_queryset(self):
         return cache.CategoryCache().get(parent_category_id__isnull=True)
 
+"""
+class CategoryAddView(View):
+    form_class = AddCategory
+    success_url = '/categories/'
+    template_name = 'products/categories/modify.html'
+    foo = _('Add')
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'foo': self.foo})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            print('valid')
+            form.save()
+            print(form)
+            return HttpResponseRedirect(self.success_url)
+        return render(request, self.template_name, {'form': form, 'foo': self.foo})
+
+"""
+
 
 class CategoryAddView(CreateView):
 
@@ -132,6 +154,9 @@ class CategoryAddView(CreateView):
     def form_valid(self, form):
         messages.success(self.request, _('Category add!'))
         return super(CategoryAddView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 class RegisterView(View):

@@ -92,8 +92,10 @@ def categories_as_choices():
 
 
 class AddCategory(forms.ModelForm):
-
-    parent_category = forms.ChoiceField(choices=categories_as_choices())
+    def __init__(self, *args, **kwargs):
+        super(AddCategory, self).__init__(*args, **kwargs)
+        self.fields['parent_category'].choices = categories_as_choices()
+        self.fields['parent_category'].label = 'Родительская категория'
 
     class Meta:
         model = Category
