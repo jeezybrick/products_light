@@ -101,9 +101,9 @@ class AddCategory(forms.ModelForm):
         fields = ('name', 'parent_category', )
 
         help_texts = {
-            'parent_category': _('Выберете родительскую категорию.'),
+            'parent_category': _('Choose parent category if you want.'),
         }
 
         labels = {
-            'parent_category': 'Родительская категория',
+            'parent_category': _('Parent Category'),
         }
