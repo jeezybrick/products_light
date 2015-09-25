@@ -35,7 +35,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     $http.get('/api/items/').success(function (data) {
 
         $scope.items = data;
-        var myEl = angular.element( document.querySelector( '.wrapperOnList' ) );
+        var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
 
         $http.get('/api/categories/').success(function (data) {
@@ -54,7 +54,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     };
 
     $scope.sortByCategory = function (name) {
-        $http.get('/api/items/?category='+name).success(function (data) {
+        $http.get('/api/items/?category=' + name).success(function (data) {
 
             $scope.items = data;
 
@@ -119,7 +119,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
         });
     };
 
-    $scope.addComment = function(){
+    $scope.addComment = function () {
         var data = {
             "username": $scope.username,
             "message": $scope.message,
@@ -138,7 +138,7 @@ myApp.controller('categoryListCtrl', function ($scope, $http) {
 
         $scope.categories = data;
         $scope.categoryLoad = true;
-        var myEl = angular.element( document.querySelector( '.wrapperOnList' ) );
+        var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
 
     });

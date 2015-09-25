@@ -72,8 +72,8 @@ class AddRate(forms.ModelForm):
 
 
 class AddItem(forms.ModelForm):
-    price = forms.IntegerField(max_value=10000000, min_value=0, label=_('price'))
-    description = forms.CharField(widget=forms.Textarea, label=_('description'))
+    price = forms.IntegerField(max_value=10000000, min_value=0, label=_('Price'))
+    description = forms.CharField(widget=forms.Textarea, label=_('Description'))
 
     class Meta:
         model = Item
@@ -82,7 +82,7 @@ class AddItem(forms.ModelForm):
 
 # Функция для вывода родительской категории
 def categories_as_choices():
-    categories = []
+    categories = [['', '---------']]
     new_category = []
     for category in Category.objects.filter(parent_category_id__isnull=True):
         new_category = [category.id, category.name]
