@@ -88,10 +88,12 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
     $scope.greet = false;
     $scope.maxx = 100;
     $scope.dynamic = 0;
+    $scope.itemDetailLoad = false;
 
     $http.get('/api/items/' + $routeParams.itemId + '/?format=json').success(function (data) {
 
         $scope.itemDetail = data[0];
+        $scope.itemDetailLoad = true;
 
     });
     $scope.rate = 5;

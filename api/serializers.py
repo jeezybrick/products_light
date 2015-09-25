@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from products.models import Item, Category, Rate, Comment
 from haystack.query import SearchQuerySet
 from django.db.models import Avg
-from products.cache import ProductCache, CategoryCache
+from products import cache
 
 
 class UserSerializer(serializers.ModelField):
@@ -65,9 +65,10 @@ class ItemSerializer(serializers.Serializer):
 class ItemDetailSerializer(serializers.ModelSerializer):
 
     rates = serializers.SerializerMethodField()
+    comments = CommentSerializer(many=True)
 
     def get_rates(self, obj):
-         return Rate.objects.filter(item_id=obj.pk).aggregate(Avg('value'))['value__avg']
+         return cache.RateCache().get(item_id=obj.pk).aggregate(Avg('value'))['value__avg']
 
     class Meta:
         model = Item

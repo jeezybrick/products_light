@@ -1,4 +1,8 @@
 {% verbatim %}
+    <!-- Preloader for load list -->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-hide="itemDetailLoad">
+        <h2>Loading detail... <i class="fa fa-spinner fa-pulse fa-3x"></i></h2>
+    </div>
      <div class="col-lg-12">
             <h3 style="margin: 0;">
                 ID:{{ itemDetail.id }}
@@ -39,7 +43,7 @@
             <h2 ng-show="itemDetail.comments.length">Comments</h2>
             <div class="col-md-8 col-sm-10" ng-repeat="comment in itemDetail.comments" style="border-bottom: solid 1px black;">
                     <h3><small>{{ comment.username }}</small></h3>
-                    <h4>{{ comment}}</h4>
+                    <h4>{{ comment.message }}</h4>
             </div>
 {% endverbatim %}
          <div class="col-md-8 col-sm-10" style="margin-top: 20px;">
