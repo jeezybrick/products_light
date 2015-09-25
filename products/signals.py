@@ -5,8 +5,6 @@ from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.db import models
 from haystack import signals
-# from haystack.management.commands import update_index
-from products.search_indexes import ItemIndex
 
 invalidate_signals = [post_delete, post_save]
 
@@ -33,34 +31,30 @@ def invalidate_comment(sender, instance, **kwargs):
 
 class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
 
-    #@receiver(post_save, sender=Rate)
-    def handle_rate_change(self, sender, instance, **kwargs):
-        print('handle work')
-        if instance.item.rates:
-            print('if work')
+    def handle_rate_update(self, sender, instance, **kwargs):
+        for item in Item.objects.filter(rates__id=instance.id):
             super(RateOnlySignalProcessor, self).handle_save(
-                Item, instance.item.rates, **kwargs
+                Item, item, **kwargs
+            )
+
+    def handle_comment_update(self, sender, instance, **kwargs):
+        for comment in Item.objects.filter(comments__id=instance.id):
+            super(RateOnlySignalProcessor, self).handle_save(
+                Item, comment, **kwargs
             )
 
     def setup(self, **kwargs):
         models.signals.post_save.connect(self.handle_save, sender=Item)
-        # models.signals.post_save.connect(self.handle_rate_change, sender=Item)
         models.signals.post_delete.connect(self.handle_delete, sender=Item)
+        models.signals.post_save.connect(self.handle_rate_update, sender=Rate)
+        models.signals.post_delete.connect(self.handle_rate_update, sender=Rate)
+        models.signals.post_save.connect(self.handle_comment_update, sender=Comment)
+        models.signals.post_delete.connect(self.handle_comment_update, sender=Comment)
 
     def teardown(self):
         models.signals.post_save.disconnect(self.handle_save, sender=Item)
         models.signals.post_delete.disconnect(self.handle_delete, sender=Item)
-
-'''
-@receiver(post_save, sender=Comment)
-@receiver(post_save, sender=Rate)
-def reindex_mymodel(sender, **kwargs):
-    ItemIndex().update()
-'''
-
-'''
-#hard reset index
-@receiver(post_save, sender=Rate)
-def UpdateItemIndex(sender, instance, **kwargs):
-    update_index.Command().handle()
-'''
+        models.signals.post_save.disconnect(self.handle_rate_update, sender=Rate)
+        models.signals.post_delete.disconnect(self.handle_rate_update, sender=Rate)
+        models.signals.post_save.disconnect(self.handle_comment_update, sender=Comment)
+        models.signals.post_delete.disconnect(self.handle_comment_update, sender=Comment)
