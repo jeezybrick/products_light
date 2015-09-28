@@ -128,8 +128,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
             "message": $scope.message,
             "item": $scope.id
         };
-        $http.post('/api/comments/', data).success(function (data) {
+        $http.post('/api/comments/', data).success(function () {
             $scope.hideCommentForm = true;
+            $scope.appendComment = data;
 
         }).error(function(data){
             $scope.errorComment = data;
