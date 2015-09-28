@@ -146,6 +146,7 @@ myApp.controller('categoryListCtrl', function ($scope, $http) {
         $scope.categoryLoad = true;
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
+        //myEl.addClass('animated pulse');
 
     });
 
