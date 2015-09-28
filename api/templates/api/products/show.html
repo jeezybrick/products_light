@@ -31,27 +31,37 @@
 
 {% verbatim %}
      <progressbar max="maxx" value="dynamic"><span style="color:white; white-space:nowrap;">{{dynamic}} / {{maxx}}</span></progressbar>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h3 ng-show="itemDetail.categories.length">Categories: </h3>
-                <ul>
-                    <li ng-repeat="category in itemDetail.categories">
-                        {{ category }}
-                    </li>
-                </ul>
-            </div>
+         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+             <h3 ng-show="itemDetail.categories.length">Categories: </h3>
+             <ul>
+                 <li ng-repeat="category in itemDetail.categories">
+                     {{ category }}
+                 </li>
+             </ul>
+         </div>
            <hr>
             <h2 ng-show="itemDetail.comments.length">Comments</h2>
-            <div class="col-md-8 col-sm-10" ng-repeat="comment in itemDetail.comments" style="border-bottom: solid 1px black;">
-                    <h3><small>{{ comment.username }}</small></h3>
-                    <h4>{{ comment.message }}</h4>
-            </div>
 
-         <div class="col-md-8 col-sm-10 animated slideInUp" ng-show="appendComment" style="border-bottom: solid 1px black;">
+         <div class="col-md-8 col-sm-10 animated slideInUp" ng-show="appendComment"
+              style="border-bottom: solid 1px black;">
              <h3>
                  <small>{{ appendComment.username }}</small>
              </h3>
              <h4>{{ appendComment.message }}</h4>
          </div>
+         <div class="col-md-8 col-sm-10"
+              ng-repeat="comment in itemDetail.comments|startFrom:(currentPage - 1) * pageSize | limitTo:pageSize"
+              style="border-bottom: solid 1px black;">
+             <h3>
+                 <small>{{ comment.username }}</small>
+             </h3>
+             <h4>{{ comment.message }}</h4>
+         </div>
+         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+             <pagination total-items="itemDetail.comments.length" ng-model="currentPage"
+                         items-per-page="pageSize"></pagination>
+         </div>
+
 
          <div class="col-md-8 col-sm-10" style="margin-top: 20px;">
              <h1 ng-hide="hideCommentForm">

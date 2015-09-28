@@ -83,12 +83,20 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
 });
 
+myApp.filter('startFrom', function () {
+    return function (data, start) {
+        return data.slice(start)
+    }
+});
+
 myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
     $scope.id = $routeParams.itemId;
     $scope.greet = false;
     $scope.maxx = 100;
     $scope.dynamic = 0;
     $scope.itemDetailLoad = false;
+    $scope.pageSize = 4;
+    $scope.currentPage = 1;
 
     $http.get('/api/items/' + $routeParams.itemId + '/?format=json', { cache: true}).success(function (data) {
 

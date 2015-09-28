@@ -31,3 +31,6 @@
   color: white;
   display: block !important;
 }
+#login_nav{
+    margin-right: 15px;
+}
