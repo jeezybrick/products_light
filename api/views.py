@@ -62,19 +62,23 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.UserSerializer
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.filter(parent_category_id__isnull=True)
-    # queryset = cache.CategoryCache().get(parent_category_id__isnull=True)
-    serializer_class = serializers.CategorySerializer
+class CategoryList(APIView):
+
+    def get(self, request, format=None):
+        categories = cache.CategoryCache().get(parent_category_id__isnull=True)
+        serializer = serializers.CategorySerializer(categories, many=True)
+        return Response(serializer.data)
 
 
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    # queryset = cache.CommentCache().get()
-    serializer_class = serializers.CommentSerializer
+class CommentList(APIView):
+
+    def get(self, request, format=None):
+        comments = cache.CommentCache().get()
+        serializer = serializers.CommentSerializer(comments, many=True)
+        return Response(serializer.data)
 
 
-class RateList(APIView, signals.BaseSignalProcessor):
+class RateList(APIView):
 
     def get(self, request, format=None):
         rates = cache.RateCache().get()
