@@ -14,7 +14,7 @@ myApp.config(function ($routeProvider) {
             controller: 'itemCtrl'
         }).
         when('/:itemId', {
-            templateUrl: '/products_ang/show',
+            templateUrl: '/products_ang/show/',
             controller: 'ItemDetailCtrl'
         })/*.
      otherwise({
@@ -73,7 +73,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
     $scope.pagination = function (page) {
 
-        $http.get(page).success(function (data) {
+        $http.get(page, { cache: true}).success(function (data) {
 
             $scope.items = data;
 
@@ -90,7 +90,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
     $scope.dynamic = 0;
     $scope.itemDetailLoad = false;
 
-    $http.get('/api/items/' + $routeParams.itemId + '/?format=json').success(function (data) {
+    $http.get('/api/items/' + $routeParams.itemId + '/?format=json', { cache: true}).success(function (data) {
 
         $scope.itemDetail = data;
         $scope.itemDetailLoad = true;

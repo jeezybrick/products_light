@@ -81,11 +81,12 @@ class ItemDetailSerializer(serializers.ModelSerializer):
     def get_user_rate(self, obj):
         request = self.context.get('request', None)
         try:
-            # user_rate = Rate.objects.get(user=request.user.id, item=obj.id).value
-            user_rate = cache.RateCache().get(user=request.user.id, item=obj.id)
+            user_rate = Rate.objects.get(user=request.user.id, item=obj.id).value
+            # user_rate = cache.RateCache().get(user=request.user.id, item=obj.id)
         except:
             user_rate = None
-        return [user_rate.value for user_rate in user_rate]
+        # return [user_rate.value for user_rate in user_rate]
+        return user_rate
 
     class Meta:
         model = Item
