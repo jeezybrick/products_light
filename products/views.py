@@ -81,6 +81,7 @@ class ItemDetailView(View):
 
     def get(self, request, *args, **kwargs):
         item = cache.ProductCache().get(id=kwargs["pk"])
+        # comments = cache.CommentCache().get(item_id=kwargs["pk"])
         user_rate = None
         for item in item:
             try:

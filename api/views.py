@@ -15,7 +15,7 @@ from haystack import signals
 
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 3
+    page_size = 12
     page_size_query_param = 'page_size'
     max_page_size = 1
 
@@ -29,9 +29,9 @@ class ItemList(generics.GenericAPIView):
         try:
             request.GET["category"]
         except:
-            queryset = SearchQuerySet().models(cache.ProductCache.model).order_by('-id')
+            queryset = SearchQuerySet().models(Item).order_by('-id')
         else:
-            queryset = SearchQuerySet().models(cache.ProductCache.model).filter(categories__in=[request.GET["category"]])
+            queryset = SearchQuerySet().models(Item).filter(categories__in=[request.GET["category"]])
 
         page = self.paginate_queryset(queryset)
         if page is not None:
