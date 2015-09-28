@@ -121,6 +121,7 @@ class CategoryListView(ListView):
 
     def get_queryset(self):
         return cache.CategoryCache().get(parent_category_id__isnull=True)
+        # return Category.objects.filter(parent_category_id__isnull=True)
 
 
 class CategoryAddView(CreateView):

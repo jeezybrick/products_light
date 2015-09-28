@@ -7,6 +7,8 @@ from cacheback.base import Job
 class BaseModelJob(Job):
     model = None
 
+    # lifetime = 10
+
     def key(self, *args, **kwargs):
         """Compose the key"""
         return "%s-%s" % (
@@ -44,6 +46,7 @@ class ProductDetailCache(BaseModelJob):
         return obj
 
     model = Item
+
 
 class CategoryCache(BaseModelJob):
     model = Category

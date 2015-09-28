@@ -43,15 +43,25 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
                 Item, comment, **kwargs
             )
 
+    def handle_category_update(self, sender, instance, **kwargs):
+        for item in Item.objects.filter(id=instance.id):
+            for category in item.categories.all():
+                super(RateOnlySignalProcessor, self).handle_save(
+                    Item, category, **kwargs
+                )
+
     def setup(self, **kwargs):
         models.signals.post_save.connect(self.handle_save, sender=Item)
+        models.signals.post_save.connect(self.handle_category_update, sender=Item)
         models.signals.post_delete.connect(self.handle_delete, sender=Item)
         models.signals.post_save.connect(self.handle_rate_update, sender=Rate)
         models.signals.post_delete.connect(self.handle_rate_update, sender=Rate)
         models.signals.post_save.connect(self.handle_comment_update, sender=Comment)
         models.signals.post_delete.connect(self.handle_comment_update, sender=Comment)
-        # models.signals.post_save.connect(self.handle_comment_update, sender=Category)
-        # models.signals.post_delete.connect(self.handle_comment_update, sender=Category)
+        models.signals.post_save.connect(self.handle_save, sender=Category)
+        models.signals.post_delete.connect(self.handle_save, sender=Category)
+
+        super(RateOnlySignalProcessor, self).setup()
 
     def teardown(self):
         models.signals.post_save.disconnect(self.handle_save, sender=Item)
@@ -60,3 +70,5 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
         models.signals.post_delete.disconnect(self.handle_rate_update, sender=Rate)
         models.signals.post_save.disconnect(self.handle_comment_update, sender=Comment)
         models.signals.post_delete.disconnect(self.handle_comment_update, sender=Comment)
+
+        super(RateOnlySignalProcessor, self).teardown()
