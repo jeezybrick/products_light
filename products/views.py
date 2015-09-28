@@ -81,10 +81,12 @@ class ItemDetailView(View):
 
     def get(self, request, *args, **kwargs):
         item = cache.ProductCache().get(id=kwargs["pk"])
-        try:
-            user_rate = Rate.objects.get(user=request.user.id, item=item.id)
-        except:
-            user_rate = None
+        user_rate = None
+        for item in item:
+            try:
+                user_rate = Rate.objects.get(user=request.user.id, item=item.id)
+            except:
+                user_rate = None
         context = {
             'comment_form': AddComment,
             'rating_form': AddRate(instance=user_rate),

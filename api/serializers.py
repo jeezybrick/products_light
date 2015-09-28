@@ -45,7 +45,6 @@ class CommentSerializer(serializers.ModelSerializer):
         return value
 
 
-
 class RateSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -77,12 +76,12 @@ class ItemDetailSerializer(serializers.ModelSerializer):
     user_rate = serializers.SerializerMethodField()
 
     def get_rates(self, obj):
-         return cache.RateCache().get(item_id=obj.pk).aggregate(Avg('value'))['value__avg']
+        return cache.RateCache().get(item_id=obj.pk).aggregate(Avg('value'))['value__avg']
 
     def get_user_rate(self, obj):
         request = self.context.get('request', None)
         try:
-            user_rate = cache.RateCache().get(user=request.user.id, item=obj.id).value
+            user_rate = Rate.objects.get(user=request.user.id, item=obj.id).value
         except:
             user_rate = None
         return user_rate
