@@ -32,7 +32,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     $scope.isCollapsed = true;
     $scope.itemLoad = false;
 
-    $http.get('/api/items/').success(function (data) {
+    $http.get('/api/items/', { cache: true}).success(function (data) {
 
         $scope.items = data;
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
@@ -54,7 +54,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     };
 
     $scope.sortByCategory = function (name) {
-        $http.get('/api/items/?category=' + name).success(function (data) {
+        $http.get('/api/items/?category=' + name, { cache: true}).success(function (data) {
 
             $scope.items = data;
 
@@ -63,7 +63,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     };
 
     $scope.showAllItems = function () {
-        $http.get('/api/items/').success(function (data) {
+        $http.get('/api/items/', { cache: true}).success(function (data) {
 
             $scope.items = data;
 
