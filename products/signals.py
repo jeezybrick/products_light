@@ -11,7 +11,7 @@ invalidate_signals = [post_delete, post_save]
 
 @receiver(invalidate_signals, sender=Category)
 def invalidate_category(sender, instance, **kwargs):
-    CategoryCache().invalidate()
+    CategoryCache().invalidate(parent_category_id__isnull=True)
 
 
 @receiver(invalidate_signals, sender=Item)
@@ -58,8 +58,6 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
         models.signals.post_delete.connect(self.handle_rate_update, sender=Rate)
         models.signals.post_save.connect(self.handle_comment_update, sender=Comment)
         models.signals.post_delete.connect(self.handle_comment_update, sender=Comment)
-        models.signals.post_save.connect(self.handle_save, sender=Category)
-        models.signals.post_delete.connect(self.handle_save, sender=Category)
 
         super(RateOnlySignalProcessor, self).setup()
 
