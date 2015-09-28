@@ -82,7 +82,11 @@ class RateList(APIView, signals.BaseSignalProcessor):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = serializers.RateSerializer(data=request.data)
+        try:
+            rate = Rate.objects.get(user=request.user.id, item=request.data["item"])
+        except:
+            rate = None
+        serializer = serializers.RateSerializer(data=request.data, instance=rate)
         if serializer.is_valid():
             serializer.save(user=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

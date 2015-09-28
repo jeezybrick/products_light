@@ -94,11 +94,12 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
 
         $scope.itemDetail = data[0];
         $scope.itemDetailLoad = true;
+        $scope.rate = data['user_rate'];
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
 
     });
-    $scope.rate = 5;
+   // $scope.rate = 5;
     $scope.max = 10;
     $scope.isReadonly = false;
 
@@ -130,6 +131,8 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
         $http.post('/api/comments/', data).success(function (data) {
             $scope.hideCommentForm = true;
 
+        }).error(function(data){
+            $scope.errorComment = data;
         });
     };
 });

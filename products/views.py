@@ -81,9 +81,13 @@ class ItemDetailView(View):
 
     def get(self, request, *args, **kwargs):
         item = cache.ProductCache().get(id=kwargs["pk"])
+        try:
+            user_rate = Rate.objects.get(user=request.user.id, item=item.id)
+        except:
+            user_rate = None
         context = {
             'comment_form': AddComment,
-            'rating_form': AddRate,
+            'rating_form': AddRate(instance=user_rate),
             'average_rating': Rate.objects.filter(item_id=self.kwargs["pk"]).aggregate(Avg('value')),
             'item': item,
         }
@@ -174,7 +178,12 @@ class AddRateView(LoginRequiredMixin, View):
     form_class = AddRate
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        item = get_object_or_404(Item, id=kwargs["pk"])
+        try:
+            rate = Rate.objects.get(user=request.user.id, item=item.id)
+        except:
+            rate = None
+        form = self.form_class(request.POST, instance=rate)
         if form.is_valid():
             first = form.save(commit=False)
             first.item = get_object_or_404(cache.ProductCache.model, id=kwargs["pk"])

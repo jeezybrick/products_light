@@ -94,7 +94,7 @@
         <h2>Rate this item</h2>
             <form class="form-horizontal"
                   name="add_comment_form" role="form" method="POST"
-                  action="#" enctype="multipart/form-data">
+                  action="{% url 'rate_add' item.id %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% if form.errors %}
                     <div class="col-md-12">

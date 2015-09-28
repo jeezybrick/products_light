@@ -38,6 +38,13 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ('username', 'message', 'item')
 
+    def validate_message(self, value):
+        if len(value) < 5:
+            raise serializers.ValidationError(
+                "Text is too short!")
+        return value
+
+
 
 class RateSerializer(serializers.ModelSerializer):
 
@@ -67,10 +74,19 @@ class ItemDetailSerializer(serializers.ModelSerializer):
     rates = serializers.SerializerMethodField()
     comments = CommentSerializer(many=True)
     categories = serializers.StringRelatedField(many=True)
+    user_rate = serializers.SerializerMethodField()
 
     def get_rates(self, obj):
          return cache.RateCache().get(item_id=obj.pk).aggregate(Avg('value'))['value__avg']
 
+    def get_user_rate(self, obj):
+        request = self.context.get('request', None)
+        try:
+            user_rate = cache.RateCache().get(user=request.user.id, item=obj.id).value
+        except:
+            user_rate = None
+        return user_rate
+
     class Meta:
         model = Item
-        fields = ('id', 'name', 'price', 'description', 'categories', 'comments', 'image_url', 'rates', )
+        fields = ('id', 'name', 'price', 'description', 'categories', 'comments', 'image_url', 'rates', 'user_rate' )
