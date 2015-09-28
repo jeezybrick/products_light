@@ -1,0 +1,36 @@
+.footer-text {
+    margin: 20px;
+}
+
+.footer-text > a {
+    float: none;
+}
+
+.lal {
+    margin-bottom: 20px;
+    padding: 0 10px;
+    min-height: 300px;
+    max-height: 250px;
+    overflow: scroll;
+    border: 1px dashed gray;
+}
+/*
+.lal:hover {
+    overflow: visible;
+}
+*/
+
+.splash{
+    display: none;
+}
+
+[ng-cloak].splash {
+  background-color: #428bca;
+  width: 100%;
+  text-align: center;
+  color: white;
+  display: block !important;
+}
+#login_nav{
+    margin-right: 15px;
+}

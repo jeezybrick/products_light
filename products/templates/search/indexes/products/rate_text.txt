@@ -1,0 +1,3 @@
+{{ object.value }}
+{{ object.user }}
+{{ object.item }}
