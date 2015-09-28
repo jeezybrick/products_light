@@ -19,29 +19,29 @@
                 </div>
             </div>
         </div>
+
         <ol class="breadcrumb">
             <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
             <li class="active">{% trans "List of categories" %}</li>
         </ol>
         <hr>
+
         <div class="row">
             {% if messages %}
-                    {% for message in messages %}
-                        <div class="messenger alert alert-success" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% for note in categories %}
+                {% for message in messages %}
+                    <div class="messenger alert alert-success" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {% for note in categories %}
                     <div class="lal col-lg-4 col-ms-4 col-sm-6 col-xs-12"
                          style="margin-bottom: 20px;padding: 0 10px;">
-
-                        <div class="notes"
-                             style="background-color: {{ note.color.color }};">
                             <div class="row">
-                                <div class="notes_labels col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                     style="height: 48px;overflow: hidden;">
+                                <div class="notes_labels col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <h2>ID:{{ note.id }}</h2>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -49,21 +49,20 @@
                                 </div>
                             </div>
                             <h4>Sub:</h4>
-                         <ul>
-                            {% for sub in note.category_set.all %}
-                                <li>{{ sub }}</li>
-                            {% empty %}
-                                <h4>{% trans "Sub categories doesnt exists" %}</h4>
-                            {% endfor %}
-                         </ul>
-                        </div>
+                            <ul>
+                                {% for sub in note.category_set.all %}
+                                    <li>{{ sub }}</li>
+                                {% empty %}
+                                    <h4>{% trans "Sub categories doesnt exists" %}</h4>
+                                {% endfor %}
+                            </ul>
                     </div>
-            {% empty %}
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    {% trans "Categories doesn't add yeat." %}
-                </div>
-            {% endfor %}
-        </div>
+                {% empty %}
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        {% trans "Categories doesn't add yeat." %}
+                    </div>
+                {% endfor %}
+            </div>
         {% if is_paginated %}
             <nav>
                 <ul class="pager">

@@ -81,11 +81,28 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
     };
 
+    $scope.getLocation = function (val) {
+        return $http.get('/api/items/', {
+            params: {
+                category: val
+            },
+            cache: true
+
+        }).then(function (response) {
+            return response.data.results.map(function (item) {
+                return item.name;
+            });
+        });
+    };
+
+
 });
 
 myApp.filter('startFrom', function () {
     return function (data, start) {
-        return data.slice(start)
+        if(data != undefined){
+            return data.slice(start)
+        }
     }
 });
 
@@ -139,6 +156,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
         $http.post('/api/comments/', data).success(function () {
             $scope.hideCommentForm = true;
             $scope.appendComment = data;
+            $scope.errorComment = false;
 
         }).error(function(data){
             $scope.errorComment = data;
@@ -154,7 +172,6 @@ myApp.controller('categoryListCtrl', function ($scope, $http) {
         $scope.categoryLoad = true;
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
-        //myEl.addClass('animated pulse');
 
     });
 

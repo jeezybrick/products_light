@@ -19,6 +19,8 @@ class Item(models.Model):
     image_url = models.URLField(_("Link to image"), null=True, blank=True)
     categories = models.ManyToManyField(Category, blank=True, null=True)
     description = models.CharField(_("Description"), max_length=1000, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
     def __str__(self):
         return self.name
@@ -28,6 +30,8 @@ class Comment(models.Model):
     username = models.CharField(_("Username"), max_length=50, blank=False)
     message = models.CharField(_("Comment"), max_length=1000, blank=False)
     item = models.ForeignKey(Item, related_name='comments')
+    created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
     def __str__(self):
         return self.message

@@ -6,35 +6,41 @@
 {% endblock %}
 
 {% block content %}
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="row">
-                    <div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
-                        <h1 id="test">{% trans "list of items" %}</h1>
-                    </div>
-                    <div class="col-lg-6 col-md-3 col-sm-3 col-xs-12" style="margin-top: 25px;">
-                        <a href="{% url 'products_add' %}"
-                           class="btn btn-warning pull-right">{% trans "Add item" %}</a>
-                    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
+                    <h1 id="test">{% trans "list of items" %}</h1>
+                </div>
+                <div class="col-lg-6 col-md-3 col-sm-3 col-xs-12" style="margin-top: 25px;">
+                    <a href="{% url 'products_add' %}"
+                       class="btn btn-warning pull-right">{% trans "Add item" %}</a>
                 </div>
             </div>
         </div>
-        <ol class="breadcrumb">
-            <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-            <li class="active">{% trans "list of items" %}</li>
-        </ol>
-        <hr>
-        <div class="row">
-        {% if messages %}
-                {% for message in messages %}
-                    <div class="messenger alert alert-success" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
+    </div>
+    <!-- bread -->
+    <ol class="breadcrumb">
+        <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+        <li class="active">{% trans "list of items" %}</li>
+    </ol>
+    <!-- !bread -->
+    <hr>
 
-            <!-- Begin faceting. -->
+    <div class="row">
+        <!-- success messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="messenger alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <!-- !success messages -->
+
+        <!-- Begin faceting. -->
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <h2>By Category</h2>
             <div>
@@ -56,29 +62,33 @@
             </div>
             <!-- End faceting -->
         </div>
+
+    <!-- repeat -->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             {% for product in products %}
-                    <div class="lal col-lg-4 col-ms-4 col-sm-6 col-xs-12"
-                         style="margin-bottom: 20px;padding: 0 10px;">
+                <div class="lal col-lg-4 col-ms-4 col-sm-6 col-xs-12"
+                     style="margin-bottom: 20px;padding: 0 10px;">
 
-                        <div class="notes">
-                            <div class="row">
-                                <div class="notes_labels col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                     style="height: 48px;overflow: hidden;">
-                                    <h2>ID:{{ product.object.id }}</h2>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h4 style="word-break: break-all;">{% trans "name" %}:{{ product.object.name|truncatechars:35 }}</h4>
-                                </div>
+                    <div class="notes">
+                        <div class="row">
+                            <div class="notes_labels col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                 style="height: 48px;overflow: hidden;">
+                                <h2>ID:{{ product.object.id }}</h2>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h4 style="word-break: break-all;">{% trans "name" %}:{{ product.object.name|truncatechars:35 }}</h4>
+                            </div>
 
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h4 style="word-break: break-all;">{% trans "price" %}:{{ product.object.price|truncatechars:35 }} $.</h4>
-                                </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h4 style="word-break: break-all;">{% trans "price" %}:{{ product.object.price|truncatechars:35 }}
+                                    $.</h4>
+                            </div>
 
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h4 style="word-break: break-all;">{% trans "image_url" %}: {{ product.object.image_url|default:'No image url' }}</h4>
-                                </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h4 style="word-break: break-all;">{% trans "image_url" %}: {{ product.object.image_url|default:'No image url' }}</h4>
+                            </div>
 
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <ul>
                                     {% for category in product.object.categories.all %}
                                         <li>{{ category }}</li>
@@ -87,27 +97,33 @@
                                     {% endfor %}
                                 </ul>
 
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h4 style="word-break: break-all;"><a href="{% url 'products_show' product.object.id %}">{% trans "Details" %}</a></h4>
-                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h4 style="word-break: break-all;"><a
+                                        href="{% url 'products_show' product.object.id %}">{% trans "Details" %}</a>
+                                </h4>
                             </div>
                         </div>
                     </div>
+                </div>
             {% empty %}
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     Items no added
                 </div>
             {% endfor %}
         </div>
-            <nav>
-                <ul class="pager">
-                    {% if products.has_previous %}
-                        <li><a href="?page={{ products.previous_page_number }}">Previous</a></li>
-                    {% endif %}
-                    {% if products.has_next %}
-                        <li><a href="?page={{ products.next_page_number }}">Next</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
+    </div>
+    <!-- !repeat -->
+
+    <!-- pagination -->
+    <nav>
+        <ul class="pager">
+            {% if products.has_previous %}
+                <li><a href="?page={{ products.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            {% if products.has_next %}
+                <li><a href="?page={{ products.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
 {% endblock %}
