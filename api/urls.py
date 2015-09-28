@@ -2,7 +2,6 @@ __author__ = 'user'
 
 from django.conf.urls import include, url
 from rest_framework import routers
-from django.views.generic import TemplateView
 from api import views
 
 router = routers.DefaultRouter()

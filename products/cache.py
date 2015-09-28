@@ -30,6 +30,21 @@ class ProductCache(BaseModelJob):
     model = Item
 
 
+class ProductDetailCache(BaseModelJob):
+
+    def fetch(self, **kwargs):
+        if not self.model:
+            raise ImproperlyConfigured(
+                "%(cls)s is missing a model. Define %(cls)s.model %(cls)s.fetch()." % {
+                    'cls': self.__class__.__name__
+                }
+            )
+
+        obj = self.model.objects.get(**kwargs)
+        return obj
+
+    model = Item
+
 class CategoryCache(BaseModelJob):
     model = Category
 

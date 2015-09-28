@@ -42,19 +42,19 @@ class ItemList(generics.GenericAPIView):
         return Response(serializer.data)
 
 
-class ItemDetail(APIView):
+class ItemDetail(generics.RetrieveAPIView):
 
-    def get_object(self, pk):
-        try:
-            return cache.ProductCache().get(id=pk)
+    queryset = Item.objects.all()
+    serializer_class = serializers.ItemDetailSerializer
 
-        except cache.ProductCache().get(id=pk).DoesNotExist:
-            raise Http404
+    def get_object(self):
 
-    def get(self, request, pk, format=None):
-        item = self.get_object(pk)
-        serializer = serializers.ItemDetailSerializer(item, many=True)
-        return Response(serializer.data)
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        obj = cache.ProductDetailCache().get(id=filter_kwargs['pk'])
+        self.check_object_permissions(self.request, obj)
+
+        return obj
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):

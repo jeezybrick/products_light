@@ -92,7 +92,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
 
     $http.get('/api/items/' + $routeParams.itemId + '/?format=json').success(function (data) {
 
-        $scope.itemDetail = data[0];
+        $scope.itemDetail = data;
         $scope.itemDetailLoad = true;
         $scope.rate = data['user_rate'];
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
