@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.http import Http404
 from django.db import models
-from rest_framework import generics, viewsets, status
+from rest_framework import generics, viewsets, status, mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from products.models import Item, Category, Rate, Comment
@@ -42,7 +42,10 @@ class ItemList(generics.GenericAPIView):
         return Response(serializer.data)
 
 
-class ItemDetail(generics.RetrieveAPIView):
+class ItemDetail(generics.RetrieveAPIView,
+                 generics.UpdateAPIView,
+                 generics.DestroyAPIView
+                 ):
 
     queryset = Item.objects.all()
     serializer_class = serializers.ItemDetailSerializer
@@ -55,6 +58,15 @@ class ItemDetail(generics.RetrieveAPIView):
         self.check_object_permissions(self.request, obj)
 
         return obj
+
+
+class ItemModifyView(generics.UpdateAPIView):
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):

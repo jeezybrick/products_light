@@ -16,7 +16,12 @@ myApp.config(function ($routeProvider) {
         when('/:itemId', {
             templateUrl: '/products_ang/show/',
             controller: 'ItemDetailCtrl'
-        })/*.
+        }).
+         when('/:itemId/edit', {
+            templateUrl: '/products_ang/edit/',
+            controller: 'ItemDetailCtrl'
+        })
+        /*.
      otherwise({
      redirectTo: '/products_ang/'
      })*/;
@@ -106,8 +111,9 @@ myApp.filter('startFrom', function () {
     }
 });
 
-myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
+myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $location,$window) {
     $scope.id = $routeParams.itemId;
+    $scope.showDetailOfItem = true;
     $scope.greet = false;
     $scope.maxx = 100;
     $scope.dynamic = 0;
@@ -160,6 +166,33 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
 
         }).error(function (data) {
             $scope.errorComment = data;
+        });
+    };
+
+    $scope.editItem = function () {
+        var data = {
+            "name": $scope.itemDetail.name,
+            "price": $scope.itemDetail.price,
+            "image_url": $scope.itemDetail.image_url,
+            "description": $scope.itemDetail.description
+        };
+        $http.put('/api/items/'+$scope.id+'/', data).success(function () {
+            $scope.appendComment = data;
+            $scope.errorEditItem = false;
+
+        }).error(function (data) {
+            $scope.errorEditItem = data;
+        });
+    };
+
+    $scope.deleteItem = function () {
+
+        $http.delete('/api/items/'+$scope.id+'/').success(function () {
+            $scope.showDetailOfItem = false;
+           // $location.path("/");
+            $window.location.href = '/products_ang/';
+        }).error(function (data) {
+            $scope.errorDeleteItem = data;
         });
     };
 });

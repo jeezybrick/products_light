@@ -247,6 +247,7 @@ class ItemEditView(UpdateView):
 '''
 
 
+# Delete item view
 class ItemDeleteView(DeleteView):
     model = Item
     success_url = '/products/'

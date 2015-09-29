@@ -4,10 +4,17 @@
         <h2>Loading detail...</h2>
     </div>
      <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden">
-            <h3 style="margin: 0;">
-                ID:{{ itemDetail.id }}
-            </h3>
-
+         <div class="row">
+             <div class="col-lg-10">
+                 <h3 style="margin: 0;">
+                     ID:{{ itemDetail.id }}
+                 </h3>
+             </div>
+             <div class="col-lg-2">
+                 <a href="#/{{ itemDetail.id }}/edit"
+                       class="btn btn-info pull-right" ng-show="showDetailOfItem">Edit item</a>
+             </div>
+         </div>
             <h3>Name:{{ itemDetail.name }}</h3>
 
             <h3>Price:{{ itemDetail.price | currency:"₴" }}</h3>

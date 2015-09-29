@@ -6,10 +6,12 @@ from products import views
 
 
 urlpatterns = [
+    # Home view
     url(r"^$", TemplateView.as_view(
         template_name='products/home.html'
     ), name='home'),
 
+    # Auth views
     url(r'^auth/login/$', views.LoginView.as_view(),
         name='login'),
     url(r'^auth/logout/$', views.get_logout, name='logout'),
@@ -38,7 +40,11 @@ urlpatterns = [
     url(r"^products_ang/show/$", TemplateView.as_view(
         template_name='api/products/show.html'
     ), name='products_detail_ang'),
+    url(r"^products_ang/edit/$", TemplateView.as_view(
+        template_name='api/products/modify.html'
+    ), name='products_edit_ang'),
 
+    # Categories views
     url(r"^categories/add/$", views.CategoryAddView.as_view(), name='categories_add'),
     url(r"^categories/$", views.CategoryListView.as_view(), name='categories_list'),
 
