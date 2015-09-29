@@ -100,7 +100,7 @@ class ItemDetailView(View):
 class ItemAddView(CreateView):
 
     model = cache.ProductCache.model
-    template_name = 'products/products/add.html'
+    template_name = 'products/products/modify.html'
     success_url = '/products/'
     form_class = AddItem
 
@@ -205,7 +205,7 @@ def get_logout(request):
 class ItemEditView(UpdateView):
 
     model = Item
-    template_name = 'products/products/add.html'
+    template_name = 'products/products/modify.html'
     success_url = '/products/'
     form_class = AddItem
 

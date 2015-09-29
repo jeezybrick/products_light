@@ -8,8 +8,8 @@
             /*
             $(this).click(function () {
                 $(this).removeClass('animated pulse').addClass('animated flip');
-             */
-            });
+
+            });*/
         }).mouseleave(function () {
             $(this).removeClass('animated pulse')
         });
