@@ -1,13 +1,13 @@
 {% extends 'products/layout.html' %}
-
+{% load i18n %}
 {% block title %}
-    Успех
+    Success
 {% endblock %}
 
 {% block content %}
     <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        Success! Now you can <a href="{% url 'login' %}">Sign In.</a>
+        {% trans "Success! Now you can" %} <a href="{% url 'login' %}">{% trans "Sign In" %}.</a>
     </div>
 
 {% endblock %}

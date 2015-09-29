@@ -21,11 +21,12 @@
 
         <ol class="breadcrumb">
             <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-            <li><a href="{% url 'products_list_ang' %}" ng-click="showDetailOfItem=false">{% trans "list of items" %}</a></li>
-            <li ng-show="showDetailOfItem" class="active">{% trans "detail of items" %}</li>
+            <li><a href="{% url 'products_list_ang' %}" ng-click="showDetailOfItem=false">{% trans "List of items" %}</a></li>
+            <li ng-show="showDetailOfItem" class="active">{% trans "Detail of items" %}</li>
         </ol>
         <hr>
         {% verbatim %}
+
         <div class="col-lg-12" ng-show="items.results.length" ng-hide="showDetailOfItem">
             <!-- Preloader -->
             <div class="splash" ng-cloak="">
