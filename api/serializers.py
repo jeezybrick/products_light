@@ -70,9 +70,9 @@ class ItemSerializer(serializers.Serializer):
 
 class ItemDetailSerializer(serializers.ModelSerializer):
 
-    rates = serializers.SerializerMethodField()
-    comments = CommentSerializer(many=True, required=False)
-    categories = serializers.StringRelatedField(many=True, required=False)
+    rates = serializers.SerializerMethodField(read_only=True)
+    comments = CommentSerializer(many=True, required=False, read_only=True)
+    categories = serializers.StringRelatedField(many=True, required=False, read_only=True)
     user_rate = serializers.SerializerMethodField()
 
     def get_rates(self, obj):

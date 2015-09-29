@@ -13,6 +13,8 @@ from products import cache
 from .models import Rate, Category, Item
 from products import forms
 from haystack.query import SearchQuerySet
+
+
 # Create your views here.
 
 
@@ -24,13 +26,11 @@ class LoginRequiredMixin(object):
 
 
 class LoginView(View):
-
     form_class = forms.MyLoginForm
     template_name = 'products/auth/login.html'
     success_url = '/'
 
     def get(self, request):
-
         form = self.form_class(request)
         context = {
             'form': form,
@@ -39,7 +39,6 @@ class LoginView(View):
         return TemplateResponse(request, self.template_name, context)
 
     def post(self, request):
-
         form = self.form_class(request, data=request.POST)
         context = {
             'form': form,
@@ -76,7 +75,6 @@ class ItemListView(View):
 
 
 class ItemDetailView(View):
-
     template_name = 'products/products/show.html'
 
     def get(self, request, *args, **kwargs):
@@ -98,7 +96,6 @@ class ItemDetailView(View):
 
 
 class ItemAddView(CreateView):
-
     model = Item
     template_name = 'products/products/modify.html'
     success_url = '/products/'
@@ -115,7 +112,6 @@ class ItemAddView(CreateView):
 
 
 class CategoryListView(ListView):
-
     template_name = 'products/categories/index.html'
     context_object_name = 'categories'
     paginate_by = 10
@@ -125,7 +121,6 @@ class CategoryListView(ListView):
 
 
 class CategoryAddView(CreateView):
-
     model = Category
     template_name = 'products/categories/modify.html'
     success_url = '/categories/'
@@ -145,7 +140,6 @@ class CategoryAddView(CreateView):
 
 
 class RegisterView(View):
-
     form_class = forms.MyRegForm
     template_name = 'products/auth/register.html'
 
@@ -162,7 +156,6 @@ class RegisterView(View):
 
 
 class AddCommentView(View):
-
     form_class = forms.AddComment
 
     def post(self, request, *args, **kwargs):
@@ -172,12 +165,11 @@ class AddCommentView(View):
             first.item = get_object_or_404(cache.ProductCache.model, id=kwargs["pk"])
             first.save()
             messages.success(self.request, _('Your comment add!'))
-            return HttpResponseRedirect('/products/'+kwargs["pk"]+'/')
+            return HttpResponseRedirect('/products/' + kwargs["pk"] + '/')
         return render(request, 'products/products/show.html', {'form': form})
 
 
 class AddRateView(LoginRequiredMixin, View):
-
     form_class = forms.AddRate
 
     def post(self, request, *args, **kwargs):
@@ -193,7 +185,7 @@ class AddRateView(LoginRequiredMixin, View):
             first.user = request.user
             first.save()
             messages.success(self.request, _('Thanks for rate!'))
-            return HttpResponseRedirect('/products/'+kwargs["pk"]+'/')
+            return HttpResponseRedirect('/products/' + kwargs["pk"] + '/')
         return render(request, 'products/products/show.html', {'form': form})
 
 
@@ -202,38 +194,12 @@ def get_logout(request):
     return HttpResponseRedirect('/')
 
 
-class ItemEditView(View):
-    form_class = forms.ModifyItem
-    template_name = 'products/products/modify.html'
-
-    def get_item(self, id):
-        item = Item.objects.get(id=id)
-        return item
-
-    def get(self, request, *args, **kwargs):
-        item = self.get_item(kwargs['pk'])
-        form = self.form_class(instance=item)
-        return render(request, self.template_name, {'form': form,
-                                                    'foo': 'Edit',
-                                                    'item': item})
-
-    def post(self, request, pk):
-        item = self.get_item(pk)
-        form = self.form_class(request.POST, instance=item)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/products/')
-        return render(request, self.template_name, {'form': form, 'foo': 'Edit'})
-
-
-
-'''
 class ItemEditView(UpdateView):
 
     model = Item
     template_name = 'products/products/modify.html'
     success_url = '/products/'
-    form_class = AddItem
+    form_class = forms.ModifyItem
     # fields = ['name', 'price', 'image_url', 'categories', 'description']
 
     def get_context_data(self, **kwargs):
@@ -244,7 +210,6 @@ class ItemEditView(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, _('Item edit!'))
         return super(ItemEditView, self).form_valid(form)
-'''
 
 
 # Delete item view
@@ -253,4 +218,4 @@ class ItemDeleteView(DeleteView):
     success_url = '/products/'
 
     def form_valid(self):
-        messages.success(self.request,  _('Item delete!'))
+        messages.success(self.request, _('Item delete!'))

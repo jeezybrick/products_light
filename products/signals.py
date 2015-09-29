@@ -38,17 +38,16 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
             )
 
     def handle_comment_update(self, sender, instance, **kwargs):
-        for comment in Item.objects.filter(comments__id=instance.id):
+        for item in Item.objects.filter(comments__id=instance.id):
             super(RateOnlySignalProcessor, self).handle_save(
-                Item, comment, **kwargs
+                Item, item, **kwargs
             )
 
     def handle_category_update(self, sender, instance, **kwargs):
         for item in Item.objects.filter(id=instance.id):
-            for category in item.categories.all():
-                super(RateOnlySignalProcessor, self).handle_save(
-                    Item, category, **kwargs
-                )
+            super(RateOnlySignalProcessor, self).handle_save(
+                Item, item, **kwargs
+            )
 
     def setup(self, **kwargs):
         models.signals.post_save.connect(self.handle_save, sender=Item)
