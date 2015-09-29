@@ -171,15 +171,16 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     };
 
     $scope.editItem = function () {
-        var data = {
+        var editData = {
             "name": $scope.itemDetail.name,
             "price": $scope.itemDetail.price,
             "image_url": $scope.itemDetail.image_url,
             "description": $scope.itemDetail.description
         };
-        $http.put(itemListUrl +$scope.id+'/', data).success(function () {
+        $http.put(itemListUrl +$scope.id+'/', editData).success(function () {
             $scope.appendComment = data;
             $scope.errorEditItem = false;
+            $scope.editData = editData;
 
         }).error(function (data) {
             $scope.errorEditItem = data;
