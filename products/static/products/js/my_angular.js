@@ -112,7 +112,7 @@ myApp.filter('startFrom', function () {
     }
 });
 
-myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $location,$window) {
+myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $location,$window,$timeout) {
     $scope.id = $routeParams.itemId;
     $scope.showDetailOfItem = true;
     $scope.greet = false;
@@ -178,9 +178,8 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
             "description": $scope.itemDetail.description
         };
         $http.put(itemListUrl +$scope.id+'/', editData).success(function () {
-            $scope.appendComment = data;
-            $scope.errorEditItem = false;
-            $scope.editData = editData;
+
+            $scope.successAction();
 
         }).error(function (data) {
             $scope.errorEditItem = data;
@@ -196,6 +195,17 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
         }).error(function (data) {
             $scope.errorDeleteItem = data;
         });
+    };
+
+    $scope.successAction = function () {
+        $scope.editItemSuccess = true;
+        var myEl = angular.element(document.querySelector('#editItemSuccessMessage'));
+        myEl.removeClass('animated fadeInUp');
+        myEl.removeClass('animated fadeOut');
+        myEl.addClass('animated fadeInUp');
+        $timeout(function () {
+            myEl.addClass('animated fadeOut');
+        }, 3000);
     };
 });
 
