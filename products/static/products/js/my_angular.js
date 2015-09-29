@@ -22,7 +22,7 @@ myApp.config(function ($routeProvider) {
             templateUrl: '/products_ang/show/',
             controller: 'ItemDetailCtrl'
         }).
-         when('/:itemId/edit', {
+        when('/:itemId/edit', {
             templateUrl: '/products_ang/edit/',
             controller: 'ItemDetailCtrl'
         });
@@ -60,7 +60,13 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     };
 
     $scope.sortByCategory = function (name) {
-        $http.get(itemListUrl+'?category=' + name, {cache: true}).success(function (data) {
+        $http.get(itemListUrl ,{
+            params: {
+                category: name
+            },
+            cache: true
+
+        }).success(function (data) {
 
             $scope.items = data;
 
@@ -112,7 +118,7 @@ myApp.filter('startFrom', function () {
     }
 });
 
-myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $location,$window,$timeout) {
+myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $location, $window, $timeout) {
     $scope.id = $routeParams.itemId;
     $scope.showDetailOfItem = true;
     $scope.greet = false;
@@ -177,7 +183,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
             "image_url": $scope.itemDetail.image_url,
             "description": $scope.itemDetail.description
         };
-        $http.put(itemListUrl +$scope.id+'/', editData).success(function () {
+        $http.put(itemListUrl + $scope.id + '/', editData).success(function () {
 
             $scope.successAction();
 
@@ -197,11 +203,10 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
                 $scope.errorDeleteItem = data;
             });
         }
-
-
     };
 
     $scope.successAction = function () {
+        $scope.errorEditItem = false;
         $scope.editItemSuccess = true;
         var myEl = angular.element(document.querySelector('#editItemSuccessMessage'));
         myEl.removeClass('animated fadeInUp');

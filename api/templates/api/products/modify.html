@@ -5,6 +5,14 @@
 </div>
 
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden">
+    <h4 style="color: red;" ng-repeat="(errorName,errorMessage) in errorEditItem">
+        {{ errorName }}:
+        <ul>
+            <li ng-repeat="errorMessage in errorMessage">
+                {{ errorMessage }}
+            </li>
+        </ul>
+    </h4>
     <form class="form-horizontal" name="edit_item_form" role="form" method="POST" ng-submit="editItem()">
 
         <div class="form-group"><label class="col-md-2 control-label" for="id_name">Name of item</label>
