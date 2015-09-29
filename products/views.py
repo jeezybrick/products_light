@@ -11,7 +11,7 @@ from django.template.response import TemplateResponse
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from products import cache
 from .models import Rate, Category, Item
-from .forms import MyRegForm, AddComment, AddRate, AddItem, MyLoginForm, AddCategory
+from products import forms
 from haystack.query import SearchQuerySet
 # Create your views here.
 
@@ -25,7 +25,7 @@ class LoginRequiredMixin(object):
 
 class LoginView(View):
 
-    form_class = MyLoginForm
+    form_class = forms.MyLoginForm
     template_name = 'products/auth/login.html'
     success_url = '/'
 
@@ -40,7 +40,7 @@ class LoginView(View):
 
     def post(self, request):
 
-        form = MyLoginForm(request, data=request.POST)
+        form = self.form_class(request, data=request.POST)
         context = {
             'form': form,
             'title': 'Sign In',
@@ -89,8 +89,8 @@ class ItemDetailView(View):
             except:
                 user_rate = None
         context = {
-            'comment_form': AddComment,
-            'rating_form': AddRate(instance=user_rate),
+            'comment_form': forms.AddComment,
+            'rating_form': forms.AddRate(instance=user_rate),
             'average_rating': Rate.objects.filter(item_id=self.kwargs["pk"]).aggregate(Avg('value')),
             'item': item,
         }
@@ -99,10 +99,10 @@ class ItemDetailView(View):
 
 class ItemAddView(CreateView):
 
-    model = cache.ProductCache.model
+    model = Item
     template_name = 'products/products/modify.html'
     success_url = '/products/'
-    form_class = AddItem
+    form_class = forms.ModifyItem
 
     def get_context_data(self, **kwargs):
         context = super(ItemAddView, self).get_context_data(**kwargs)
@@ -129,7 +129,7 @@ class CategoryAddView(CreateView):
     model = Category
     template_name = 'products/categories/modify.html'
     success_url = '/categories/'
-    form_class = AddCategory
+    form_class = forms.AddCategory
 
     def get_context_data(self, **kwargs):
         context = super(CategoryAddView, self).get_context_data(**kwargs)
@@ -146,7 +146,7 @@ class CategoryAddView(CreateView):
 
 class RegisterView(View):
 
-    form_class = MyRegForm
+    form_class = forms.MyRegForm
     template_name = 'products/auth/register.html'
 
     def get(self, request):
@@ -163,7 +163,7 @@ class RegisterView(View):
 
 class AddCommentView(View):
 
-    form_class = AddComment
+    form_class = forms.AddComment
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -178,7 +178,7 @@ class AddCommentView(View):
 
 class AddRateView(LoginRequiredMixin, View):
 
-    form_class = AddRate
+    form_class = forms.AddRate
 
     def post(self, request, *args, **kwargs):
         item = get_object_or_404(Item, id=kwargs["pk"])
@@ -202,12 +202,39 @@ def get_logout(request):
     return HttpResponseRedirect('/')
 
 
+class ItemEditView(View):
+    form_class = forms.ModifyItem
+    template_name = 'products/products/modify.html'
+
+    def get_item(self, id):
+        item = Item.objects.get(id=id)
+        return item
+
+    def get(self, request, *args, **kwargs):
+        item = self.get_item(kwargs['pk'])
+        form = self.form_class(instance=item)
+        return render(request, self.template_name, {'form': form,
+                                                    'foo': 'Edit',
+                                                    'item': item})
+
+    def post(self, request, pk):
+        item = self.get_item(pk)
+        form = self.form_class(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/products/')
+        return render(request, self.template_name, {'form': form, 'foo': 'Edit'})
+
+
+
+'''
 class ItemEditView(UpdateView):
 
     model = Item
     template_name = 'products/products/modify.html'
     success_url = '/products/'
     form_class = AddItem
+    # fields = ['name', 'price', 'image_url', 'categories', 'description']
 
     def get_context_data(self, **kwargs):
         context = super(ItemEditView, self).get_context_data(**kwargs)
@@ -217,3 +244,12 @@ class ItemEditView(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, _('Item edit!'))
         return super(ItemEditView, self).form_valid(form)
+'''
+
+
+class ItemDeleteView(DeleteView):
+    model = Item
+    success_url = '/products/'
+
+    def form_valid(self):
+        messages.success(self.request,  _('Item delete!'))

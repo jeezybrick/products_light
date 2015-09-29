@@ -7,11 +7,27 @@
 {% endblock %}
 
 {% block content %}
-
-    <h1>{{ foo }} {% trans "item" %}</h1>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
+                    <h1>{{ foo }} {% trans "item" %}</h1>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12" style="margin-top: 25px;">
+                    <form action="{% url 'products_delete' item.id  %}" method="post"
+                          style="margin: 10px 0 0 0;">
+                        {% csrf_token %}
+                        <button class="btn btn-danger" type="submit"
+                                onclick="return confirm('Вы уверены,что хотите удалить эту заметку?')">Удалить заметку
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <ol class="breadcrumb">
         <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-        <li><a href="#">{% trans "items" %}</a></li>
+        <li><a href="{%  url 'products_list' %}">{% trans "items" %}</a></li>
         <li class="active">{{ foo }} {% trans "item" %}</li>
     </ol>
     <hr>

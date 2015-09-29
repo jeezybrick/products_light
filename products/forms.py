@@ -71,7 +71,7 @@ class AddRate(forms.ModelForm):
         fields = ('value', )
 
 
-class AddItem(forms.ModelForm):
+class ModifyItem(forms.ModelForm):
     price = forms.IntegerField(max_value=10000000, min_value=0, label=_('Price'))
     description = forms.CharField(widget=forms.Textarea, label=_('Description'))
 
