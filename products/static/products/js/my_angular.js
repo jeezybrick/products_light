@@ -188,13 +188,17 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
     $scope.deleteItem = function () {
 
-        $http.delete(itemListUrl + $scope.id+'/').success(function () {
-            $scope.showDetailOfItem = false;
-           // $location.path("/");
-            $window.location.href = '/products_ang/';
-        }).error(function (data) {
-            $scope.errorDeleteItem = data;
-        });
+        if (confirm('Are you sure you want to delete this item?')) {
+            $http.delete(itemListUrl + $scope.id + '/').success(function () {
+                $scope.showDetailOfItem = false;
+                // $location.path("/");
+                $window.location.href = '/products_ang/';
+            }).error(function (data) {
+                $scope.errorDeleteItem = data;
+            });
+        }
+
+
     };
 
     $scope.successAction = function () {
