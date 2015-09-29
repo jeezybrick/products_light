@@ -12,6 +12,10 @@
             <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12" style="word-break: break-all;">
                 <h1 style="margin-top: 0;">{{ item.name }}</h1>
             </div>
+            <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12" style="margin-top: 25px;">
+                <a href="{% url 'products_edit' item.id %}"
+                   class="btn btn-info pull-right">{% trans "Edit item" %}</a>
+            </div>
 
             <div class="col-lg-12 col-md--12 col-sm-12 col-xs-12">
                 <ol class="breadcrumb">
@@ -52,8 +56,6 @@
                 </h3>
                 <hr/>
             </div>
-            <hr>
-        <hr>
         <div class="col-md-8 col-sm-10">
         <h2>{% trans "Comments" %}</h2>
         {% for comment in item.comments.all %}

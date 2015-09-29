@@ -200,3 +200,20 @@ class AddRateView(LoginRequiredMixin, View):
 def get_logout(request):
     auth_logout(request)
     return HttpResponseRedirect('/')
+
+
+class ItemEditView(UpdateView):
+
+    model = Item
+    template_name = 'products/products/add.html'
+    success_url = '/products/'
+    form_class = AddItem
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemEditView, self).get_context_data(**kwargs)
+        context['foo'] = _('Edit')
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, _('Item edit!'))
+        return super(ItemEditView, self).form_valid(form)

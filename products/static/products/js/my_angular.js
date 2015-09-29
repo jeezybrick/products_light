@@ -32,7 +32,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     $scope.isCollapsed = true;
     $scope.itemLoad = false;
 
-    $http.get('/api/items/', { cache: true}).success(function (data) {
+    $http.get('/api/items/', {cache: true}).success(function (data) {
 
         $scope.items = data;
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
@@ -54,7 +54,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     };
 
     $scope.sortByCategory = function (name) {
-        $http.get('/api/items/?category=' + name, { cache: true}).success(function (data) {
+        $http.get('/api/items/?category=' + name, {cache: true}).success(function (data) {
 
             $scope.items = data;
 
@@ -63,7 +63,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     };
 
     $scope.showAllItems = function () {
-        $http.get('/api/items/', { cache: true}).success(function (data) {
+        $http.get('/api/items/', {cache: true}).success(function (data) {
 
             $scope.items = data;
 
@@ -73,7 +73,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
     $scope.pagination = function (page) {
 
-        $http.get(page, { cache: true}).success(function (data) {
+        $http.get(page, {cache: true}).success(function (data) {
 
             $scope.items = data;
 
@@ -100,7 +100,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
 myApp.filter('startFrom', function () {
     return function (data, start) {
-        if(data != undefined){
+        if (data != undefined) {
             return data.slice(start)
         }
     }
@@ -115,7 +115,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
     $scope.pageSize = 4;
     $scope.currentPage = 1;
 
-    $http.get('/api/items/' + $routeParams.itemId + '/?format=json', { cache: true}).success(function (data) {
+    $http.get('/api/items/' + $routeParams.itemId + '/?format=json', {cache: true}).success(function (data) {
 
         $scope.itemDetail = data;
         $scope.itemDetailLoad = true;
@@ -124,7 +124,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
         myEl.removeClass('hidden');
 
     });
-   // $scope.rate = 5;
+    // $scope.rate = 5;
     $scope.max = 10;
     $scope.isReadonly = false;
 
@@ -158,7 +158,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http) {
             $scope.appendComment = data;
             $scope.errorComment = false;
 
-        }).error(function(data){
+        }).error(function (data) {
             $scope.errorComment = data;
         });
     };
