@@ -210,3 +210,8 @@ myApp.controller('categoryListCtrl', function ($scope, $http) {
     });
 
 });
+
+myApp.controller('loginCtrl', function ($scope) {
+
+
+});

@@ -5,47 +5,60 @@
 {% endblock %}
 {% block content %}
 
-<h2>{{ title }}</h2>
-<div class="row" ng-controller="loginCtrl">
-    <div class="col-md-8">
-        <section id="loginForm">
-            <form action="." method="post" class="form-horizontal" name="loginForm">
-                {% csrf_token %}
-                <hr />
-                <div class="form-group">
-                    <label for="id_username" class="col-md-2 control-label">{% trans "username" %}</label>
-                    <div class="col-md-10">
-                        <input ng-model="login"  type="text"
-                         class="form-control" name="username" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="id_password" class="col-md-2 control-label">{% trans "password" %}</label>
-                    <div class="col-md-10">
-                         <input ng-model="password" type="password" class="form-control" name="password" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-6 col-md-10">
-                        <input type="hidden" name="next" value="/" />
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            {% trans "Sign In" %}
-                        </button>
-                    </div>
-                </div>
-                {% if form.errors %}
-                <p class="validation-summary-errors">Please,type correct username and/or password</p>
-                {% endif %}
-                 <div class="form-group">
-                   <h4><label class="col-md-6 control-label"> <a href="{% url 'register' %}">Sign Up right now!</a></label></h4>
-                </div>
+    <h2>{{ title }}</h2>
+    <div class="row" ng-controller="loginCtrl">
+        <div class="col-md-8">
+            <section id="loginForm">
+                <form action="." method="post" class="form-horizontal" name="loginForm">
+                    {% csrf_token %}
+                    <hr/>
+                    {% include 'products/partials/form_errors.html' %}
+                    <div class="form-group">
+                        <label for="id_username" class="col-md-2 control-label">{% trans "username" %}</label>
 
-            </form>
-        </section>
+                        <div class="col-md-10">
+                            <input ng-model="login" type="text"
+                                   class="form-control" name="username" required>
+                            <span class="help-block" ng-show="loginForm.username.$error.required">
+                                     Обязательное поле</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_password" class="col-md-2 control-label">{% trans "password" %}</label>
+
+                        <div class="col-md-10">
+                            <input ng-minlength="6" ng-model="password" type="password" class="form-control"
+                                   name="password" required>
+                            <span class="help-block" ng-show="loginForm.password.$error.required">
+                                     Обязательное поле</span>
+                        <span class="help-block" ng-show="loginForm.password.$error.minlength">
+                                    Минимум 6 символов</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-6 col-md-10">
+                            <input type="hidden" name="next" value="/"/>
+                            <button type="submit" class="btn btn-primary btn-lg"
+                                    ng-disabled="
+                                    loginForm.username.$error.required ||
+                                    loginForm.password.$error.minlength ||
+                                    loginForm.password.$error.required ">
+                                {% trans "Sign In" %}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h4><label class="col-md-4 control-label"> <a href="{% url 'register' %}">Sign Up right now!</a></label>
+                        </h4>
+                    </div>
+
+                </form>
+            </section>
+        </div>
+        <div class="col-md-4">
+            <section id="socialLoginForm"></section>
+        </div>
     </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm"></section>
-    </div>
-</div>
 
 {% endblock %}

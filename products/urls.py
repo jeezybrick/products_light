@@ -34,15 +34,15 @@ urlpatterns = [
     url(r"^products_ang/$", TemplateView.as_view(
         template_name='api/products/index.html'
     ), name='products_list_ang'),
-    url(r"^categories_ang/$", TemplateView.as_view(
-        template_name='api/categories/index.html'
-    ), name='categories_list_ang'),
     url(r"^products_ang/show/$", TemplateView.as_view(
         template_name='api/products/show.html'
     ), name='products_detail_ang'),
     url(r"^products_ang/edit/$", TemplateView.as_view(
         template_name='api/products/modify.html'
     ), name='products_edit_ang'),
+    url(r"^categories_ang/$", TemplateView.as_view(
+        template_name='api/categories/index.html'
+    ), name='categories_list_ang'),
 
     # Categories views
     url(r"^categories/add/$", views.CategoryAddView.as_view(), name='categories_add'),

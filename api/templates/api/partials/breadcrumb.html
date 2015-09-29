@@ -1,0 +1,6 @@
+{% load i18n %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+    <li><a href="{% url 'products_list_ang' %}" ng-click="showDetailOfItem=false">{% trans "List of items" %}</a></li>
+    <li ng-show="showDetailOfItem" class="active">{% trans "Detail of items" %}</li>
+</ol>

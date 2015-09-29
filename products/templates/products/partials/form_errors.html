@@ -1,0 +1,11 @@
+{% if form.errors %}
+    <div class="col-md-12">
+        <div class="panel-body">
+            <div class="alert alert-danger">
+                <ul>
+                    {{ form.errors }}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endif %}
