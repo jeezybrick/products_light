@@ -129,13 +129,14 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     $scope.currentPage = 1;
 
     $http.get(itemListUrl + $routeParams.itemId + '/?format=json', {cache: true}).success(function (data) {
-
         $scope.itemDetail = data;
         $scope.itemDetailLoad = true;
         $scope.rate = data['user_rate'];
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
 
+    }).error(function(data){
+        $scope.itemDetailError = data;
     });
     // $scope.rate = 5;
     $scope.max = 10;

@@ -2,7 +2,6 @@ __author__ = 'user'
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.http import Http404
-from django.db import models
 from rest_framework import generics, viewsets, status, mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
@@ -11,7 +10,6 @@ from products import cache
 from api import serializers
 from rest_framework.response import Response
 from haystack.query import SearchQuerySet
-from haystack import signals
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -54,7 +52,10 @@ class ItemDetail(generics.RetrieveAPIView,
 
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
-        obj = cache.ProductDetailCache().get(id=filter_kwargs['pk'])
+        try:
+            obj = cache.ProductDetailCache().get(id=filter_kwargs['pk'])
+        except:
+            raise Http404
         self.check_object_permissions(self.request, obj)
 
         return obj

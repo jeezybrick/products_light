@@ -55,3 +55,14 @@
 .word-break{
     word-break: break-all;
 }
+
+#editItemSuccessMessage{
+margin-top: 40px;
+
+}
+.bg-primary{
+    padding: 20px;
+}
+.bg-primary > a{
+    color: darkgray;
+}

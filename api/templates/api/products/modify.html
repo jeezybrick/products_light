@@ -53,8 +53,10 @@
             </div>
         </div>
     </form>
-        <div id="editItemSuccessMessage" class="col-lg-6 text-center" ng-show="editItemSuccess">
-            <p class="bg-primary" style="padding: 20px;">Item edit successefuly!</p>
-        </div>
+    <div id="editItemSuccessMessage" class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center" ng-show="editItemSuccess">
+        <p class="bg-primary">Item edit successfully! <a href="/products_ang/#/{{ itemDetail.id }}">Click</a> to item page.</p>
+    </div>
+
+
 </div>
 {% endverbatim %}
