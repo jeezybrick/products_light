@@ -189,11 +189,13 @@ class AddRateView(LoginRequiredMixin, View):
         return render(request, 'products/products/show.html', {'form': form})
 
 
+# logout function
 def get_logout(request):
     auth_logout(request)
     return HttpResponseRedirect('/')
 
 
+# class for edit item
 class ItemEditView(UpdateView):
 
     model = Item

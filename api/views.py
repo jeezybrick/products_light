@@ -45,7 +45,6 @@ class ItemDetail(generics.RetrieveAPIView,
                  generics.DestroyAPIView
                  ):
 
-    queryset = Item.objects.all()
     serializer_class = serializers.ItemDetailSerializer
 
     def get_object(self):
@@ -59,15 +58,6 @@ class ItemDetail(generics.RetrieveAPIView,
         self.check_object_permissions(self.request, obj)
 
         return obj
-
-
-class ItemModifyView(generics.UpdateAPIView):
-
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-    def patch(self, request, *args, **kwargs):
-        return self.partial_update(request, *args, **kwargs)
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):

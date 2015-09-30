@@ -1,6 +1,6 @@
 __author__ = 'user'
 from .models import Category, Item, Rate,Comment
-from .cache import ProductCache, CategoryCache, RateCache, CommentCache
+from products import cache
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.db import models
@@ -11,22 +11,24 @@ invalidate_signals = [post_delete, post_save]
 
 @receiver(invalidate_signals, sender=Category)
 def invalidate_category(sender, instance, **kwargs):
-    CategoryCache().invalidate(parent_category_id__isnull=True)
+    cache.CategoryCache().invalidate(parent_category_id__isnull=True)
 
 
 @receiver(invalidate_signals, sender=Item)
 def invalidate_item(sender, instance, **kwargs):
-    ProductCache().invalidate(pk=instance.pk)
+    cache.ProductCache().invalidate(pk=instance.pk)
+    # doesnt work
+    cache.ProductDetailCache().invalidate(pk=instance.pk)
 
 
 @receiver(post_save, sender=Rate)
 def invalidate_rate(sender, instance, **kwargs):
-    RateCache().invalidate()
+    cache.RateCache().invalidate()
 
 
 @receiver(post_save, sender=Comment)
 def invalidate_comment(sender, instance, **kwargs):
-    CommentCache().invalidate()
+    cache.CommentCache().invalidate()
 
 
 class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):

@@ -35,6 +35,8 @@ class ProductCache(BaseModelJob):
 
 class ProductDetailCache(BaseModelJob):
 
+    # lifetime = 5
+
     def fetch(self, **kwargs):
         if not self.model:
             raise ImproperlyConfigured(
