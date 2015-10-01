@@ -6,7 +6,6 @@ billiard==3.3.0.20
 celery==3.1.18
 celery-haystack==0.9
 django-activelink==0.4
-django-activeurl==0.1.8
 django-appconf==1.0.1
 django-bootstrap3==6.2.2
 django-cacheback==0.9.1

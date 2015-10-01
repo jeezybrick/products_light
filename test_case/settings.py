@@ -50,7 +50,7 @@ INSTALLED_APPS = (
     'whoosh',
     'debug_toolbar',
     'elasticsearch',
-     'activelink',
+    'activelink',
 )
 
 MIDDLEWARE_CLASSES = (
