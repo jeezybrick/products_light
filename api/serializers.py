@@ -2,7 +2,6 @@ from rest_framework import routers, serializers, viewsets, generics
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from products.models import Item, Category, Rate, Comment
-from haystack.query import SearchQuerySet
 from django.db.models import Avg
 from products import cache
 
