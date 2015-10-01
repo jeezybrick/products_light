@@ -210,9 +210,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
         $scope.errorEditItem = false;
         $scope.editItemSuccess = true;
         var myEl = angular.element(document.querySelector('#editItemSuccessMessage'));
-        myEl.removeClass('animated fadeInUp');
+        myEl.removeClass('animated fadeInDown');
         myEl.removeClass('animated fadeOut');
-        myEl.addClass('animated fadeInUp');
+        myEl.addClass('animated fadeInDown');
         $timeout(function () {
             myEl.addClass('animated fadeOut');
         }, 3000);

@@ -16,7 +16,7 @@
     min-height: 300px;
     max-height: 250px;
     overflow: scroll;
-    border: 1px dashed gray;
+    box-shadow: 0 0 2px rgba(0,0,0,0.52),0 2px 4px rgba(0,0,0,0.12);
 }
 
 .main-list-top-pencil {
@@ -52,17 +52,26 @@
 .button-add-something {
     margin-top: 25px;
 }
-.word-break{
+
+.word-break {
     word-break: break-all;
 }
 
-#editItemSuccessMessage{
-margin-top: 40px;
+#editItemSuccessMessage {
+    text-align: center;
+    margin: 50px 0 0 0;
+    position: fixed;
+    top: 0;
+    padding: 0;
 
 }
-.bg-primary{
+
+.bg-primary {
     padding: 20px;
+    width: 300px;
 }
-.bg-primary > a{
+
+.bg-primary > a {
     color: darkgray;
 }
+

@@ -1,5 +1,5 @@
 __author__ = 'user'
-from .models import Category, Item, Rate,Comment
+from .models import Category, Item, Rate, Comment
 from products import cache
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
@@ -18,7 +18,7 @@ def invalidate_category(sender, instance, **kwargs):
 def invalidate_item(sender, instance, **kwargs):
     cache.ProductCache().invalidate(pk=instance.pk)
     # doesnt work
-    cache.ProductDetailCache().invalidate(pk=instance.pk)
+    cache.ProductDetailCache().invalidate(id=instance.pk)
 
 
 @receiver(post_save, sender=Rate)
