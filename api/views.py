@@ -13,6 +13,7 @@ from haystack.query import SearchQuerySet
 
 
 class StandardResultsSetPagination(PageNumberPagination):
+
     page_size = 12
     page_size_query_param = 'page_size'
     max_page_size = 1
@@ -40,10 +41,7 @@ class ItemList(generics.GenericAPIView):
         return Response(serializer.data)
 
 
-class ItemDetail(generics.RetrieveAPIView,
-                 generics.UpdateAPIView,
-                 generics.DestroyAPIView
-                 ):
+class ItemDetail(generics.RetrieveAPIView, generics.UpdateAPIView, generics.DestroyAPIView):
 
     serializer_class = serializers.ItemDetailSerializer
 
@@ -61,6 +59,7 @@ class ItemDetail(generics.RetrieveAPIView,
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
+
     queryset = User.objects.all()
     serializer_class = serializers.UserSerializer
 

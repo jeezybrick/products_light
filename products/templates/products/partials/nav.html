@@ -1,4 +1,6 @@
 {% load i18n %}
+{% load activelink %}
+
 <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -20,16 +22,16 @@
                 <ul class="nav navbar-nav">
                     <li {% if request.path == '/' %} class="active" {% endif %}><a href="{% url 'home' %}">{% trans "Home" %}</a>
                     </li>
-                    <li {% if '/products/' in request.path and not '/products_ang/' in request.path %} class="active"{% endif %}>
+                    <li class="{% ifactive "products_list" %} active {% endifactive %}">
                         <a href="{% url 'products_list' %}">{% trans "Items" %}</a>
                     </li>
-                    <li {% if '/products_ang/' in request.path and not '/product/' in request.path %} class="active"{% endif %}>
+                    <li class="{% ifactive "products_list_ang" %} active {% endifactive %}">
                         <a href="{% url 'products_list_ang' %}">{% trans "Items-Angular" %}</a>
                     </li>
-                    <li {% if '/categories/' in request.path %} class="active"{% endif %}>
+                    <li class="{% ifactive "categories_list" %} active {% endifactive %}">
                         <a href="{% url 'categories_list' %}">{% trans "Categories" %}</a>
                     </li>
-                    <li {% if '/categories_ang/' in request.path and not '/categories/' in request.path %} class="active"{% endif %}>
+                    <li class="{% ifactive "categories_list_ang" %} active {% endifactive %}">
                         <a href="{% url 'categories_list_ang' %}">{% trans "Categories-Angular" %}</a>
                     </li>
                     {% if user.is_staff %}
