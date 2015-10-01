@@ -207,15 +207,25 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     };
 
     $scope.successAction = function () {
+        resetTime($scope.time);
         $scope.errorEditItem = false;
         $scope.editItemSuccess = true;
         var myEl = angular.element(document.querySelector('#editItemSuccessMessage'));
-        myEl.removeClass('animated fadeInDown');
-        myEl.removeClass('animated fadeOut');
+        myEl.removeClass();
         myEl.addClass('animated fadeInDown');
-        $timeout(function () {
+
+        $scope.time = $timeout(function () {
+
             myEl.addClass('animated fadeOut');
+            $timeout(function () {
+                myEl.addClass('hidden');
+
+            }, 1000);
         }, 3000);
+
+        function resetTime(time){
+            $timeout.cancel(time);
+        }
     };
 });
 

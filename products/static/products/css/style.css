@@ -63,6 +63,8 @@
     position: fixed;
     top: 0;
     padding: 0;
+    transition: all 3s;
+    -webkit-transition: all 2s;
 
 }
 
@@ -72,6 +74,6 @@
 }
 
 .bg-primary > a {
-    color: darkgray;
+    color: #FFFF00;
 }
 

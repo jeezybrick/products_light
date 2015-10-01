@@ -9,6 +9,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
 from django.template.response import TemplateResponse
 from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.core.urlresolvers import reverse
 from products import cache
 from .models import Rate, Category, Item
 from products import forms
@@ -151,12 +152,13 @@ class RegisterView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/auth/register/success')
+            return HttpResponseRedirect(reverse('register_success'))
         return render(request, self.template_name, {'form': form})
 
 
 class AddCommentView(View):
     form_class = forms.AddComment
+    template_name = 'products/products/show.html'
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -165,12 +167,13 @@ class AddCommentView(View):
             first.item = get_object_or_404(cache.ProductCache.model, id=kwargs["pk"])
             first.save()
             messages.success(self.request, _('Your comment add!'))
-            return HttpResponseRedirect('/products/' + kwargs["pk"] + '/')
-        return render(request, 'products/products/show.html', {'form': form})
+            return HttpResponseRedirect(reverse('products_show', args=(kwargs["pk"],)))
+        return render(request, self.template_name, {'form': form})
 
 
 class AddRateView(LoginRequiredMixin, View):
     form_class = forms.AddRate
+    template_name = 'products/products/show.html'
 
     def post(self, request, *args, **kwargs):
         item = get_object_or_404(Item, id=kwargs["pk"])
@@ -185,8 +188,8 @@ class AddRateView(LoginRequiredMixin, View):
             first.user = request.user
             first.save()
             messages.success(self.request, _('Thanks for rate!'))
-            return HttpResponseRedirect('/products/' + kwargs["pk"] + '/')
-        return render(request, 'products/products/show.html', {'form': form})
+            return HttpResponseRedirect(reverse('products_show', args=(kwargs["pk"],)))
+        return render(request, self.template_name, {'form': form})
 
 
 # logout function
