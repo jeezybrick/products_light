@@ -7,10 +7,12 @@ var myApp = angular.module('myApp', ['ngRoute', 'ui.bootstrap']).config(function
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 });
 
-var itemListUrl = '/api/items/',
-    categoryListUrl = '/api/categories/',
-    ratesListUrl = '/api/rates/',
-    commentsListUrl = '/api/comments/';
+var apiURLs = {
+    itemListUrl: '/api/items/',
+    ratesListUrl : '/api/rates/',
+    commentsListUrl: '/api/comments/',
+    categoryListUrl: '/api/categories/'
+};
 
 myApp.config(function ($routeProvider) {
     $routeProvider.
@@ -38,13 +40,13 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     $scope.isCollapsed = true;
     $scope.itemLoad = false;
 
-    $http.get(itemListUrl, {cache: true}).success(function (data) {
+    $http.get(apiURLs.itemListUrl, {cache: true}).success(function (data) {
 
         $scope.items = data;
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
 
-        $http.get(categoryListUrl).success(function (data) {
+        $http.get(apiURLs.categoryListUrl).success(function (data) {
 
             $scope.categories = data;
             $scope.itemLoad = true;
@@ -60,7 +62,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     };
 
     $scope.sortByCategory = function (name) {
-        $http.get(itemListUrl ,{
+        $http.get(apiURLs.itemListUrl ,{
             params: {
                 category: name
             },
@@ -75,7 +77,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     };
 
     $scope.showAllItems = function () {
-        $http.get(itemListUrl, {cache: true}).success(function (data) {
+        $http.get(apiURLs.itemListUrl, {cache: true}).success(function (data) {
 
             $scope.items = data;
 
@@ -94,7 +96,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     };
 
     $scope.getLocation = function (val) {
-        return $http.get(itemListUrl, {
+        return $http.get(apiURLs.itemListUrl, {
             params: {
                 category: val
             },
@@ -112,7 +114,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
 myApp.filter('startFrom', function () {
     return function (data, start) {
-        if (data != undefined) {
+        if (angular.isUndefined(data)) {
             return data.slice(start)
         }
     }
@@ -128,15 +130,15 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     $scope.pageSize = 4;
     $scope.currentPage = 1;
 
-    $http.get(itemListUrl + $routeParams.itemId + '/?format=json', {cache: true}).success(function (data) {
+    $http.get(apiURLs.itemListUrl + $routeParams.itemId + '/?format=json', {cache: true}).success(function (data) {
         $scope.itemDetail = data;
         $scope.itemDetailLoad = true;
         $scope.rate = data['user_rate'];
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
 
-    }).error(function(data){
-        $scope.itemDetailError = data;
+    }).error(function(error){
+        $scope.itemDetailError = error;
     });
     // $scope.rate = 5;
     $scope.max = 10;
@@ -155,7 +157,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
             "item": $scope.id
         };
 
-        $http.post(ratesListUrl, data).success(function (data) {
+        $http.post(apiURLs.ratesListUrl, data).success(function (data) {
             $scope.greet = true;
 
         });
@@ -167,13 +169,13 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
             "message": $scope.message,
             "item": $scope.id
         };
-        $http.post(commentsListUrl, data).success(function () {
+        $http.post(apiURLs.commentsListUrl, data).success(function () {
             $scope.hideCommentForm = true;
             $scope.appendComment = data;
             $scope.errorComment = false;
 
-        }).error(function (data) {
-            $scope.errorComment = data;
+        }).error(function (error) {
+            $scope.errorComment = error;
         });
     };
 
@@ -184,12 +186,12 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
             "image_url": $scope.itemDetail.image_url,
             "description": $scope.itemDetail.description
         };
-        $http.put(itemListUrl + $scope.id + '/', editData).success(function () {
+        $http.put(apiURLs.itemListUrl + $scope.id + '/', editData).success(function () {
 
             $scope.successAction();
 
-        }).error(function (data) {
-            $scope.errorEditItem = data;
+        }).error(function (error) {
+            $scope.errorEditItem = error;
         });
     };
 
@@ -200,8 +202,8 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
                 $scope.showDetailOfItem = false;
                 // $location.path("/");
                 $window.location.href = '/products_ang/';
-            }).error(function (data) {
-                $scope.errorDeleteItem = data;
+            }).error(function (error) {
+                $scope.errorDeleteItem = error;
             });
         }
     };
@@ -231,7 +233,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
 myApp.controller('categoryListCtrl', function ($scope, $http) {
 
-    $http.get(categoryListUrl).success(function (data) {
+    $http.get(apiURLs.categoryListUrl).success(function (data) {
 
         $scope.categories = data;
         $scope.categoryLoad = true;
