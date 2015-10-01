@@ -114,7 +114,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
 myApp.filter('startFrom', function () {
     return function (data, start) {
-        if (angular.isUndefined(data)) {
+        if (angular.isDefined(data)) {
             return data.slice(start)
         }
     }
