@@ -58,7 +58,7 @@
                 Sort by: <a href="javascript:;" ng-click="sortField = 'price'; reverse = !reverse;showTriangle = true">price</a>
                 <span ng-show="reverse && showTriangle" class="glyphicon glyphicon-triangle-top"
                       aria-hidden="true"></span>
-                <span ng-show="!reverse" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                <span ng-hide="reverse" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
                 or
                 <a href="javascript:;" ng-click="sortField = 'rate'; reverse = !reverse">rate</a>
             </h4>
