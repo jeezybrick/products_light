@@ -1,6 +1,7 @@
 {% extends 'products/layout.html' %}
 {% load i18n %}
 {% load bootstrap3 %}
+{% load crispy_forms_tags %}
 {% load staticfiles %}
 {% block title %}
     {{ foo }} {% trans "category" %}
@@ -16,20 +17,9 @@
     </ol>
     <hr>
     <div class="col-md-8 col-sm-10">
-        <form class="form-horizontal"
-              name="add_comment_form" role="form" method="POST"
-              action="#" enctype="multipart/form-data">
-            {% csrf_token %}
 
-            {% include 'products/partials/form_errors.html' %}
+            {% crispy form %}
 
-            {% bootstrap_form form layout='horizontal' size='medium' horizontal_label_class='col-md-2' horizontal_field_class='col-md-7' %}
-            <div class="form-group">
-                <div class="col-md-6 col-md-offset-2 text-center">
-                    <input type="submit" class="btn btn-primary" name="submit" value="{{ foo }} {% trans "category" %}">
-                </div>
-            </div>
-        </form>
     </div>
 
 {% endblock %}

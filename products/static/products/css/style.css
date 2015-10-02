@@ -76,4 +76,9 @@
 .bg-primary > a {
     color: #FFFF00;
 }
-
+.signup-decision{
+    margin:30px;
+}
+.delete-item-form{
+    margin: 10px 0 0 0;
+}

@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Field
+from crispy_forms.layout import Submit, Layout, Field, Fieldset
 from crispy_forms.bootstrap import PrependedText
 from .cache import Item
 from .models import Comment, Rate, Category
@@ -15,7 +15,7 @@ from .utils import categories_as_choices
 class MyLoginForm(AuthenticationForm):
 
     username = forms.CharField(label=_('username'))
-    password = forms.CharField(label=_('password'))
+    password = forms.CharField(label=_('password'), widget=forms.PasswordInput)
 
     def __init__(self, *args, **kwargs):
         super(MyLoginForm, self).__init__(*args, **kwargs)
@@ -26,7 +26,8 @@ class MyLoginForm(AuthenticationForm):
         self.helper.label_class = 'col-md-2'
         self.helper.field_class = 'col-md-7'
 
-        self.helper.add_input(Submit('submit', 'Sign In', css_class='btn btn-default btn-md col-md-offset-5'))
+        self.helper.add_input(Submit('submit', 'Sign In',
+                                     css_class='btn btn-default btn-md col-md-offset-5'))
 
         self.helper.layout = Layout(
             Field(
@@ -61,7 +62,8 @@ class MyRegForm(UserCreationForm):
         self.helper.label_class = 'col-md-2'
         self.helper.field_class = 'col-md-7'
 
-        self.helper.add_input(Submit('submit', _('Sign Up'), css_class='btn btn-default btn-md col-md-offset-5'))
+        self.helper.add_input(Submit('submit', _('Sign Up'),
+                                     css_class='btn btn-default btn-md col-md-offset-5'))
 
     class Meta:
         model = User
@@ -99,6 +101,31 @@ class ModifyItem(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea, label=_('Description'))
 
+    def __init__(self, *args, **kwargs):
+        super(ModifyItem, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_action = '#'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-7'
+
+        self.helper.add_input(Submit('submit', _('Add/edit item'),
+                                     css_class='btn btn-default btn-md col-md-offset-5'))
+
+        self.helper.layout = Layout(
+            Fieldset(
+                'Add item',
+                'name',
+                'image_url',
+                'categories',
+                'description',
+            ),
+            PrependedText(
+                'price', 'грн.'
+            ),
+        )
+
     class Meta:
         model = Item
         fields = ('name', 'price', 'image_url', 'categories', 'description', )
@@ -110,6 +137,16 @@ class AddCategory(forms.ModelForm):
         super(AddCategory, self).__init__(*args, **kwargs)
         self.fields['parent_category'].choices = categories_as_choices()
         self.fields['parent_category'].initial = 'default'
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_action = '#'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-7'
+
+        self.helper.add_input(Submit('submit', _('Add/edit category'),
+                                     css_class='btn btn-default btn-md col-md-offset-5'))
 
     class Meta:
         model = Category

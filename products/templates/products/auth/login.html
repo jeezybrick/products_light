@@ -10,16 +10,13 @@
     <div class="row" ng-controller="loginCtrl">
         <div class="col-md-10">
             <section id="loginForm">
-                    <hr/>
-                    {% include 'products/partials/form_errors.html' %}
-                    {% crispy form %}
+                <hr/>
 
-                    <div class="form-group">
-                        <h4><label class="col-md-4 control-label"> <a href="{% url 'register' %}">Sign Up right now!</a></label>
-                        </h4>
-                    </div>
+                {% crispy form %}
 
-                </form>
+                <h4 class="signup-decision">
+                    <a href="{% url 'register' %}">Sign Up right now!</a>
+                </h4>
             </section>
         </div>
         <div class="col-md-4">
