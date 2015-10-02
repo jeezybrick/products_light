@@ -40,17 +40,20 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    # my apps
+    'api',
     'products',
+    # third party apps
     'bootstrap3',
     'rest_framework',
     'cacheback',
     'djcelery',
-    'api',
     'haystack',
     'whoosh',
     'debug_toolbar',
     'elasticsearch',
     'activelink',
+    'crispy_forms',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -136,3 +139,5 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_SIGNAL_PROCESSOR = 'products.signals.RateOnlySignalProcessor'
 
 CELERY_ALWAYS_EAGER = True
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

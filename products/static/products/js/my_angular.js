@@ -13,7 +13,7 @@ var apiURLs = {
     commentsListUrl: '/api/comments/',
     categoryListUrl: '/api/categories/'
 },
-    jsonFormat='/?format=json';
+    jsonFormat='?format=json';
 
 myApp.config(function ($routeProvider) {
     $routeProvider.

@@ -1,10 +1,12 @@
-__author__ = 'user'
+
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.core import validators
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, Field
+from crispy_forms.bootstrap import PrependedText
 from .cache import Item
 from .models import Comment, Rate, Category
 from .utils import categories_as_choices
@@ -12,14 +14,28 @@ from .utils import categories_as_choices
 
 class MyLoginForm(AuthenticationForm):
 
-    username = forms.CharField(label=_('username'), max_length=254,
-                               widget=forms.TextInput({
-                                   'class': 'form-control',
-                                   'placeholder': 'Enter username'}))
-    password = forms.CharField(label=_("password"),
-                               widget=forms.PasswordInput({
-                                   'class': 'form-control',
-                                   'placeholder': 'Enter password'}))
+    username = forms.CharField(label=_('username'))
+    password = forms.CharField(label=_('password'))
+
+    def __init__(self, *args, **kwargs):
+        super(MyLoginForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_action = '#'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-7'
+
+        self.helper.add_input(Submit('submit', 'Sign In', css_class='btn btn-default btn-md col-md-offset-5'))
+
+        self.helper.layout = Layout(
+            Field(
+                'username', placeholder='Input your login'
+            ),
+            Field(
+                'password', placeholder='Input your password'
+            )
+        )
 
 
 class MyRegForm(UserCreationForm):
@@ -27,13 +43,7 @@ class MyRegForm(UserCreationForm):
     error_messages = {
         'password_mismatch': "Passwords mismatch",
     }
-    username = forms.CharField(help_text='Max 30 characters',
-                               validators=[
-                                   validators.RegexValidator(r'^[\w.@+-]+$',
-                                                             _('Enter a valid username. '
-                                                               'This value may contain only letters, numbers '
-                                                               'and @/./+/-/_ characters.'), 'invalid'),
-                               ])
+    username = forms.CharField(help_text='Max 30 characters')
     password1 = forms.CharField(min_length=6, label=_('password'), widget=forms.PasswordInput,
                                 help_text=_("Min 6 characters"))
     password2 = forms.CharField(min_length=6, label=_('password again'),
@@ -41,6 +51,17 @@ class MyRegForm(UserCreationForm):
     last_name = forms.CharField(max_length=50, label=_('last name'))
     first_name = forms.CharField(max_length=50, label=_('first name'))
     email = forms.EmailField(label=_('Email'), required=True,)
+
+    def __init__(self, *args, **kwargs):
+        super(MyRegForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_action = '#'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-7'
+
+        self.helper.add_input(Submit('submit', _('Sign Up'), css_class='btn btn-default btn-md col-md-offset-5'))
 
     class Meta:
         model = User
@@ -88,6 +109,7 @@ class AddCategory(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AddCategory, self).__init__(*args, **kwargs)
         self.fields['parent_category'].choices = categories_as_choices()
+        self.fields['parent_category'].initial = 'default'
 
     class Meta:
         model = Category
