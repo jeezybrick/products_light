@@ -18,7 +18,8 @@ class Item(models.Model):
     price = models.IntegerField(_("Price"), blank=False)
     image_url = models.URLField(_("Link to image"), null=True, blank=True)
     categories = models.ManyToManyField(Category, blank=True, null=True)
-    description = models.CharField(_("Description"), max_length=1000, blank=False)
+    description = models.CharField(
+        _("Description"), max_length=1000, blank=False)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 

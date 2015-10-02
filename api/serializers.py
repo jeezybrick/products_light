@@ -1,4 +1,4 @@
-from rest_framework import routers, serializers, viewsets, generics
+from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from products.models import Item, Category, Rate, Comment
@@ -7,6 +7,7 @@ from products import cache
 
 
 class UserSerializer(serializers.ModelField):
+
     class Meta:
         model = User
         fields = ('url', 'username', 'email', 'is_staff', )
@@ -20,12 +21,7 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
     def get_count(self, obj):
         category = get_object_or_404(Category, id=obj.pk)
         return category.item_set.count()
-    '''
-    def get_count_sub(self, obj):
-        category = get_object_or_404(Category, id=obj.pk)
-        sub = category.category_set.all()
-        return sub.item_set.count()
-    '''
+
     class Meta:
         model = Category
         fields = ('name', 'id', 'category_set', 'count', )
@@ -64,14 +60,16 @@ class ItemSerializer(serializers.Serializer):
 
     class Meta:
 
-        fields = ('pk', 'name', 'price', 'description', 'categories', 'comments', 'image_url', 'rate', )
+        fields = ('pk', 'name', 'price', 'description',
+                  'categories', 'comments', 'image_url', 'rate', )
 
 
 class ItemDetailSerializer(serializers.ModelSerializer):
 
     rates = serializers.SerializerMethodField(read_only=True)
     comments = CommentSerializer(many=True, required=False, read_only=True)
-    categories = serializers.StringRelatedField(many=True, required=False, read_only=True)
+    categories = serializers.StringRelatedField(
+        many=True, required=False, read_only=True)
     user_rate = serializers.SerializerMethodField()
 
     def get_rates(self, obj):
@@ -80,13 +78,14 @@ class ItemDetailSerializer(serializers.ModelSerializer):
     def get_user_rate(self, obj):
         request = self.context.get('request', None)
         try:
-            user_rate = Rate.objects.get(user=request.user.id, item=obj.id).value
-            # user_rate = cache.RateCache().get(user=request.user.id, item=obj.id)
+            user_rate = Rate.objects.get(
+                user=request.user.id, item=obj.id).value
         except:
             user_rate = None
-        # return [user_rate.value for user_rate in user_rate]
+
         return user_rate
 
     class Meta:
         model = Item
-        fields = ('id', 'name', 'price', 'description', 'categories', 'comments', 'image_url', 'rates', 'user_rate', )
+        fields = ('id', 'name', 'price', 'description', 'categories',
+                  'comments', 'image_url', 'rates', 'user_rate', )

@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import View, ListView, DetailView
+from django.views.generic import View, ListView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from django.db.models import Avg
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -10,22 +10,23 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.response import TemplateResponse
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from products import cache
 from .models import Rate, Category, Item
 from products import forms
 from haystack.query import SearchQuerySet
 
 
-# Create your views here.
-
-
+# For redirect if not Auth
 class LoginRequiredMixin(object):
+
     @classmethod
     def as_view(cls, **initkwargs):
         view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
         return login_required(view, login_url='/auth/login/')
 
 
+# For login
 class LoginView(View):
     form_class = forms.MyLoginForm
     template_name = 'products/auth/login.html'
@@ -51,17 +52,21 @@ class LoginView(View):
         return TemplateResponse(request, self.template_name, context)
 
 
+# For list of items
 class ItemListView(View):
     template_name = 'products/products/index.html'
 
     def get(self, request):
-        try:
-            request.GET["category"]
-        except:
-            products = SearchQuerySet().models(Item).order_by('-id')
+        # Sort by category
+        category = request.GET.get('category', False)
+        if not category:
+            products = SearchQuerySet().models(Item).all().order_by('-id')
         else:
-            products = SearchQuerySet().models(Item).filter(categories__name=request.GET["category"]).order_by('-id')
+            products = SearchQuerySet().models(Item).filter(
+                categories__name=category).order_by('-id')
+        # Facet
         facets = SearchQuerySet().models(Item).facet('categories').facet_counts()
+        # Pagination
         paginator = Paginator(products, 6)
         page = request.GET.get('page')
 
@@ -75,17 +80,18 @@ class ItemListView(View):
         return render(request, self.template_name, {'products': products, 'facets': facets})
 
 
+# Item detail
 class ItemDetailView(View):
     template_name = 'products/products/show.html'
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, **kwargs):
         item = cache.ProductCache().get(id=kwargs["pk"])
-        # comments = cache.CommentCache().get(item_id=kwargs["pk"])
         user_rate = None
         for item in item:
             try:
-                user_rate = Rate.objects.get(user=request.user.id, item=item.id)
-            except:
+                user_rate = Rate.objects.get(
+                    user=request.user.id, item=item.id)
+            except ObjectDoesNotExist:
                 user_rate = None
         context = {
             'comment_form': forms.AddComment,
@@ -96,6 +102,7 @@ class ItemDetailView(View):
         return render(request, self.template_name, context)
 
 
+# For add new item
 class ItemAddView(CreateView):
     model = Item
     template_name = 'products/products/modify.html'
@@ -112,6 +119,7 @@ class ItemAddView(CreateView):
         return super(ItemAddView, self).form_valid(form)
 
 
+# Category list
 class CategoryListView(ListView):
     template_name = 'products/categories/index.html'
     context_object_name = 'categories'
@@ -121,6 +129,7 @@ class CategoryListView(ListView):
         return cache.CategoryCache().get(parent_category_id__isnull=True)
 
 
+# For add new category
 class CategoryAddView(CreateView):
     model = Category
     template_name = 'products/categories/modify.html'
@@ -140,6 +149,7 @@ class CategoryAddView(CreateView):
         return self.render_to_response(self.get_context_data(form=form))
 
 
+# Registration view
 class RegisterView(View):
     form_class = forms.MyRegForm
     template_name = 'products/auth/register.html'
@@ -156,35 +166,39 @@ class RegisterView(View):
         return render(request, self.template_name, {'form': form})
 
 
+# For adding new comments to detail
 class AddCommentView(View):
     form_class = forms.AddComment
     template_name = 'products/products/show.html'
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
             first = form.save(commit=False)
-            first.item = get_object_or_404(cache.ProductCache.model, id=kwargs["pk"])
+            first.item = get_object_or_404(
+                cache.ProductCache.model, id=kwargs["pk"])
             first.save()
             messages.success(self.request, _('Your comment add!'))
             return HttpResponseRedirect(reverse('products_show', args=(kwargs["pk"],)))
         return render(request, self.template_name, {'form': form})
 
 
+# Add rate for specific item
 class AddRateView(LoginRequiredMixin, View):
     form_class = forms.AddRate
     template_name = 'products/products/show.html'
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, **kwargs):
         item = get_object_or_404(Item, id=kwargs["pk"])
         try:
             rate = Rate.objects.get(user=request.user.id, item=item.id)
-        except:
+        except ObjectDoesNotExist:
             rate = None
         form = self.form_class(request.POST, instance=rate)
         if form.is_valid():
             first = form.save(commit=False)
-            first.item = get_object_or_404(cache.ProductCache.model, id=kwargs["pk"])
+            first.item = get_object_or_404(
+                cache.ProductCache.model, id=kwargs["pk"])
             first.user = request.user
             first.save()
             messages.success(self.request, _('Thanks for rate!'))
@@ -205,7 +219,6 @@ class ItemEditView(UpdateView):
     template_name = 'products/products/modify.html'
     success_url = '/products/'
     form_class = forms.ModifyItem
-    # fields = ['name', 'price', 'image_url', 'categories', 'description']
 
     def get_context_data(self, **kwargs):
         context = super(ItemEditView, self).get_context_data(**kwargs)

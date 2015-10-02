@@ -12,7 +12,8 @@ var apiURLs = {
     ratesListUrl : '/api/rates/',
     commentsListUrl: '/api/comments/',
     categoryListUrl: '/api/categories/'
-};
+},
+    jsonFormat='/?format=json';
 
 myApp.config(function ($routeProvider) {
     $routeProvider.
@@ -40,13 +41,13 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     $scope.isCollapsed = true;
     $scope.itemLoad = false;
 
-    $http.get(apiURLs.itemListUrl, {cache: true}).success(function (data) {
+    $http.get(apiURLs.itemListUrl + jsonFormat, {cache: true}).success(function (data) {
 
         $scope.items = data;
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
 
-        $http.get(apiURLs.categoryListUrl).success(function (data) {
+        $http.get(apiURLs.categoryListUrl + jsonFormat).success(function (data) {
 
             $scope.categories = data;
             $scope.itemLoad = true;
@@ -77,7 +78,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     };
 
     $scope.showAllItems = function () {
-        $http.get(apiURLs.itemListUrl, {cache: true}).success(function (data) {
+        $http.get(apiURLs.itemListUrl + jsonFormat, {cache: true}).success(function (data) {
 
             $scope.items = data;
 
@@ -130,7 +131,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     $scope.pageSize = 4;
     $scope.currentPage = 1;
 
-    $http.get(apiURLs.itemListUrl + $routeParams.itemId + '/?format=json', {cache: true}).success(function (data) {
+    $http.get(apiURLs.itemListUrl + $routeParams.itemId + jsonFormat, {cache: true}).success(function (data) {
         $scope.itemDetail = data;
         $scope.itemDetailLoad = true;
         $scope.rate = data['user_rate'];
@@ -153,8 +154,8 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     $scope.addRate = function () {
         $scope.dynamic = 100;
         var data = {
-            "value": $scope.rate,
-            "item": $scope.id
+            value: $scope.rate,
+            item: $scope.id
         };
 
         $http.post(apiURLs.ratesListUrl, data).success(function (data) {
@@ -165,9 +166,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
     $scope.addComment = function () {
         var data = {
-            "username": $scope.username,
-            "message": $scope.message,
-            "item": $scope.id
+            username: $scope.username,
+            message: $scope.message,
+            item: $scope.id
         };
         $http.post(apiURLs.commentsListUrl, data).success(function () {
             $scope.hideCommentForm = true;
@@ -181,10 +182,10 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
     $scope.editItem = function () {
         var editData = {
-            "name": $scope.itemDetail.name,
-            "price": $scope.itemDetail.price,
-            "image_url": $scope.itemDetail.image_url,
-            "description": $scope.itemDetail.description
+            name: $scope.itemDetail.name,
+            price: $scope.itemDetail.price,
+            image_url: $scope.itemDetail.image_url,
+            description: $scope.itemDetail.description
         };
         $http.put(apiURLs.itemListUrl + $scope.id + '/', editData).success(function () {
 
@@ -198,7 +199,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     $scope.deleteItem = function () {
 
         if (confirm('Are you sure you want to delete this item?')) {
-            $http.delete(itemListUrl + $scope.id + '/').success(function () {
+            $http.delete(apiURLs.itemListUrl + $scope.id + '/').success(function () {
                 $scope.showDetailOfItem = false;
                 // $location.path("/");
                 $window.location.href = '/products_ang/';
@@ -209,7 +210,6 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     };
 
     $scope.successAction = function () {
-        resetTime($scope.time);
         $scope.errorEditItem = false;
         $scope.editItemSuccess = true;
         var myEl = angular.element(document.querySelector('#editItemSuccessMessage'));
@@ -225,15 +225,12 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
             }, 1000);
         }, 3000);
 
-        function resetTime(time){
-            $timeout.cancel(time);
-        }
     };
 });
 
 myApp.controller('categoryListCtrl', function ($scope, $http) {
 
-    $http.get(apiURLs.categoryListUrl).success(function (data) {
+    $http.get(apiURLs.categoryListUrl + jsonFormat).success(function (data) {
 
         $scope.categories = data;
         $scope.categoryLoad = true;

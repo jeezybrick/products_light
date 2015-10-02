@@ -1,14 +1,11 @@
 __author__ = 'user'
 from django.core.exceptions import ImproperlyConfigured
-from django.db.models import Avg
 from products.models import Item, Category, Rate, Comment
 from cacheback.base import Job
 
 
 class BaseModelJob(Job):
     model = None
-
-    # lifetime = 10
 
     def key(self, *args, **kwargs):
         """Compose the key"""
@@ -61,20 +58,3 @@ class CommentCache(BaseModelJob):
 
 class RateCache(BaseModelJob):
     model = Rate
-
-"""
-class RateAverageCache(BaseModelJob):
-
-    def fetch(self, **kwargs):
-        if not self.model:
-            raise ImproperlyConfigured(
-                "%(cls)s is missing a model. Define %(cls)s.model %(cls)s.fetch()." % {
-                    'cls': self.__class__.__name__
-                }
-            )
-
-        obj = self.model.objects.get(**kwargs).aggregate(Avg('value'))['value__avg']
-        return obj
-
-    model = Rate
-"""

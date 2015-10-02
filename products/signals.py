@@ -53,22 +53,31 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
 
     def setup(self, **kwargs):
         models.signals.post_save.connect(self.handle_save, sender=Item)
-        models.signals.post_save.connect(self.handle_category_update, sender=Item)
+        models.signals.post_save.connect(
+            self.handle_category_update, sender=Item)
         models.signals.post_delete.connect(self.handle_delete, sender=Item)
         models.signals.post_save.connect(self.handle_rate_update, sender=Rate)
-        models.signals.post_delete.connect(self.handle_rate_update, sender=Rate)
-        models.signals.post_save.connect(self.handle_comment_update, sender=Comment)
-        models.signals.post_delete.connect(self.handle_comment_update, sender=Comment)
+        models.signals.post_delete.connect(
+            self.handle_rate_update, sender=Rate)
+        models.signals.post_save.connect(
+            self.handle_comment_update, sender=Comment)
+        models.signals.post_delete.connect(
+            self.handle_comment_update, sender=Comment)
 
         super(RateOnlySignalProcessor, self).setup()
 
     def teardown(self):
         models.signals.post_save.disconnect(self.handle_save, sender=Item)
         models.signals.post_delete.disconnect(self.handle_delete, sender=Item)
-        models.signals.post_save.disconnect(self.handle_category_update, sender=Item)
-        models.signals.post_save.disconnect(self.handle_rate_update, sender=Rate)
-        models.signals.post_delete.disconnect(self.handle_rate_update, sender=Rate)
-        models.signals.post_save.disconnect(self.handle_comment_update, sender=Comment)
-        models.signals.post_delete.disconnect(self.handle_comment_update, sender=Comment)
+        models.signals.post_save.disconnect(
+            self.handle_category_update, sender=Item)
+        models.signals.post_save.disconnect(
+            self.handle_rate_update, sender=Rate)
+        models.signals.post_delete.disconnect(
+            self.handle_rate_update, sender=Rate)
+        models.signals.post_save.disconnect(
+            self.handle_comment_update, sender=Comment)
+        models.signals.post_delete.disconnect(
+            self.handle_comment_update, sender=Comment)
 
         super(RateOnlySignalProcessor, self).teardown()

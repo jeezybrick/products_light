@@ -22,12 +22,17 @@ urlpatterns = [
     # Django views
     url(r"^products/$", views.ItemListView.as_view(), name='products_list'),
     url(r"^products/add/$", views.ItemAddView.as_view(), name='products_add'),
-    url(r"^products/(?P<pk>\w+)/$", views.ItemDetailView.as_view(), name='products_show'),
-    url(r"^products/(?P<pk>\w+)/edit/$", views.ItemEditView.as_view(), name='products_edit'),
-    url(r"^products/(?P<pk>\w+)/delete/$", views.ItemDeleteView.as_view(), name='products_delete'),
+    url(r"^products/(?P<pk>\w+)/$",
+        views.ItemDetailView.as_view(), name='products_show'),
+    url(r"^products/(?P<pk>\w+)/edit/$",
+        views.ItemEditView.as_view(), name='products_edit'),
+    url(r"^products/(?P<pk>\w+)/delete/$",
+        views.ItemDeleteView.as_view(), name='products_delete'),
 
-    url(r"^products/(?P<pk>\w+)/comments/add/$", views.AddCommentView.as_view(), name='comment_add'),
-    url(r"^products/(?P<pk>\w+)/rates/add/$", views.AddRateView.as_view(), name='rate_add'),
+    url(r"^products/(?P<pk>\w+)/comments/add/$",
+        views.AddCommentView.as_view(), name='comment_add'),
+    url(r"^products/(?P<pk>\w+)/rates/add/$",
+        views.AddRateView.as_view(), name='rate_add'),
 
     # Angular views
     url(r"^products_ang/$", TemplateView.as_view(
@@ -51,5 +56,4 @@ urlpatterns = [
     url(r'^search/', include('haystack.urls')),
 
 
-    ]
-
+]
