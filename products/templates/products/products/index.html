@@ -34,13 +34,13 @@
         <!-- !success messages -->
 
         <!-- Begin faceting. -->
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="faceting col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <h2>By Category</h2>
             <div>
-                <dl>
+                <dl class="all-categories-list">
                     {% if facets.fields.categories %}
                         <dt>Category:</dt>
-                        <a href="/products/" style="color: red;">All categories</a>
+                        <a href="/products/">All categories</a>
                         {# Provide only the top 5 categories #}
                         {% for category in facets.fields.categories|slice:":5" %}
                             <dd>
@@ -95,8 +95,8 @@
 
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <h4 style="word-break: break-all;"><a
-                                        href="{% url 'products_show' product.object.id %}">{% trans "Details" %}</a>
+                                <h4>
+                                    <a href="{% url 'products_show' product.object.id %}">{% trans "Details" %}</a>
                                 </h4>
                             </div>
                         </div>

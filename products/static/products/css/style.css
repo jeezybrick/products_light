@@ -16,7 +16,7 @@
     min-height: 300px;
     max-height: 250px;
     overflow: scroll;
-    box-shadow: 0 0 2px rgba(0,0,0,0.52),0 2px 4px rgba(0,0,0,0.12);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.52), 0 2px 4px rgba(0, 0, 0, 0.12);
 }
 
 .main-list-top-pencil {
@@ -76,9 +76,44 @@
 .bg-primary > a {
     color: #FFFF00;
 }
-.signup-decision{
-    margin:30px;
+
+.signup-decision {
+    margin: 30px;
 }
-.delete-item-form{
+
+.delete-item-form {
     margin: 10px 0 0 0;
+}
+
+.all-categories-list > a {
+    color: red;
+}
+
+.detail-item-attr {
+    margin: 0;
+}
+
+.rate-success-text {
+    color: darkgreen;
+}
+
+.progressbar-text {
+    color: white;
+    white-space: nowrap;
+}
+
+.comment-unit {
+    border-bottom: solid 1px black;
+}
+
+.error-comment-message {
+    color: red;
+}
+
+.comment-form {
+    margin-top: 20px;
+}
+
+.item-detail-header {
+    word-break: break-all;
 }

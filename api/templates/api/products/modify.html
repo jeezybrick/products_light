@@ -1,7 +1,7 @@
 {% verbatim %}
 
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <h4 style="color: red;" ng-repeat="(errorName,errorMessage) in errorEditItem">
+    <h4 class="error-comment-message" ng-repeat="(errorName,errorMessage) in errorEditItem">
         {{ errorName }}:
         <ul>
             <li ng-repeat="errorMessage in errorMessage">

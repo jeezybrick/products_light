@@ -7,7 +7,7 @@
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden">
     <div class="row">
         <div class="col-lg-10">
-            <h3 style="margin: 0;">
+            <h3 class="detail-item-attr">
                 ID:{{ itemDetail.id }}
             </h3>
         </div>
@@ -34,11 +34,11 @@
 
             </rating>
         </h4>
-        <h4 ng-show="greet" style="color: darkgreen;">Thanks for rate</h4>
+        <h4 class="rate-success-text" ng-show="greet">Thanks for rate</h4>
     {% endif %}
 
     {% verbatim %}
-    <progressbar max="maxx" value="dynamic"><span style="color:white; white-space:nowrap;">{{dynamic}} / {{maxx}}</span>
+    <progressbar max="maxx" value="dynamic"><span class="progressbar-text">{{dynamic}} / {{maxx}}</span>
     </progressbar>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <h3 ng-show="itemDetail.categories.length">Categories: </h3>
@@ -51,16 +51,14 @@
     <hr>
     <h3 ng-show="itemDetail.comments.length">Comments</h3>
 
-    <div class="col-md-8 col-sm-10 animated slideInUp" ng-show="appendComment"
-         style="border-bottom: solid 1px black;">
+    <div class="comment-unit col-md-8 col-sm-10 animated slideInUp" ng-show="appendComment">
         <h3>
             <small>{{ appendComment.username }}</small>
         </h3>
         <h4>{{ appendComment.message }}</h4>
     </div>
-    <div class="col-md-8 col-sm-10"
-         ng-repeat="comment in itemDetail.comments|startFrom:(currentPage - 1) * pageSize | limitTo:pageSize"
-         style="border-bottom: solid 1px black;">
+    <div class="comment-unit col-md-8 col-sm-10"
+         ng-repeat="comment in itemDetail.comments|startFrom:(currentPage - 1) * pageSize | limitTo:pageSize">
         <h3>
             <small>{{ comment.username }}</small>
         </h3>
@@ -73,11 +71,11 @@
     </div>
 
 
-    <div class="col-md-8 col-sm-10" style="margin-top: 20px;">
+    <div class="comment-form col-md-8 col-sm-10">
         <h1 ng-hide="hideCommentForm">
             <small>Add comment</small>
         </h1>
-        <h4 style="color: red;" ng-show="errorComment.username">
+        <h4 class="error-comment-message" ng-show="errorComment.username">
             Username:
             <ul>
                 <li ng-repeat="error in errorComment.username">
@@ -85,7 +83,7 @@
                 </li>
             </ul>
         </h4>
-        <h4 style="color: red;" ng-show="errorComment.message">
+        <h4 class="error-comment-message" ng-show="errorComment.message">
             Message:
             <ul>
                 <li ng-repeat="error in errorComment.message">
