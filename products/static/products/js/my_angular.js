@@ -96,6 +96,21 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
     };
 
+    $scope.isItemsNotPrevious = function (items) {
+
+        return !items.previous;
+
+    };
+    
+    /**
+     * @return {boolean}
+     */
+    $scope.IsItemsNotNext = function (items) {
+
+        return !items.next;
+    };
+
+
     $scope.getLocation = function (val) {
         return $http.get(apiURLs.itemListUrl, {
             params: {
