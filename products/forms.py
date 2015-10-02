@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field, Fieldset
-from crispy_forms.bootstrap import PrependedText, FormActions
+from crispy_forms.bootstrap import PrependedText
 from .cache import Item
 from .models import Comment, Rate, Category
 from .utils import categories_as_choices

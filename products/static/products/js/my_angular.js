@@ -41,6 +41,10 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     $scope.isCollapsed = true;
     $scope.itemLoad = false;
 
+     /**
+     * Get list of items and list of categories
+     */
+
     $http.get(apiURLs.itemListUrl + jsonFormat, {cache: true}).success(function (data) {
 
         $scope.items = data;
@@ -57,10 +61,18 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
     });
 
+    /**
+     * Show item detail
+     */
+
     $scope.showItem = function () {
         $scope.showDetailOfItem = true;
 
     };
+
+    /**
+     * Filter items by category
+     */
 
     $scope.sortByCategory = function (name) {
         $http.get(apiURLs.itemListUrl ,{
@@ -77,6 +89,10 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
     };
 
+    /**
+     * Show all items
+     */
+
     $scope.showAllItems = function () {
         $http.get(apiURLs.itemListUrl + jsonFormat, {cache: true}).success(function (data) {
 
@@ -85,6 +101,10 @@ myApp.controller('itemCtrl', function ($scope, $http) {
         });
 
     };
+
+    /**
+     * Pagination
+     */
 
     $scope.pagination = function (page) {
 
@@ -96,13 +116,27 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
     };
 
+    /**
+     * For sorting by price
+     */
+
+    $scope.changeSortState = function (status) {
+        $scope.sortField = status;
+        $scope.reverse = !$scope.reverse;
+        $scope.showTriangle = !$scope.showTriangle;
+    };
+
+    /**
+     * Function for check if previous page exists
+     */
     $scope.isItemsNotPrevious = function (items) {
 
         return !items.previous;
 
     };
-    
+
     /**
+     * Function for check if next page exists
      * @return {boolean}
      */
     $scope.IsItemsNotNext = function (items) {
@@ -128,6 +162,10 @@ myApp.controller('itemCtrl', function ($scope, $http) {
 
 });
 
+/**
+ * Filter for pagination comments
+ */
+
 myApp.filter('startFrom', function () {
     return function (data, start) {
         if (angular.isDefined(data)) {
@@ -146,6 +184,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     $scope.pageSize = 4;
     $scope.currentPage = 1;
 
+    /**
+     * Get item detail
+     */
     $http.get(apiURLs.itemListUrl + $routeParams.itemId + jsonFormat, {cache: true}).success(function (data) {
         $scope.itemDetail = data;
         $scope.itemDetailLoad = true;
@@ -160,12 +201,17 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     $scope.max = 10;
     $scope.isReadonly = false;
 
+    /**
+     * For hovering rating stars
+     */
     $scope.hoveringOver = function (value) {
         $scope.overStar = value;
         $scope.percent = 100 * (value / $scope.max);
     };
 
-
+    /**
+     * Post selected rating of item by user
+     */
     $scope.addRate = function () {
         $scope.dynamic = 100;
         var data = {
@@ -179,6 +225,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
         });
     };
 
+     /**
+     * Add comment
+     */
     $scope.addComment = function () {
         var data = {
             username: $scope.username,
@@ -195,6 +244,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
         });
     };
 
+     /**
+     * Edit item
+     */
     $scope.editItem = function () {
         var editData = {
             name: $scope.itemDetail.name,
@@ -211,6 +263,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
         });
     };
 
+     /**
+     * Delete item
+     */
     $scope.deleteItem = function () {
 
         if (confirm('Are you sure you want to delete this item?')) {
@@ -224,6 +279,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
         }
     };
 
+     /**
+     * Function for success edit item
+     */
     $scope.successAction = function () {
         $scope.errorEditItem = false;
         $scope.editItemSuccess = true;
@@ -245,6 +303,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
 myApp.controller('categoryListCtrl', function ($scope, $http) {
 
+     /**
+     * Get category list
+     */
     $http.get(apiURLs.categoryListUrl + jsonFormat).success(function (data) {
 
         $scope.categories = data;

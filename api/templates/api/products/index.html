@@ -55,12 +55,11 @@
 
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.results.length">
             <h4>
-                Sort by: <a href="javascript:;" ng-click="sortField = 'price'; reverse = !reverse;showTriangle = true">price</a>
-                <span ng-show="reverse && showTriangle" class="glyphicon glyphicon-triangle-top"
+                Sort by: <a href="javascript:;" ng-click="changeSortState(price)">price</a>
+                <span ng-show="!reverse" class="glyphicon glyphicon-triangle-top"
                       aria-hidden="true"></span>
-                <span ng-hide="reverse" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-                or
-                <a href="javascript:;" ng-click="sortField = 'rate'; reverse = !reverse">rate</a>
+                <span ng-show="reverse" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+
             </h4>
         </div>
 
