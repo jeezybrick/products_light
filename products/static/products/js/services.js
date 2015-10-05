@@ -5,7 +5,9 @@
 
 angular.module('myApp.services', ['ngResource'])
   .factory('Item', function($resource) {
-    return $resource('/api/items/:id/');
+    return $resource('/api/items/:id/', null, {
+        'update': { method:'PUT' }
+    });
   })
     .factory('User', function($resource) {
     return $resource('/api/users/:id/');

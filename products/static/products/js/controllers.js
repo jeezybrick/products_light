@@ -2,7 +2,7 @@
  * Created by user on 05.10.15.
  */
 
-myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Rate) {
+myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category) {
 
     $scope.sortField = 'pk';
     $scope.reverse = true;
@@ -198,8 +198,8 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     $scope.addComment = function () {
 
         var comment = new Comment({username: $scope.username,
-                                message: $scope.message,
-                                item: $routeParams.itemId });
+                                   message: $scope.message,
+                                   item: $routeParams.itemId });
         comment.$save(function (data) {
             $scope.hideCommentForm = true;
             $scope.appendComment = data;
@@ -212,6 +212,10 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
      * Edit item
      */
     $scope.editItem = function () {
+        /*
+        var item = Item.get({id: $routeParams.itemId});
+        Item.update({ name:'LAL' }, item);
+       */
         var editData = {
             name: $scope.itemDetail.name,
             price: $scope.itemDetail.price,
@@ -233,6 +237,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     $scope.deleteItem = function () {
 
         if (confirm('Are you sure you want to delete this item?')) {
+
             $http.delete(apiURLs.itemListUrl + $scope.id + '/').success(function () {
                 $scope.showDetailOfItem = false;
                 // $location.path("/");
@@ -275,5 +280,10 @@ myApp.controller('categoryListCtrl', function ($scope, Category) {
         myEl.removeClass('hidden');
 
     });
+
+});
+
+myApp.controller('loginCtrl', function ($scope) {
+
 
 });
