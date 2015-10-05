@@ -100,6 +100,8 @@ class ModifyItem(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea, label=_('Description'))
 
+    quantity = forms.IntegerField( min_value=0, label=_('Quantity'))
+
     def __init__(self, *args, **kwargs):
         super(ModifyItem, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -119,6 +121,7 @@ class ModifyItem(forms.ModelForm):
                 'image_url',
                 'categories',
                 'description',
+                'quantity',
             ),
             PrependedText(
                 'price', 'грн.'
@@ -128,7 +131,7 @@ class ModifyItem(forms.ModelForm):
 
     class Meta:
         model = Item
-        fields = ('name', 'price', 'image_url', 'categories', 'description', )
+        fields = ('name', 'price', 'image_url', 'categories', 'description', 'quantity')
 
 
 class AddCategory(forms.ModelForm):

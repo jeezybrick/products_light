@@ -85,6 +85,7 @@ class ItemDetailView(View):
     template_name = 'products/products/show.html'
 
     def get(self, request, **kwargs):
+        message = None
         item = cache.ProductCache().get(id=kwargs["pk"])
         user_rate = None
         for item in item:
@@ -93,13 +94,23 @@ class ItemDetailView(View):
                     user=request.user.id, item=item.id)
             except ObjectDoesNotExist:
                 user_rate = None
+
+            message = self.message_of_quantity_items(item)
         context = {
             'comment_form': forms.AddComment,
             'rating_form': forms.AddRate(instance=user_rate),
             'average_rating': Rate.objects.filter(item_id=self.kwargs["pk"]).aggregate(Avg('value')),
             'item': item,
+            'message': message,
         }
         return render(request, self.template_name, context)
+
+    def message_of_quantity_items(self, item):
+        if item.quantity:
+            if item.quantity == 0:
+                return 'The product is out of stock'
+            if item.quantity < 10:
+                return 'The product ends'
 
 
 # For add new item

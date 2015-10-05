@@ -58,31 +58,27 @@
 
     <!-- repeat -->
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            {% for product in shops %}
+            {% for shop in shops %}
                 <div class="main-list col-lg-4 col-ms-4 col-sm-6 col-xs-12">
 
                     <div class="notes">
                         <div class="row">
                             <div class="main-list-top col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                <h2>ID:{{ product.object.id }}</h2>
-                            </div>
-                            <div class="main-list-top-pencil col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
-                                <a href="{% url 'products_edit' product.object.id %}" >
-                                    <i class="fa fa-pencil fa-2x"></i>
-                                </a>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <h4 class="word-break">{% trans "name" %}:{{ product.object.username|truncatechars:35 }}</h4>
+                                <h2>ID:{{ shop.object.id }}</h2>
                             </div>
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <h4 class="word-break">{% trans "email" %}:{{ product.object.email|truncatechars:35 }}</h4>
+                                <h4 class="word-break">{% trans "name" %}:{{ shop.object.username|truncatechars:35 }}</h4>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h4 class="word-break">{% trans "email" %}:{{ shop.object.email|truncatechars:35 }}</h4>
                             </div>
 
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <h4>
-                                    <a href="{% url 'shop_detail' product.object.id %}">{% trans "Details" %}</a>
+                                    <a href="{% url 'shop_detail' shop.object.id %}">{% trans "Details" %}</a>
                                 </h4>
                             </div>
                         </div>
@@ -90,7 +86,7 @@
                 </div>
             {% empty %}
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    Items no added
+                    {% trans "Shops no added" %}
                 </div>
             {% endfor %}
         </div>

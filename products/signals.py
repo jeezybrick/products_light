@@ -33,7 +33,7 @@ def invalidate_comment(sender, instance, **kwargs):
 
 @receiver(post_save, sender=MyUser)
 def invalidate_shop(sender, instance, **kwargs):
-    cache.ShopCache().invalidate()
+    cache.ShopCache().invalidate(id=instance.pk)
 
 
 class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):

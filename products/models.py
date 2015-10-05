@@ -34,6 +34,7 @@ class Item(models.Model):
     categories = models.ManyToManyField(Category, blank=True)
     description = models.CharField(
         _("Description"), max_length=1000, blank=False)
+    quantity = models.IntegerField(blank=True, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='items')
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
@@ -60,3 +61,10 @@ class Rate(models.Model):
 
     def __unicode__(self):
         return self.value
+
+"""
+class QuantityOfItem(models.Model):
+    shop = models.OneToOneField(MyUser)
+    item = models.OneToOneField(Item)
+    quantity = models.IntegerField()
+"""
