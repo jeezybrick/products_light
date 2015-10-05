@@ -117,3 +117,16 @@
 .item-detail-header {
     word-break: break-all;
 }
+
+#editItemSuccessMessage.ng-enter{
+    animation: fadeInDown 1s;
+}
+
+#editItemSuccessMessage.ng-leave{
+    animation: fadeOut 2s;
+}
+
+.main-list.ng-enter{
+
+    animation: fadeInDown 1s;
+}

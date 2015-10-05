@@ -1,38 +1,8 @@
 /**
- * Created by user on 14.09.15.
+ * Created by user on 05.10.15.
  */
 
-var myApp = angular.module('myApp', ['ngRoute', 'ui.bootstrap','ngAnimate','ngResource','myApp.services']).config(function ($httpProvider) {
-     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
- });
-
-var apiURLs = {
-    itemListUrl: '/api/items/',
-    ratesListUrl : '/api/rates/',
-    commentsListUrl: '/api/comments/',
-    categoryListUrl: '/api/categories/'
-},
-    jsonFormat='?format=json';
-
-myApp.config(function ($routeProvider) {
-    $routeProvider.
-        when('/products_ang/', {
-            templateUrl: '/products_ang/',
-            controller: 'itemCtrl'
-        }).
-        when('/:itemId', {
-            templateUrl: '/products_ang/show/',
-            controller: 'ItemDetailCtrl'
-        }).
-        when('/:itemId/edit', {
-            templateUrl: '/products_ang/edit/',
-            controller: 'ItemDetailCtrl'
-        });
-});
-
-
-myApp.controller('itemCtrl', function ($scope, $http) {
+myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Rate) {
 
     $scope.sortField = 'pk';
     $scope.reverse = true;
@@ -41,21 +11,20 @@ myApp.controller('itemCtrl', function ($scope, $http) {
     $scope.isCollapsed = true;
     $scope.itemLoad = false;
 
-     /**
+    /**
      * Get list of items and list of categories
      */
 
     $http.get(apiURLs.itemListUrl + jsonFormat, {cache: true}).success(function (data) {
 
         $scope.items = data;
-        $scope.itemLoad = true;
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
 
-        $http.get(apiURLs.categoryListUrl + jsonFormat).success(function (data) {
+        Category.query(function (response) {
 
-            $scope.categories = data;
-            $scope.categoryLoad = true;
+            $scope.categories = response;
+            $scope.itemLoad = true;
 
         });
 
@@ -76,7 +45,7 @@ myApp.controller('itemCtrl', function ($scope, $http) {
      */
 
     $scope.sortByCategory = function (name) {
-        $http.get(apiURLs.itemListUrl ,{
+        $http.get(apiURLs.itemListUrl, {
             params: {
                 category: name
             },
@@ -175,7 +144,8 @@ myApp.filter('startFrom', function () {
     }
 });
 
-myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $location, $window, $timeout) {
+
+myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $location, $window, $timeout, Item, Rate, Comment) {
     $scope.id = $routeParams.itemId;
     $scope.showDetailOfItem = true;
     $scope.greet = false;
@@ -188,16 +158,15 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     /**
      * Get item detail
      */
-    $http.get(apiURLs.itemListUrl + $routeParams.itemId + jsonFormat, {cache: true}).success(function (data) {
+    Item.get({id: $routeParams.itemId}, function (data) {
+
         $scope.itemDetail = data;
         $scope.itemDetailLoad = true;
         $scope.rate = data['user_rate'];
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
-
-    }).error(function(error){
-        $scope.itemDetailError = error;
     });
+
     // $scope.rate = 5;
     $scope.max = 10;
     $scope.isReadonly = false;
@@ -215,34 +184,28 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
      */
     $scope.addRate = function () {
         $scope.dynamic = 100;
-        var data = {
-            value: $scope.rate,
-            item: $scope.id
-        };
-
-        $http.post(apiURLs.ratesListUrl, data).success(function (data) {
-            $scope.greet = true;
-
+        var rate = new Rate({value: $scope.rate,
+                            item: $routeParams.itemId});
+        rate.$save(function () {
+           // $scope.tweets.unshift(tweet);
         });
+
     };
 
      /**
      * Add comment
      */
     $scope.addComment = function () {
-        var data = {
-            username: $scope.username,
-            message: $scope.message,
-            item: $scope.id
-        };
-        $http.post(apiURLs.commentsListUrl, data).success(function () {
+
+        var comment = new Comment({username: $scope.username,
+                                message: $scope.message,
+                                item: $routeParams.itemId });
+        comment.$save(function (data) {
             $scope.hideCommentForm = true;
             $scope.appendComment = data;
             $scope.errorComment = false;
-
-        }).error(function (error) {
-            $scope.errorComment = error;
         });
+
     };
 
      /**
@@ -284,41 +247,33 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
      * Function for success edit item
      */
     $scope.successAction = function () {
-        $scope.errorEditItem = false;
+
         $scope.editItemSuccess = true;
-        var myEl = angular.element(document.querySelector('#editItemSuccessMessage'));
-        myEl.removeClass();
-        myEl.addClass('animated fadeInDown');
+        $timeout.cancel($scope.time);
 
         $scope.time = $timeout(function () {
 
-            myEl.addClass('animated fadeOut');
-            $timeout(function () {
-                myEl.addClass('hidden');
+            $scope.editItemSuccess = false;
 
-            }, 1000);
         }, 3000);
 
     };
 });
 
-myApp.controller('categoryListCtrl', function ($scope, $http) {
 
-     /**
+myApp.controller('categoryListCtrl', function ($scope, Category) {
+
+    /**
      * Get category list
      */
-    $http.get(apiURLs.categoryListUrl + jsonFormat).success(function (data) {
 
-        $scope.categories = data;
+    Category.query(function (response) {
+
+        $scope.categories = response;
         $scope.categoryLoad = true;
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
 
     });
-
-});
-
-myApp.controller('loginCtrl', function ($scope) {
-
 
 });
