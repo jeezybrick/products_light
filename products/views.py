@@ -85,7 +85,6 @@ class ItemDetailView(View):
     template_name = 'products/products/show.html'
 
     def get(self, request, **kwargs):
-        message = None
         item = cache.ProductCache().get(id=kwargs["pk"])
         user_rate = None
         for item in item:
@@ -95,7 +94,8 @@ class ItemDetailView(View):
             except ObjectDoesNotExist:
                 user_rate = None
 
-            message = self.message_of_quantity_items(item)
+        message = self.message_of_quantity_items(item)
+        item = self.price_with_percent(item)
         context = {
             'comment_form': forms.AddComment,
             'rating_form': forms.AddRate(instance=user_rate),
@@ -105,12 +105,19 @@ class ItemDetailView(View):
         }
         return render(request, self.template_name, context)
 
+    """ return message depends on quantity item """
     def message_of_quantity_items(self, item):
         if item.quantity:
             if item.quantity == 0:
                 return 'The product is out of stock'
             if item.quantity < 10:
                 return 'The product ends'
+
+    """ return item with percentage price """
+    def price_with_percent(self, item):
+        if self.request.user.percentage_of_price:
+            item.price = item.price * self.request.user.percentage_of_price / 100
+        return item
 
 
 # For add new item
