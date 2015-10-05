@@ -69,7 +69,7 @@ class ItemListView(View):
         # Pagination
         paginator = Paginator(products, 6)
         page = request.GET.get('page')
-
+        cart = self.request.user.cart_set.all()
         try:
             products = paginator.page(page)
         except PageNotAnInteger:
@@ -77,7 +77,9 @@ class ItemListView(View):
         except EmptyPage:
             products = paginator.page(paginator.num_pages)
 
-        return render(request, self.template_name, {'products': products, 'facets': facets})
+        return render(request, self.template_name, {'products': products,
+                                                    'facets': facets,
+                                                    'cart': cart})
 
 
 # Item detail

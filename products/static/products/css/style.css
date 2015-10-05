@@ -19,6 +19,14 @@
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.52), 0 2px 4px rgba(0, 0, 0, 0.12);
 }
 
+.main-list-top > h2{
+    margin-top: 0;
+}
+
+.main-list-top > div{
+    margin-top: 20px;
+}
+
 .main-list-top-pencil {
     margin-top: 20px;
 }
@@ -116,6 +124,9 @@
 
 .item-detail-header {
     word-break: break-all;
+}
+.nav-cart {
+    padding:0;
 }
 
 #editItemSuccessMessage.ng-enter{

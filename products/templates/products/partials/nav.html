@@ -16,6 +16,16 @@
                         <li><a href="{% url 'login' %}">{% trans "Sign In" %}</a>
                         </li>
                     </ul>
+
+                {% else %}
+                    <ul id="login_nav" class="nav navbar-nav hidden-lg hidden-md hidden-sm pull-right">
+                        <li class="nav-cart">
+                            <a href="{% url 'logout' %}" style="padding:0;">
+                                <i class="fa fa-shopping-cart fa-3x"></i>
+                                <span class="badge">{{ cart.count }}</span>
+                            </a>
+                        </li>
+                    </ul>
                 {% endif %}
             </div>
             <div id="navbar" class="navbar-collapse collapse">
@@ -34,7 +44,7 @@
                     <li class="{% ifactive "products_list_ang" %} active {% endifactive %}">
                         <a href="{% url 'products_list_ang' %}">{% trans "Items-Angular" %}</a>
                     </li>
-                    <li class="{% ifactive "categories_list" %} active {% endifactive %}">
+                    <li class="{% ifactive "categories_list" %} active {% endifactive %}hidden-sm">
                         <a href="{% url 'categories_list' %}">{% trans "Categories" %}</a>
                     </li>
                     <li class="{% ifactive "categories_list_ang" %} active {% endifactive %}">
@@ -47,6 +57,12 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
+                        <li class="nav-cart hidden-xs">
+                            <a href="{% url 'logout' %}" style="padding:0;">
+                                <i class="fa fa-shopping-cart fa-3x"></i>
+                                <span class="badge">{{ cart.count }}</span>
+                            </a>
+                        </li>
                         <li><a href="{% url 'logout' %}">{% trans "Sign out" %}</a>
                         </li>
                     {% else %}

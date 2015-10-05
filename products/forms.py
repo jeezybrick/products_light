@@ -124,7 +124,7 @@ class ModifyItem(forms.ModelForm):
                 'quantity',
             ),
             PrependedText(
-                'price', 'грн.'
+                'price', '$'
             ),
 
         )

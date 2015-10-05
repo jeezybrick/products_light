@@ -63,3 +63,11 @@ class Rate(models.Model):
 
     def __unicode__(self):
         return self.value
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    item = models.ForeignKey(Item)
+
+    def __unicode__(self):
+        return self.user
