@@ -129,6 +129,10 @@
     padding:0;
 }
 
+.add-cart-button{
+padding: 15px;
+}
+
 #editItemSuccessMessage.ng-enter{
     animation: fadeInDown 1s;
 }

@@ -58,7 +58,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                         <li class="nav-cart hidden-xs">
-                            <a href="{% url 'logout' %}" style="padding:0;">
+                            <a href="{% url 'cart_list' %}" style="padding:0;">
                                 <i class="fa fa-shopping-cart fa-3x"></i>
                                 <span class="badge">{{ cart.count }}</span>
                             </a>

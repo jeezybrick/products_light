@@ -6,8 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field, Fieldset
 from crispy_forms.bootstrap import PrependedText
-from .cache import Item
-from .models import Comment, Rate, Category, MyUser
+from products import models
 from .utils import categories_as_choices
 
 
@@ -65,7 +64,7 @@ class MyRegForm(UserCreationForm):
                                      css_class='btn btn-default btn-md col-md-offset-5'))
 
     class Meta:
-        model = MyUser
+        model = models.MyUser
         fields = ('last_name', 'first_name', 'username',
                   'email', 'password1', 'password2',)
 
@@ -82,7 +81,7 @@ class AddComment(forms.ModelForm):
     message = forms.CharField(widget=forms.Textarea, label=_('comment'))
 
     class Meta:
-        model = Comment
+        model = models.Comment
         fields = ('username', 'message', )
 
 
@@ -90,7 +89,7 @@ class AddRate(forms.ModelForm):
     value = forms.IntegerField(max_value=10, min_value=1, label=_('rate item'))
 
     class Meta:
-        model = Rate
+        model = models.Rate
         fields = ('value', )
 
 
@@ -130,7 +129,7 @@ class ModifyItem(forms.ModelForm):
         )
 
     class Meta:
-        model = Item
+        model = models.Item
         fields = ('name', 'price', 'image_url', 'categories', 'description', 'quantity')
 
 
@@ -152,7 +151,7 @@ class AddCategory(forms.ModelForm):
                                      css_class='btn btn-default btn-md col-md-offset-5'))
 
     class Meta:
-        model = Category
+        model = models.Category
         fields = ('name', 'parent_category', )
 
         help_texts = {
@@ -162,3 +161,10 @@ class AddCategory(forms.ModelForm):
         labels = {
             'parent_category': _('Parent Category'),
         }
+
+
+class AddItemToCart(forms.ModelForm):
+
+    class Meta:
+        model = models.Cart
+        fields = ('item', )

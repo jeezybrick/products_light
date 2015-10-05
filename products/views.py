@@ -241,7 +241,7 @@ def get_logout(request):
 
 
 # class for edit item
-class ItemEditView(UpdateView):
+class ItemEditView(LoginRequiredMixin,UpdateView):
 
     model = Item
     template_name = 'products/products/modify.html'
@@ -300,3 +300,27 @@ class ShopDetailView(View):
             'shop': shop,
         }
         return render(request, self.template_name, context)
+
+
+class CartView(LoginRequiredMixin, View):
+    template_name = 'products/cart/index.html'
+    form_class = forms.AddItemToCart
+
+    def get(self, request):
+
+        cart = self.request.user.cart_set.all()
+        context = {
+            'cart': cart,
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            first = form.save(commit=False)
+            first.user = request.user
+            first.save()
+            messages.success(self.request, _('Item add to cart!'))
+            return HttpResponseRedirect(reverse('products_list'))
+        return render(request, self.template_name, {'form': form})
+

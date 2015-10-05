@@ -37,6 +37,8 @@ urlpatterns = [
     url(r"^products/(?P<pk>\w+)/rates/add/$",
         views.AddRateView.as_view(), name='rate_add'),
 
+    url(r"^cart/$", views.CartView.as_view(), name='cart_list'),
+
     # Angular views
     url(r"^products_ang/$", TemplateView.as_view(
         template_name='api/products/index.html'
