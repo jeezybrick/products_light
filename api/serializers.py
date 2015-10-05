@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
-from products.models import Item, Category, Rate, Comment, MyUser
+from products import models
 from django.db.models import Avg
 from products import cache
 
@@ -19,18 +19,18 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
     count = serializers.SerializerMethodField()
 
     def get_count(self, obj):
-        category = get_object_or_404(Category, id=obj.pk)
+        category = get_object_or_404(models.Category, id=obj.pk)
         return category.item_set.count()
 
     class Meta:
-        model = Category
+        model = models.Category
         fields = ('name', 'id', 'category_set', 'count', )
 
 
 class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Comment
+        model = models.Comment
         fields = ('username', 'message', 'item')
 
     def validate_message(self, value):
@@ -43,7 +43,7 @@ class CommentSerializer(serializers.ModelSerializer):
 class RateSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Rate
+        model = models.Rate
         fields = ('value', 'item')
 
 
@@ -78,7 +78,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
     def get_user_rate(self, obj):
         request = self.context.get('request', None)
         try:
-            user_rate = Rate.objects.get(
+            user_rate = models.Rate.objects.get(
                 user=request.user.id, item=obj.id).value
         except:
             user_rate = None
@@ -86,7 +86,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
         return user_rate
 
     class Meta:
-        model = Item
+        model = models.Item
         fields = ('id', 'name', 'price', 'description', 'categories',
                   'comments', 'image_url', 'rates', 'user_rate', )
 
@@ -106,5 +106,12 @@ class ShopSerializer(serializers.Serializer):
 class ShopDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = MyUser
+        model = models.MyUser
         fields = ('id', 'username', 'email', 'items', )
+
+
+class CartSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Cart
+        fields = ('user', 'item', )

@@ -283,6 +283,18 @@ myApp.controller('categoryListCtrl', function ($scope, Category) {
 
 });
 
+myApp.controller('addCartCtrl', function ($scope) {
+
+    $scope.addItemToCart = function (itemId) {
+
+        $scope.test = 'AAAAAAAAAAAAAAAAAAAAA';
+
+        console.log(itemId);
+
+    };
+
+});
+
 myApp.controller('loginCtrl', function ($scope) {
 
 
