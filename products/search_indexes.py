@@ -1,7 +1,7 @@
 __author__ = 'user'
 from django.db.models import Avg
 from haystack import indexes
-from products.models import Item, Comment, Rate
+from products.models import Item, Comment, Rate, MyUser
 
 
 class ItemIndex(indexes.SearchIndex, indexes.Indexable):
@@ -25,6 +25,23 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_rate(self, obj):
         return obj.rates.aggregate(Avg('value'))['value__avg']
+
+    def index_queryset(self, using=None):
+        return self.get_model().objects.all()
+
+
+class ShopIndex(indexes.SearchIndex, indexes.Indexable):
+    text = indexes.CharField(document=True, use_template=True)
+    username = indexes.CharField(model_attr='username')
+    email = indexes.CharField(model_attr='email')
+    items = indexes.MultiValueField(faceted=True)
+    is_shop = indexes.BooleanField(model_attr='is_shop')
+
+    def prepare_items(self, obj):
+        return [item.name for item in obj.items.order_by('-id')]
+
+    def get_model(self):
+        return MyUser
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()

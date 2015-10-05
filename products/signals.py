@@ -1,5 +1,5 @@
 __author__ = 'user'
-from .models import Category, Item, Rate, Comment
+from .models import Category, Item, Rate, Comment, MyUser
 from products import cache
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
@@ -29,6 +29,11 @@ def invalidate_rate(sender, instance, **kwargs):
 @receiver(post_save, sender=Comment)
 def invalidate_comment(sender, instance, **kwargs):
     cache.CommentCache().invalidate()
+
+
+@receiver(post_save, sender=MyUser)
+def invalidate_shop(sender, instance, **kwargs):
+    cache.ShopCache().invalidate()
 
 
 class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):

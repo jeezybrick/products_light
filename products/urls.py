@@ -20,6 +20,9 @@ urlpatterns = [
     ), name='register_success'),
 
     # Django views
+    url(r"^shops/$", views.ShopListView.as_view(), name='shop_list'),
+    url(r"^shops/(?P<pk>\w+)/$", views.ShopDetailView.as_view(), name='shop_detail'),
+
     url(r"^products/$", views.ItemListView.as_view(), name='products_list'),
     url(r"^products/add/$", views.ItemAddView.as_view(), name='products_add'),
     url(r"^products/(?P<pk>\w+)/$",

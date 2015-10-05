@@ -10,9 +10,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.response import TemplateResponse
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.core.urlresolvers import reverse
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from products import cache
-from .models import Rate, Category, Item
+from .models import Rate, Category, Item, MyUser
 from products import forms
 from haystack.query import SearchQuerySet
 
@@ -103,7 +103,7 @@ class ItemDetailView(View):
 
 
 # For add new item
-class ItemAddView(CreateView):
+class ItemAddView(LoginRequiredMixin, CreateView):
     model = Item
     template_name = 'products/products/modify.html'
     success_url = '/products/'
@@ -112,11 +112,19 @@ class ItemAddView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(ItemAddView, self).get_context_data(**kwargs)
         context['foo'] = _('Add')
+        self.if_user_not_a_shop()
         return context
 
     def form_valid(self, form):
+        first = form.save(commit=False)
+        first.user = self.request.user
+        first.save()
         messages.success(self.request, _('Item add!'))
         return super(ItemAddView, self).form_valid(form)
+
+    def if_user_not_a_shop(self):
+        if not self.request.user.is_shop:
+            raise PermissionDenied
 
 
 # Category list
@@ -237,3 +245,38 @@ class ItemDeleteView(DeleteView):
 
     def form_valid(self):
         messages.success(self.request, _('Item delete!'))
+
+
+# List of shops
+class ShopListView(View):
+    template_name = 'products/shops/index.html'
+
+    def get(self, request):
+
+        shops = SearchQuerySet().models(MyUser).filter(is_shop=True).order_by('-id')
+        # Facet
+        facets = SearchQuerySet().models(MyUser).facet('items').facet_counts()
+        # Pagination
+        paginator = Paginator(shops, 6)
+        page = request.GET.get('page')
+
+        try:
+            shops = paginator.page(page)
+        except PageNotAnInteger:
+            shops = paginator.page(1)
+        except EmptyPage:
+            shops = paginator.page(paginator.num_pages)
+
+        return render(request, self.template_name, {'shops': shops, 'facets': facets})
+
+
+# Shop detail
+class ShopDetailView(View):
+    template_name = 'products/shops/show.html'
+
+    def get(self, request, **kwargs):
+        shop = cache.ShopCache().get(id=kwargs["pk"])
+        context = {
+            'shop': shop,
+        }
+        return render(request, self.template_name, context)

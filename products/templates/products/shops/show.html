@@ -1,0 +1,61 @@
+{% extends 'products/layout.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% load humanize %}
+{% block title %}
+    {{ shop.name }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="item-detail-header col-lg-10 col-md-9 col-sm-9 col-xs-12">
+            <h1 class="detail-item-attr">{{ shop.username }}</h1>
+        </div>
+        <div class="button-add-something col-lg-2 col-md-3 col-sm-3 col-xs-12">
+            <a href="{% url 'products_edit' shop.id %}"
+               class="btn btn-info pull-right">{% trans "Edit item" %}</a>
+        </div>
+
+        <div class="col-lg-12 col-md--12 col-sm-12 col-xs-12">
+            <ol class="breadcrumb">
+                <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+                <li class="active">{% trans "list of items" %}</li>
+            </ol>
+            <hr>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="messenger alert alert-success" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <h3 class="detail-item-attr">
+                ID:{{ shop.id }}
+            </h3>
+            <hr>
+            <h3 class="detail-item-attr">
+                Name:{{ shop.username }}
+            </h3>
+            <hr>
+            <button class="btn btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#collapseExample"
+                    aria-expanded="false" aria-controls="collapseExample">
+                Items
+            </button>
+            <div class="collapse" id="collapseExample">
+                <div class="well">
+                    {% for item in shop.items.all %}
+                        <small>{% trans "Name" %}:{{ item.name }}</small>
+                        <small>{% trans "id" %}:{{ item.id }}</small><br>
+                    {% empty %}
+                        <small>This shop doesn't add items</small>
+                    {% endfor %}
+                </div>
+            </div>
+            <hr/>
+        </div>
+
+    </div>
+
+{% endblock %}

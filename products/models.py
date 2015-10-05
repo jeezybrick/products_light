@@ -34,7 +34,7 @@ class Item(models.Model):
     categories = models.ManyToManyField(Category, blank=True)
     description = models.CharField(
         _("Description"), max_length=1000, blank=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='items')
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
