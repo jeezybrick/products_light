@@ -141,3 +141,5 @@ HAYSTACK_SIGNAL_PROCESSOR = 'products.signals.RateOnlySignalProcessor'
 CELERY_ALWAYS_EAGER = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+AUTH_USER_MODEL = 'products.MyUser'

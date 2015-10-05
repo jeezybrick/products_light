@@ -2,13 +2,12 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field, Fieldset
 from crispy_forms.bootstrap import PrependedText
 from .cache import Item
-from .models import Comment, Rate, Category
+from .models import Comment, Rate, Category, MyUser
 from .utils import categories_as_choices
 
 
@@ -66,7 +65,7 @@ class MyRegForm(UserCreationForm):
                                      css_class='btn btn-default btn-md col-md-offset-5'))
 
     class Meta:
-        model = User
+        model = MyUser
         fields = ('last_name', 'first_name', 'username',
                   'email', 'password1', 'password2',)
 

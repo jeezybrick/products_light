@@ -1,8 +1,22 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
+from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+
+
+# Extend User model
+class MyUser(AbstractUser):
+    is_shop = models.BooleanField(_("Shop"), default=False, blank=True)
+
+    USERNAME_FIELD = 'username'
+
+    def __str__(self):
+        return self.username
+
+    class Meta(object):
+        unique_together = ('email',)
 
 
 class Category(models.Model):
@@ -20,6 +34,7 @@ class Item(models.Model):
     categories = models.ManyToManyField(Category, blank=True)
     description = models.CharField(
         _("Description"), max_length=1000, blank=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     created_at = models.DateTimeField(auto_now_add=True, auto_now=False)
     updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
@@ -40,7 +55,7 @@ class Comment(models.Model):
 
 class Rate(models.Model):
     value = models.IntegerField()
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     item = models.ForeignKey(Item, related_name='rates')
 
     def __unicode__(self):
