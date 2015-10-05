@@ -3,7 +3,7 @@ from django.http import Http404
 from rest_framework import generics, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
-from products.models import Item, Rate
+from products.models import Item, Rate, MyUser
 from products import cache
 from api import serializers
 from rest_framework.response import Response
@@ -100,3 +100,39 @@ class RateList(APIView):
             serializer.save(user=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+"""List of shop-users"""
+class ShopList(generics.GenericAPIView):
+    pagination_class = StandardResultsSetPagination
+    serializer_class = serializers.ShopSerializer
+
+    def get(self, request):
+
+        queryset = SearchQuerySet().models(MyUser).order_by('-id')
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = serializers.ShopSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+# Detail of shop-users
+class ShopDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
+                 generics.DestroyAPIView):
+    serializer_class = serializers.ShopDetailSerializer
+
+    def get_object(self):
+
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        try:
+            obj = cache.ShopCache().get(id=filter_kwargs['pk'])
+        except:
+            raise Http404
+        self.check_object_permissions(self.request, obj)
+
+        return obj

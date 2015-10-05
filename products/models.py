@@ -8,8 +8,9 @@ from django.contrib.auth.models import AbstractUser
 
 # Extend User model
 class MyUser(AbstractUser):
+
     is_shop = models.BooleanField(_("Shop"), default=False, blank=True)
-    percentage_of_price = models.IntegerField(null=True)
+    percentage_of_price = models.IntegerField(blank=True, null=True)
 
     USERNAME_FIELD = 'username'
 
@@ -62,10 +63,3 @@ class Rate(models.Model):
 
     def __unicode__(self):
         return self.value
-
-"""
-class QuantityOfItem(models.Model):
-    shop = models.OneToOneField(MyUser)
-    item = models.OneToOneField(Item)
-    quantity = models.IntegerField()
-"""

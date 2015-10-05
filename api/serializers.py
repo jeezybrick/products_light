@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
-from products.models import Item, Category, Rate, Comment
+from products.models import Item, Category, Rate, Comment, MyUser
 from django.db.models import Avg
 from products import cache
 
@@ -89,3 +89,22 @@ class ItemDetailSerializer(serializers.ModelSerializer):
         model = Item
         fields = ('id', 'name', 'price', 'description', 'categories',
                   'comments', 'image_url', 'rates', 'user_rate', )
+
+
+class ShopSerializer(serializers.Serializer):
+
+    pk = serializers.IntegerField()
+    username = serializers.CharField()
+    email = serializers.EmailField()
+    items = serializers.StringRelatedField(many=True)
+
+    class Meta:
+
+        fields = ('pk', 'username', 'email', 'items', )
+
+
+class ShopDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MyUser
+        fields = ('id', 'username', 'email', 'items', )

@@ -273,7 +273,7 @@ class ShopListView(View):
 
         shops = SearchQuerySet().models(MyUser).filter(is_shop=True).order_by('-id')
         # Facet
-        facets = SearchQuerySet().models(MyUser).facet('items').facet_counts()
+        facets = SearchQuerySet().models(Item).facet('shops').facet_counts()
         # Pagination
         paginator = Paginator(shops, 6)
         page = request.GET.get('page')

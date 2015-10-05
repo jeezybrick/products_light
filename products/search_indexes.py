@@ -11,6 +11,7 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     description = indexes.CharField(model_attr='name')
     image_url = indexes.CharField(model_attr='image_url')
     categories = indexes.MultiValueField(faceted=True)
+    shops = indexes.MultiValueField(faceted=True)
     comments = indexes.MultiValueField()
     rate = indexes.FloatField()
 
@@ -26,6 +27,9 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_rate(self, obj):
         return obj.rates.aggregate(Avg('value'))['value__avg']
 
+    def prepare_shops(self, obj):
+        return obj.user.username
+
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
 
@@ -37,11 +41,11 @@ class ShopIndex(indexes.SearchIndex, indexes.Indexable):
     items = indexes.MultiValueField(faceted=True)
     is_shop = indexes.BooleanField(model_attr='is_shop')
 
-    def prepare_items(self, obj):
-        return [item.name for item in obj.items.order_by('-id')]
-
     def get_model(self):
         return MyUser
+
+    def prepare_items(self, obj):
+        return [item.name for item in obj.items.order_by('-id')]
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()

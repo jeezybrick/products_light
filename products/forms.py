@@ -100,7 +100,7 @@ class ModifyItem(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea, label=_('Description'))
 
-    quantity = forms.IntegerField( min_value=0, label=_('Quantity'))
+    quantity = forms.IntegerField( min_value=0, label=_('Quantity'), required=False)
 
     def __init__(self, *args, **kwargs):
         super(ModifyItem, self).__init__(*args, **kwargs)
