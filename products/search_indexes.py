@@ -14,6 +14,7 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     shops = indexes.MultiValueField(faceted=True)
     comments = indexes.MultiValueField()
     rate = indexes.FloatField()
+    # in_cart = indexes.BooleanField()
 
     def get_model(self):
         return Item
@@ -29,7 +30,17 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_shops(self, obj):
         return obj.user.username
+    """
+    def prepare_in_cart(self, obj, request):
+        try:
+            self.request.user.cart_set.get(item__id=obj.pk)
+        except:
+            in_cart = False
+        else:
+            in_cart = True
 
+        return in_cart
+    """
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
 

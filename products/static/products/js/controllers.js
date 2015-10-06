@@ -15,15 +15,14 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
      * Get list of items and list of categories
      */
 
-    $http.get(apiURLs.itemListUrl + jsonFormat, {cache: true}).success(function (data) {
 
-        $scope.items = data;
+    $scope.items = Item.query(function () {
+
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
 
-        Category.query(function (response) {
+        $scope.categories = Category.query(function () {
 
-            $scope.categories = response;
             $scope.itemLoad = true;
 
         });
@@ -45,17 +44,10 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
      */
 
     $scope.sortByCategory = function (name) {
-        $http.get(apiURLs.itemListUrl, {
-            params: {
-                category: name
-            },
-            cache: true
 
-        }).success(function (data) {
-
-            $scope.items = data;
-
-        });
+        $scope.items = Item.query(
+            params={category: name}
+        );
 
     };
 
@@ -64,11 +56,8 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
      */
 
     $scope.showAllItems = function () {
-        $http.get(apiURLs.itemListUrl + jsonFormat, {cache: true}).success(function (data) {
 
-            $scope.items = data;
-
-        });
+        $scope.items = Item.query();
 
     };
 
@@ -129,15 +118,34 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
         });
     };
 
+    /**
+     * Add item to cart and query Item object
+     */
+
     $scope.addItemToCart = function (itemId) {
 
-        var cart = new Cart();
-        cart.item = itemId;
+        $scope.cart = new Cart();
+        $scope.cart.item = itemId;
 
-        cart.$save(function (data) {
-           $scope.itemInTheCart = true;
+        $scope.cart.$save(function () {
+
+           $scope.items = Item.query();
+
         });
 
+    };
+
+    /**
+     * Delete item form cart and query Item object
+     */
+
+    $scope.deleteItemInCart = function (itemId) {
+
+        Cart.delete({ id: itemId }, function() {
+
+            $scope.items = Item.query();
+
+        });
     };
 
 
@@ -169,16 +177,14 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     /**
      * Get item detail
      */
-    Item.get({id: $routeParams.itemId}, function (data) {
+    $scope.itemDetail = Item.get({id: $routeParams.itemId}, function () {
 
-        $scope.itemDetail = data;
         $scope.itemDetailLoad = true;
-        $scope.rate = data['user_rate'];
+        $scope.rate = $scope.itemDetail.user_rate;
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
     });
 
-    // $scope.rate = 5;
     $scope.max = 10;
     $scope.isReadonly = false;
 
@@ -195,9 +201,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
      */
     $scope.addRate = function () {
         $scope.dynamic = 100;
-        var rate = new Rate({value: $scope.rate,
+        $scope.rateObject = new Rate({value: $scope.rate,
                             item: $routeParams.itemId});
-        rate.$save(function () {
+        $scope.rateObject.$save(function () {
            // $scope.tweets.unshift(tweet);
         });
 
@@ -208,38 +214,32 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
      */
     $scope.addComment = function () {
 
-        var comment = new Comment({username: $scope.username,
+        $scope.commentObject = new Comment({username: $scope.username,
                                    message: $scope.message,
                                    item: $routeParams.itemId });
-        comment.$save(function (data) {
+
+        $scope.commentObject.$save(function (data) {
             $scope.hideCommentForm = true;
             $scope.appendComment = data;
             $scope.errorComment = false;
-        });
+        },function(error){
+             $scope.errorComment = error;
+         });
 
     };
 
      /**
      * Edit item
      */
-    $scope.editItem = function () {
-        /*
-        var item = Item.get({id: $routeParams.itemId});
-        Item.update({ name:'LAL' }, item);
-       */
-        var editData = {
-            name: $scope.itemDetail.name,
-            price: $scope.itemDetail.price,
-            image_url: $scope.itemDetail.image_url,
-            description: $scope.itemDetail.description
-        };
-        $http.put(apiURLs.itemListUrl + $scope.id + '/', editData).success(function () {
 
-            $scope.successAction();
+     $scope.editItem = function () {
 
-        }).error(function (error) {
-            $scope.errorEditItem = error;
-        });
+         $scope.itemDetail.$update(function () {
+             $scope.successAction();
+         },function(error){
+             $scope.errorEditItem = error;
+         });
+
     };
 
      /**
@@ -249,13 +249,13 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
         if (confirm('Are you sure you want to delete this item?')) {
 
-            $http.delete(apiURLs.itemListUrl + $scope.id + '/').success(function () {
+            $scope.itemDetail.$delete(function () {
                 $scope.showDetailOfItem = false;
-                // $location.path("/");
                 $window.location.href = '/products_ang/';
-            }).error(function (error) {
+            },function(error){
                 $scope.errorDeleteItem = error;
             });
+
         }
     };
 
@@ -283,9 +283,8 @@ myApp.controller('categoryListCtrl', function ($scope, Category) {
      * Get category list
      */
 
-    Category.query(function (response) {
+    $scope.categories = Category.query(function () {
 
-        $scope.categories = response;
         $scope.categoryLoad = true;
         var myEl = angular.element(document.querySelector('.wrapperOnList'));
         myEl.removeClass('hidden');
@@ -294,7 +293,7 @@ myApp.controller('categoryListCtrl', function ($scope, Category) {
 
 });
 
-myApp.controller('addCartCtrl', function ($scope,Cart) {
+myApp.controller('addCartCtrl', function ($scope, Cart) {
 
     $scope.addItemToCart = function (itemId) {
 

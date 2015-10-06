@@ -3,3 +3,4 @@
 {{ object.description }}
 {{ object.image_url }}
 {{ object.categories }}
+{{ object.in_cart }}

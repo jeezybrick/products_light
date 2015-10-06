@@ -168,3 +168,18 @@ class CartList(generics.GenericAPIView):
             serializer.save(user=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Detail of cart
+class CartDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
+                 generics.DestroyAPIView):
+    serializer_class = serializers.CartSerializer
+
+    def get_object(self):
+
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        obj = self.request.user.cart_set.get(item__id=filter_kwargs['pk'])
+        self.check_object_permissions(self.request, obj)
+
+        return obj

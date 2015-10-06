@@ -14,6 +14,8 @@ urlpatterns = [
     url(r'^api/shops/(?P<pk>[0-9]+)/$',
         views.ShopDetail.as_view(), name='shop-detail'),
     url(r'^api/cart/$', views.CartList.as_view(), name='cart-list'),
+    url(r'^api/cart/(?P<pk>[0-9]+)/$',
+        views.CartDetail.as_view(), name='cart-detail'),
 
 
 ]

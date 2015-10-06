@@ -33,6 +33,7 @@
             <div class="splash" ng-cloak>
                 <p>Loading</p>
             </div>
+            {{ test }}
             <!-- Accordion for sort by category -->
             <accordion close-others="oneAtATime">
                 <accordion-group heading="Category filter" is-open="status.isFirstOpen"
@@ -145,7 +146,7 @@
                             </button>
 
                             <div class="open-cart text-center" ng-if="item.in_cart">
-                                <a href="javascript:void(0);">Item in the cart!</a>
+                                <a href="javascript:void(0);" ng-click="deleteItemInCart(item.pk)">Item in the cart!</a>
                             </div>
                         </div>
 
