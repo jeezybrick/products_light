@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from products import models
 from django.db.models import Avg
 from products import cache
@@ -9,7 +9,7 @@ from products import cache
 class UserSerializer(serializers.ModelField):
 
     class Meta:
-        model = User
+        model = models.MyUser
         fields = ('url', 'username', 'email', 'is_staff', )
 
 
@@ -50,6 +50,7 @@ class RateSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.Serializer):
 
     pk = serializers.IntegerField()
+    author = serializers.CharField(read_only=True)
     name = serializers.CharField()
     price = serializers.IntegerField()
     description = serializers.CharField()
@@ -57,13 +58,15 @@ class ItemSerializer(serializers.Serializer):
     categories = serializers.StringRelatedField(many=True)
     comments = serializers.StringRelatedField(many=True)
     rate = serializers.FloatField()
+    quantity = serializers.IntegerField()
+    quantity_message = serializers.CharField()
     in_cart = serializers.SerializerMethodField()
 
     def get_in_cart(self, obj):
         request = self.context.get('request', None)
         try:
             request.user.cart_set.get(item__id=obj.pk)
-        except:
+        except ObjectDoesNotExist:
             in_cart = False
         else:
             in_cart = True
@@ -72,8 +75,8 @@ class ItemSerializer(serializers.Serializer):
 
     class Meta:
 
-        fields = ('pk', 'name', 'price', 'description',
-                  'categories', 'comments', 'image_url', 'rate', 'in_cart')
+        fields = ('pk', 'author', 'name', 'price', 'description',
+                  'categories', 'comments', 'image_url', 'rate', 'quantity', 'in_cart', 'quantity_message', )
 
 
 class ItemDetailSerializer(serializers.ModelSerializer):
@@ -92,7 +95,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
         try:
             user_rate = models.Rate.objects.get(
                 user=request.user.id, item=obj.id).value
-        except:
+        except ObjectDoesNotExist:
             user_rate = None
 
         return user_rate
@@ -100,7 +103,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Item
         fields = ('id', 'name', 'price', 'description', 'categories',
-                  'comments', 'image_url', 'rates', 'user_rate', )
+                  'comments', 'image_url', 'rates', 'user_rate', 'quantity', )
 
 
 class ShopSerializer(serializers.Serializer):

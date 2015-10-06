@@ -104,9 +104,19 @@
 
                     <div class="notes">
                         <div class="row">
+                            <div class="main-list-top col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="item.quantity || item.quantity == 0">
+                                    <div class="alert alert-danger" role="alert" ng-show="item.quantity == 0">
+                                        The item is out of stock :(
+                                    </div>
+                                    <div class="alert alert-warning animated infinite pulse" role="alert" ng-show="item.quantity < 10 && item.quantity != 0">
+                                        This item end soon! Hurry up!
+                                    </div>
+                            </div>
+
                             <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
                                 <h2>ID:{{ item.pk}}</h2>
                             </div>
+
                             <div class="col-lg-4 col-md-4 col-sm-7 col-xs-6">
                                 <h2><a ng-href="#/{{ item.pk }}"  ng-click="showItem()">Details</a></h2>
                             </div>

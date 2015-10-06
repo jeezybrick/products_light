@@ -241,7 +241,7 @@ def get_logout(request):
 
 
 # class for edit item
-class ItemEditView(LoginRequiredMixin,UpdateView):
+class ItemEditView(LoginRequiredMixin, UpdateView):
 
     model = Item
     template_name = 'products/products/modify.html'

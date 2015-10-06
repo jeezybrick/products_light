@@ -6,6 +6,7 @@ from products.models import Item, Comment, Rate, MyUser
 
 class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    author = indexes.CharField(model_attr='user')
     name = indexes.CharField(model_attr='name')
     price = indexes.IntegerField(model_attr='price')
     description = indexes.CharField(model_attr='name')
@@ -14,7 +15,8 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     shops = indexes.MultiValueField(faceted=True)
     comments = indexes.MultiValueField()
     rate = indexes.FloatField()
-    # in_cart = indexes.BooleanField()
+    quantity = indexes.IntegerField(model_attr='quantity', null=True)
+    quantity_message = indexes.CharField()
 
     def get_model(self):
         return Item
@@ -30,17 +32,15 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
 
     def prepare_shops(self, obj):
         return obj.user.username
-    """
-    def prepare_in_cart(self, obj, request):
-        try:
-            self.request.user.cart_set.get(item__id=obj.pk)
-        except:
-            in_cart = False
-        else:
-            in_cart = True
 
-        return in_cart
-    """
+    def prepare_quantity_message(self, obj):
+        if obj.quantity is not None:
+            if obj.quantity == 0:
+                return 'The item is out of stock :('
+            if obj.quantity < 10:
+                return 'This item end soon! Hurry up!'
+        return None
+
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
 

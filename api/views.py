@@ -141,7 +141,7 @@ class ShopDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
         return obj
 
 
-""" Lisf of items in cart for auth user """
+""" List of items in cart for auth user """
 class CartList(generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = serializers.CartSerializer

@@ -149,7 +149,6 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
         });
     };
 
-
 });
 
 /**
