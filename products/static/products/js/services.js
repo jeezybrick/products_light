@@ -20,4 +20,7 @@ angular.module('myApp.services', ['ngResource'])
   })
 .factory('Comment', function($resource) {
     return $resource('/api/comments/:id/');
+  })
+.factory('Cart', function($resource) {
+    return $resource('/api/cart/:id/');
   });

@@ -2,7 +2,7 @@
  * Created by user on 05.10.15.
  */
 
-myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category) {
+myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Cart) {
 
     $scope.sortField = 'pk';
     $scope.reverse = true;
@@ -127,6 +127,17 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category) {
                 return item.name;
             });
         });
+    };
+
+    $scope.addItemToCart = function (itemId) {
+
+        var cart = new Cart();
+        cart.item = itemId;
+
+        cart.$save(function (data) {
+           $scope.itemInTheCart = true;
+        });
+
     };
 
 
@@ -283,13 +294,16 @@ myApp.controller('categoryListCtrl', function ($scope, Category) {
 
 });
 
-myApp.controller('addCartCtrl', function ($scope) {
+myApp.controller('addCartCtrl', function ($scope,Cart) {
 
     $scope.addItemToCart = function (itemId) {
 
-        $scope.test = 'AAAAAAAAAAAAAAAAAAAAA';
+        var cart = new Cart();
+        cart.item = itemId;
 
-        console.log(itemId);
+        cart.$save(function (data) {
+           $scope.itemInTheCart = true;
+        });
 
     };
 

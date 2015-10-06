@@ -57,11 +57,23 @@ class ItemSerializer(serializers.Serializer):
     categories = serializers.StringRelatedField(many=True)
     comments = serializers.StringRelatedField(many=True)
     rate = serializers.FloatField()
+    in_cart = serializers.SerializerMethodField()
+
+    def get_in_cart(self, obj):
+        request = self.context.get('request', None)
+        try:
+            request.user.cart_set.get(item__id=obj.pk)
+        except:
+            in_cart = False
+        else:
+            in_cart = True
+
+        return in_cart
 
     class Meta:
 
         fields = ('pk', 'name', 'price', 'description',
-                  'categories', 'comments', 'image_url', 'rate', )
+                  'categories', 'comments', 'image_url', 'rate', 'in_cart')
 
 
 class ItemDetailSerializer(serializers.ModelSerializer):
@@ -111,6 +123,8 @@ class ShopDetailSerializer(serializers.ModelSerializer):
 
 
 class CartSerializer(serializers.ModelSerializer):
+
+    user = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = models.Cart

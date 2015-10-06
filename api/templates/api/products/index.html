@@ -138,6 +138,17 @@
                             <h4>Rating:{{ item.rate | limitTo:3 }}</h4>
                         </div>
 
+                        <div class="add-cart-button col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                            <button ng-if="!item.in_cart" class="btn btn-success" type="button"
+                                    ng-click="addItemToCart(item.pk)">
+                                <i class="fa fa-shopping-cart fa-lg"></i> Add to cart
+                            </button>
+
+                            <div class="open-cart text-center" ng-if="item.in_cart">
+                                <a href="javascript:void(0);">Item in the cart!</a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

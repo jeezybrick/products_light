@@ -1,5 +1,7 @@
 __author__ = 'user'
 from django.http import Http404
+from django.utils.datastructures import MultiValueDictKeyError
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import generics, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
@@ -23,9 +25,10 @@ class ItemList(generics.GenericAPIView):
     serializer_class = serializers.ItemSerializer
 
     def get(self, request):
+
         try:
             request.GET["category"]
-        except:
+        except MultiValueDictKeyError:
             queryset = SearchQuerySet().models(Item).order_by('-id')
         else:
             queryset = SearchQuerySet().models(Item).filter(
@@ -51,7 +54,7 @@ class ItemDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
         try:
             obj = cache.ProductDetailCache().get(id=filter_kwargs['pk'])
-        except:
+        except ObjectDoesNotExist:
             raise Http404
         self.check_object_permissions(self.request, obj)
 
@@ -92,7 +95,7 @@ class RateList(APIView):
         try:
             rate = Rate.objects.get(
                 user=request.user.id, item=request.data["item"])
-        except:
+        except ObjectDoesNotExist:
             rate = None
         serializer = serializers.RateSerializer(
             data=request.data, instance=rate)
@@ -131,31 +134,36 @@ class ShopDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
         try:
             obj = cache.ShopCache().get(id=filter_kwargs['pk'])
-        except:
+        except ObjectDoesNotExist:
             raise Http404
         self.check_object_permissions(self.request, obj)
 
         return obj
 
 
+""" Lisf of items in cart for auth user """
 class CartList(generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
-    serializer_class = serializers.ShopSerializer
+    serializer_class = serializers.CartSerializer
 
     def get(self, request):
 
-        queryset = SearchQuerySet().models(MyUser).order_by('-id')
+        queryset = self.request.user.cart_set.all()
         page = self.paginate_queryset(queryset)
 
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = serializers.ShopSerializer(queryset, many=True)
+        serializer = serializers.CartSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = serializers.CartSerializer(data=request.data)
+        try:
+            item = self.request.user.cart_set.get(item__id=request.data["item"])
+        except ObjectDoesNotExist:
+            item = None
+        serializer = serializers.CartSerializer(data=request.data, instance=item)
         if serializer.is_valid():
             serializer.save(user=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

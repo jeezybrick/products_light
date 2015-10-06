@@ -111,9 +111,11 @@
                             </div>
 
                             <div class="add-cart-button col-lg-6 col-md-6 col-sm-6 col-xs-6" ng-controller="addCartCtrl">
-                                    <button class="btn btn-success" type="button" ng-click="addItemToCart(product.object.id)">
+                                    <button ng-if="!itemInTheCart" class="btn btn-success" type="button" ng-click="addItemToCart({{ product.object.id }})">
                                         <i class="fa fa-shopping-cart fa-lg"></i> {% trans "Add to cart" %}
                                     </button>
+
+                                    <div class="open-cart" ng-if="itemInTheCart">Item in the cart</div>
                             </div>
 
                         </div>

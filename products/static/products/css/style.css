@@ -19,11 +19,11 @@
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.52), 0 2px 4px rgba(0, 0, 0, 0.12);
 }
 
-.main-list-top > h2{
+.main-list-top > h2 {
     margin-top: 0;
 }
 
-.main-list-top > div{
+.main-list-top > div {
     margin-top: 20px;
 }
 
@@ -125,23 +125,35 @@
 .item-detail-header {
     word-break: break-all;
 }
+
 .nav-cart {
-    padding:0;
+    padding: 0;
 }
 
-.add-cart-button{
-padding: 15px;
+.add-cart-button {
+    padding: 15px;
 }
 
-#editItemSuccessMessage.ng-enter{
+#editItemSuccessMessage.ng-enter {
     animation: fadeInDown 1s;
 }
 
-#editItemSuccessMessage.ng-leave{
+#editItemSuccessMessage.ng-leave {
     animation: fadeOut 2s;
 }
 
-.main-list.ng-enter{
+.main-list.ng-enter {
 
     animation: fadeInDown 1s;
+}
+
+.open-cart {
+    background-color: #428bca;
+    max-width: 115px;
+    padding: 10px;
+    color: white;
+}
+
+.open-cart > a{
+    color: white;
 }
