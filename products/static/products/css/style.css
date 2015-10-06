@@ -154,6 +154,14 @@
     color: white;
 }
 
-.open-cart > a{
+.open-cart > a {
     color: white;
+}
+
+.edit_item_form input.ng-invalid.ng-invalid {
+    border-color: #a94442;
+}
+
+.help-block-error {
+    color: #a94442;
 }

@@ -8,11 +8,11 @@
 {% block content %}
     <div ng-controller="categoryListCtrl">
     <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-hide="categoryLoad">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-if="!categoryLoad">
             <h2>Loading... <i class="fa fa-spinner fa-pulse fa-3x"></i></h2>
         </div>
     </div>
-    <div class="wrapperOnList hidden">
+    <div class="wrapperOnList" ng-if="categoryLoad">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="row">

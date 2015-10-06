@@ -4,9 +4,11 @@
 
 myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Cart) {
 
+    // sort
     $scope.sortField = 'pk';
     $scope.reverse = true;
     $scope.showTriangle = false;
+
     $scope.showDetailOfItem = false;
     $scope.isCollapsed = true;
     $scope.itemLoad = false;
@@ -18,12 +20,11 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
 
     $scope.items = Item.query(function () {
 
-        var myEl = angular.element(document.querySelector('.wrapperOnList'));
-        myEl.removeClass('hidden');
+        $scope.itemLoad = true;
 
         $scope.categories = Category.query(function () {
 
-            $scope.itemLoad = true;
+                $scope.categoryLoad = true;
 
         });
 
@@ -165,14 +166,25 @@ myApp.filter('startFrom', function () {
 
 
 myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $location, $window, $timeout, Item, Rate, Comment) {
-    $scope.id = $routeParams.itemId;
+
+    $scope.id = $routeParams.itemId; // item id
     $scope.showDetailOfItem = true;
+    $scope.itemDetailLoad = false;
+
+    //message after rate item
     $scope.greet = false;
+
+    //progressbar
     $scope.maxx = 100;
     $scope.dynamic = 0;
-    $scope.itemDetailLoad = false;
+
+    //pagination for comments
     $scope.pageSize = 4;
     $scope.currentPage = 1;
+
+    //rating
+    $scope.max = 10;
+    $scope.isReadonly = false;
 
     /**
      * Get item detail
@@ -181,12 +193,8 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
         $scope.itemDetailLoad = true;
         $scope.rate = $scope.itemDetail.user_rate;
-        var myEl = angular.element(document.querySelector('.wrapperOnList'));
-        myEl.removeClass('hidden');
-    });
 
-    $scope.max = 10;
-    $scope.isReadonly = false;
+    });
 
     /**
      * For hovering rating stars
@@ -215,8 +223,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     $scope.addComment = function () {
 
         $scope.commentObject = new Comment({username: $scope.username,
-                                   message: $scope.message,
-                                   item: $routeParams.itemId });
+                                            message: $scope.message,
+                                            item: $routeParams.itemId
+        });
 
         $scope.commentObject.$save(function (data) {
             $scope.hideCommentForm = true;
@@ -286,8 +295,6 @@ myApp.controller('categoryListCtrl', function ($scope, Category) {
     $scope.categories = Category.query(function () {
 
         $scope.categoryLoad = true;
-        var myEl = angular.element(document.querySelector('.wrapperOnList'));
-        myEl.removeClass('hidden');
 
     });
 
@@ -300,7 +307,7 @@ myApp.controller('addCartCtrl', function ($scope, Cart) {
         var cart = new Cart();
         cart.item = itemId;
 
-        cart.$save(function (data) {
+        cart.$save(function () {
            $scope.itemInTheCart = true;
         });
 

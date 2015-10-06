@@ -1,10 +1,10 @@
 {% verbatim %}
 <!-- Preloader for load detail -->
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-hide="itemDetailLoad">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-if="!itemDetailLoad">
     <h2>Loading detail...</h2>
 </div>
 {{ itemDetailError }}
-<div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden">
+<div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="itemDetailLoad">
     <div class="row">
         <div class="col-lg-10">
             <h3 class="detail-item-attr">
