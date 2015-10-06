@@ -274,8 +274,6 @@ class ShopListView(View):
     def get(self, request):
 
         shops = SearchQuerySet().models(MyUser).filter(is_shop=True).order_by('-id')
-        # Facet
-        facets = SearchQuerySet().models(Item).facet('shops').facet_counts()
         # Pagination
         paginator = Paginator(shops, 6)
         page = request.GET.get('page')
@@ -287,7 +285,7 @@ class ShopListView(View):
         except EmptyPage:
             shops = paginator.page(paginator.num_pages)
 
-        return render(request, self.template_name, {'shops': shops, 'facets': facets})
+        return render(request, self.template_name, {'shops': shops})
 
 
 # Shop detail
