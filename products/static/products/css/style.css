@@ -134,6 +134,7 @@
     padding: 15px;
 }
 
+/* ng-animate */
 #editItemSuccessMessage.ng-enter {
     animation: fadeInDown 1s;
 }
@@ -146,6 +147,7 @@
 
     animation: fadeInDown 1s;
 }
+/* !ng-animate */
 
 .open-cart {
     background-color: #428bca;
@@ -158,10 +160,19 @@
     color: white;
 }
 
+/* Validation Angular */
 .edit_item_form input.ng-invalid.ng-invalid {
     border-color: #a94442;
 }
 
 .help-block-error {
     color: #a94442;
+}
+
+.zero-quantity-item{
+    background-color: #E7E7E6;
+}
+
+.main-list-cart{
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
 }

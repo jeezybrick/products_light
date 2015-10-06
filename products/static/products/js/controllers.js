@@ -299,7 +299,7 @@ myApp.controller('categoryListCtrl', function ($scope, Category) {
 
 });
 
-myApp.controller('addCartCtrl', function ($scope, Cart) {
+myApp.controller('CartCtrl', function ($scope, $window, Cart) {
 
     $scope.addItemToCart = function (itemId) {
 
@@ -310,6 +310,20 @@ myApp.controller('addCartCtrl', function ($scope, Cart) {
            $scope.itemInTheCart = true;
         });
 
+    };
+
+
+    /**
+     * Delete item form cart and query Item object
+     */
+
+    $scope.deleteItemInCart = function (itemId) {
+
+        Cart.delete({ id: itemId }, function() {
+
+            $window.location.href = '/cart/';
+
+        });
     };
 
 });
