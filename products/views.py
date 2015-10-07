@@ -69,7 +69,12 @@ class ItemListView(View):
         # Pagination
         paginator = Paginator(products, 6)
         page = request.GET.get('page')
-        cart = self.request.user.cart_set.all()
+
+        # Cart set for auth user
+        cart = None
+        if self.request.user.is_authenticated():
+            cart = self.request.user.cart_set.all()
+
         try:
             products = paginator.page(page)
         except PageNotAnInteger:

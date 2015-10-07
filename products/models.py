@@ -71,3 +71,15 @@ class Cart(models.Model):
 
     def __unicode__(self):
         return self.user
+
+
+class Action(models.Model):
+    item = models.OneToOneField(Item)
+    shop = models.ForeignKey(settings.AUTH_USER_MODEL)
+    description = models.CharField(max_length=1000)
+    new_price = models.IntegerField(blank=False)
+    period_from = models.DateTimeField()
+    period_to = models.DateTimeField()
+
+    def __unicode__(self):
+        return self.item

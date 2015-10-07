@@ -40,8 +40,8 @@
             <h2>Loading items... <i class="fa fa-spinner fa-pulse fa-3x"></i></h2>
         </div>
 
-        <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="itemLoad">
-            <div class="col-lg-12" ng-show="items.results.length" ng-hide="showDetailOfItem">
+        <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="itemLoad || items.results.length">
+            <div class="col-lg-12" ng-if="items.results.length" ng-hide="showDetailOfItem">
 
                 {{ test }}
                 <!-- Accordion for sort by category -->
@@ -64,7 +64,7 @@
                 </accordion>
             </div>
 
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.results.length">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-if="items.results.length">
                 <h4>
                     Sort by: <a href="javascript:;" ng-click="changeSortState(price)">price</a>
                     <span ng-show="!reverse" class="glyphicon glyphicon-triangle-top"
@@ -74,13 +74,13 @@
                 </h4>
             </div>
 
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.results.length">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-if="items.results.length">
                 <h4>
                     Category filter (angular filter):<input ng-model="search.categories" type="text"/>
                 </h4>
             </div>
 
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.results.length">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-if="items.results.length">
                 <h4>
                     Category filter (http get filter):
                     <input type="text" ng-model="asyncSelected" placeholder="Items loaded via $http"
@@ -95,7 +95,7 @@
             </div>
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h2 ng-hide="items.results.length">No match:( <a href="javascript:;" ng-click="showAllItems()">Show all items.</a></h2>
+                <h2 ng-hide="items.results.length">No items:( <a href="javascript:;" ng-click="showAllItems()">Try show all items.</a></h2>
             </div>
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -169,7 +169,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.results.length">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-hide="showDetailOfItem" ng-if="items.results.length">
                 <nav>
                     <ul class="pager">
                         <li ng-class="{disabled:isItemsNotPrevious(items)}">
