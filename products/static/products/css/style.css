@@ -147,6 +147,11 @@
 
     animation: fadeInDown 1s;
 }
+
+.cart-panel.ng-leave{
+
+    animation: fadeInDown 2s;
+}
 /* !ng-animate */
 
 .open-cart {
@@ -175,4 +180,22 @@
 
 .main-list-cart{
    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+.cart-panel a{
+    color: black;
+}
+
+.cart-panel .trash-icon {
+    color: red;
+}
+
+.cart-panel .hand-icon {
+    margin-right: 10px;
+}
+
+.panel-primary-active{
+    background-color:#337ab7;
+}
+.cart-choose-button{
+    margin: 15px 0;
 }

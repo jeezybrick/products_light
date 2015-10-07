@@ -255,16 +255,19 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
      */
     $scope.deleteItem = function () {
 
-        if (confirm('Are you sure you want to delete this item?')) {
+        bootbox.confirm("Are you sure you want to delete this item?", function (answer) {
 
-            $scope.itemDetail.$delete(function () {
+            if (answer == true)
+
+                $scope.itemDetail.$delete(function () {
                 $scope.showDetailOfItem = false;
                 $window.location.href = '/products_ang/';
             },function(error){
                 $scope.errorDeleteItem = error;
             });
 
-        }
+        });
+
     };
 
      /**
@@ -319,11 +322,51 @@ myApp.controller('CartCtrl', function ($scope, $window, Cart) {
 
     $scope.deleteItemInCart = function (itemId) {
 
-        Cart.delete({ id: itemId }, function() {
+        bootbox.confirm("Are you sure you want to delete this item from the cart?", function (answer) {
 
-            $window.location.href = '/cart/';
+            if (answer == true)
+
+                Cart.delete({id: itemId}, function () {
+
+                    $scope.itemDeleteSuccess = true;
+                    bootbox.alert("Item deleted from the cart");
+                    // $window.location.href = '/cart/';
+
+                });
 
         });
+
+    };
+
+    $scope.chooseItem = function (itemId) {
+
+        var myEl = angular.element(document.querySelector('#item_'+itemId));
+        myEl.toggleClass('panel-primary-active');
+
+    };
+
+    $scope.toggleAll = function () {
+
+        $scope.allItemActive = ! $scope.allItemActive;
+
+    };
+
+    $scope.chooseAll = function () {
+
+        $scope.allItemActive = true;
+
+    };
+
+    $scope.chooseNothing = function () {
+
+        $scope.allItemActive = false;
+
+    };
+
+     $scope.makeOrder = function () {
+
+         bootbox.alert("You make order! Soon we call you!");
+
     };
 
 });
