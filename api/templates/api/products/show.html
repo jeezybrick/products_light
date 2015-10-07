@@ -6,6 +6,13 @@
 {{ itemDetailError }}
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="itemDetailLoad">
     <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <a ng-href="#/{{ itemDetail.id }}/action/add" class="btn btn-success" type="button"
+                    ng-click="addAction(item.pk)">
+                <i class="fa fa-plus fa-lg"></i> Add action
+            </a>
+        </div>
+
         <div class="col-lg-10">
             <h3 class="detail-item-attr">
                 ID:{{ itemDetail.id }}
@@ -18,7 +25,14 @@
     </div>
     <h3>Name:{{ itemDetail.name }}</h3>
 
-    <h3>Price:{{ itemDetail.price | currency:"₴" }}</h3>
+    <h3>Price:
+        <span ng-class="{'oldprice' : itemDetail.action_price}">
+            {{ itemDetail.price | currency:"₴" }}
+        </span>
+        <span class="newprice animated infinite pulse" ng-if="itemDetail.action_price">
+            {{ itemDetail.action_price| currency:"₴"  }}
+        </span>
+    </h3>
     <pre>{{ itemDetail.description }}</pre>
     <h3 ng-show="itemDetail.image_url.length">Image url:
         <small>{{ itemDetail.image_url }}</small>

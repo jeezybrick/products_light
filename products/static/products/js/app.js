@@ -27,5 +27,9 @@ myApp.config(function ($routeProvider) {
         when('/:itemId/edit', {
             templateUrl: '/products_ang/edit/',
             controller: 'ItemDetailCtrl'
+        }).
+        when('/:itemId/action/add', {
+            templateUrl: '/products_ang/action/add/',
+            controller: 'actionCtrl'
         });
 });

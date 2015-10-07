@@ -126,7 +126,14 @@
                             </div>
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <h4 class="word-break">Price:{{ item.price | currency:"₴" }}</h4>
+                                <h4 class="word-break">Price:
+                                    <span ng-class="{'oldprice' : item.action}">
+                                    {{ item.price | currency:"₴" }}
+                                    </span>
+                                    <span class="newprice animated infinite pulse" ng-if="item.action">
+                                        {{ item.action | currency:"₴" }}
+                                    </span>
+                                </h4>
                             </div>
 
                             <div ng-show="item.image_url" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

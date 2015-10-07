@@ -183,3 +183,31 @@ class CartDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
         self.check_object_permissions(self.request, obj)
 
         return obj
+
+
+class ActionList(generics.GenericAPIView):
+    pagination_class = StandardResultsSetPagination
+    serializer_class = serializers.ActionSerializer
+
+    def get(self, request):
+
+        queryset = self.request.user.action_set.all()
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = serializers.ActionSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        try:
+            action = self.request.user.action_set.get(item__id=request.data["item"])
+        except ObjectDoesNotExist:
+            action = None
+        serializer = serializers.ActionSerializer(data=request.data, instance=action)
+        if serializer.is_valid():
+            serializer.save(shop=self.request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

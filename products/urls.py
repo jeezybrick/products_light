@@ -51,6 +51,9 @@ urlpatterns = [
     url(r"^products_ang/edit/$", TemplateView.as_view(
         template_name='api/products/modify.html'
     ), name='products_edit_ang'),
+    url(r"^products_ang/action/add/$", TemplateView.as_view(
+        template_name='api/action/action_form.html'
+    ), name='products_action_add_ang'),
     url(r"^categories_ang/$", TemplateView.as_view(
         template_name='api/categories/index.html'
     ), name='categories_list_ang'),

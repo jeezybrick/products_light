@@ -230,9 +230,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
             $scope.hideCommentForm = true;
             $scope.appendComment = data;
             $scope.errorComment = false;
-        },function(error){
-             $scope.errorComment = error;
-         });
+        }, function (error) {
+            $scope.errorComment = error;
+        });
 
     };
 
@@ -392,7 +392,45 @@ myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
 
 });
 
+myApp.controller('actionCtrl', function ($scope, $routeParams, Action) {
+
+    $scope.itemId = $routeParams.itemId;
+
+    /**
+     * Add action
+     */
+    $scope.addAction = function () {
+
+         $scope.actionObject = new Action({description: $scope.description,
+                                       new_price: $scope.new_price,
+                                       item: $scope.itemId,
+                                       period_from: $scope.period_from,
+                                       period_to: $scope.period_to
+        });
+
+    $scope.actionObject.$save(function (data) {
+            //
+        }, function (error) {
+            //
+        });
+
+    };
+
+    });
+
 myApp.controller('loginCtrl', function ($scope) {
 
 
+});
+
+myApp.directive('myDate',function(dateFilter,$parse){
+  return{
+    restrict:'EAC',
+    require:'?ngModel',
+    link:function(scope,element,attrs,ngModel,ctrl){
+      ngModel.$parsers.push(function(viewValue){
+        return dateFilter(viewValue,'yyyy-MM-dd');
+      });
+    }
+  }
 });

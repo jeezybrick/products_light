@@ -42,6 +42,13 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
                 return 'This item end soon! Hurry up!'
         return None
 
+    def prepare_action(self, obj):
+        try:
+            obj.action.new_price
+        except:
+            return None
+        return obj.action.new_price
+
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
 

@@ -35,4 +35,11 @@ angular.module('myApp.services', ['ngResource'])
                 }
             }
         )
-    });
+    }).factory('Action', function ($resource) {
+        return $resource('/api/action/:id/', { id: '@id' }, {
+            'update': {method: 'PUT'},
+            'get':{method: 'GET', cache: true},
+            'query': {method: 'GET', isArray: false}
+        });
+    })
+    ;

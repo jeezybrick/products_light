@@ -61,6 +61,7 @@ class ItemSerializer(serializers.Serializer):
     quantity = serializers.IntegerField()
     quantity_message = serializers.CharField()
     in_cart = serializers.SerializerMethodField()
+    action = serializers.IntegerField()
 
     def get_in_cart(self, obj):
         request = self.context.get('request', None)
@@ -76,7 +77,7 @@ class ItemSerializer(serializers.Serializer):
     class Meta:
 
         fields = ('pk', 'author', 'name', 'price', 'description',
-                  'categories', 'comments', 'image_url', 'rate', 'quantity', 'in_cart', 'quantity_message', )
+                  'categories', 'comments', 'image_url', 'rate', 'quantity', 'in_cart', 'quantity_message', 'action', )
 
 
 class ItemDetailSerializer(serializers.ModelSerializer):
@@ -86,6 +87,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
     categories = serializers.StringRelatedField(
         many=True, required=False, read_only=True)
     user_rate = serializers.SerializerMethodField()
+    action_price = serializers.SerializerMethodField()
 
     def get_rates(self, obj):
         return cache.RateCache().get(item_id=obj.pk).aggregate(Avg('value'))['value__avg']
@@ -100,10 +102,21 @@ class ItemDetailSerializer(serializers.ModelSerializer):
 
         return user_rate
 
+    """ get action price"""
+    def get_action_price(self, obj):
+        request = self.context.get('request', None)
+        try:
+            user_rate = models.Action.objects.get(
+                shop=request.user.id, item=obj.id).new_price
+        except ObjectDoesNotExist:
+            user_rate = None
+
+        return user_rate
+
     class Meta:
         model = models.Item
         fields = ('id', 'name', 'price', 'description', 'categories',
-                  'comments', 'image_url', 'rates', 'user_rate', 'quantity', )
+                  'comments', 'image_url', 'rates', 'user_rate', 'quantity', 'action_price', )
 
 
 class ShopSerializer(serializers.Serializer):
@@ -132,3 +145,10 @@ class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Cart
         fields = ('user', 'item', )
+
+
+class ActionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Action
+        fields = ('item', 'description', 'new_price', 'period_from', 'period_to', )
