@@ -219,3 +219,7 @@
 .newprice {
     color: green;
 }
+
+.add-action-button{
+    margin-bottom: 15px;
+}

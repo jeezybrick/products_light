@@ -184,6 +184,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     //rating
     $scope.max = 10;
     $scope.isReadonly = false;
+    $scope.rate = 0;
 
     /**
      * Get item detail
@@ -207,11 +208,16 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
      * Post selected rating of item by user
      */
     $scope.addRate = function () {
-        $scope.dynamic = 100;
-        $scope.rateObject = new Rate({value: $scope.rate,
-                            item: $routeParams.itemId});
+
+        $scope.rateObject = new Rate({
+            value: $scope.rate,
+            item: $routeParams.itemId
+        });
+
         $scope.rateObject.$save(function () {
-           // $scope.tweets.unshift(tweet);
+            $scope.dynamic = 100;
+        }, function (error) {
+            //
         });
 
     };
@@ -392,7 +398,7 @@ myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
 
 });
 
-myApp.controller('actionCtrl', function ($scope, $routeParams, Action) {
+myApp.controller('actionCtrl', function ($scope, $routeParams,$location, Action) {
 
     $scope.itemId = $routeParams.itemId;
 
@@ -408,10 +414,11 @@ myApp.controller('actionCtrl', function ($scope, $routeParams, Action) {
                                        period_to: $scope.period_to
         });
 
-    $scope.actionObject.$save(function (data) {
-            //
+        $scope.actionObject.$save(function (response) {
+            $location.path($scope.itemId);
         }, function (error) {
-            //
+
+            $scope.errorAddAction = error;
         });
 
     };
@@ -423,6 +430,10 @@ myApp.controller('loginCtrl', function ($scope) {
 
 });
 
+
+    /**
+     * Directive for formatting date from datepicker Angular UI( add action form )
+     */
 myApp.directive('myDate',function(dateFilter,$parse){
   return{
     restrict:'EAC',

@@ -10,6 +10,7 @@ from products import cache
 from api import serializers
 from rest_framework.response import Response
 from haystack.query import SearchQuerySet
+from api.permissions import IsAuthorOrReadOnly
 
 
 # Pagination class
@@ -47,6 +48,7 @@ class ItemList(generics.GenericAPIView):
 class ItemDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
                  generics.DestroyAPIView):
     serializer_class = serializers.ItemDetailSerializer
+    permission_classes = (IsAuthorOrReadOnly, )
 
     def get_object(self):
 

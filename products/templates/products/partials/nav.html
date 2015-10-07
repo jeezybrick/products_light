@@ -33,9 +33,6 @@
                     <li class="{% ifactive "home" %} active {% endifactive %}">
                         <a href="{% url 'home' %}">{% trans "Home" %}</a>
                     </li>
-                    <li class="{% ifactive "products_list" %} active {% endifactive %}">
-                        <a href="{% url 'products_list' %}">{% trans "Items" %}</a>
-                    </li>
 
                     <li class="{% ifactive "shop_list" %} active {% endifactive %}">
                         <a href="{% url 'shop_list' %}">{% trans "Shops" %}</a>
@@ -44,9 +41,7 @@
                     <li class="{% ifactive "products_list_ang" %} active {% endifactive %}">
                         <a href="{% url 'products_list_ang' %}">{% trans "Items-Angular" %}</a>
                     </li>
-                    <li class="{% ifactive "categories_list" %} active {% endifactive %}hidden-sm">
-                        <a href="{% url 'categories_list' %}">{% trans "Categories" %}</a>
-                    </li>
+
                     <li class="{% ifactive "categories_list_ang" %} active {% endifactive %}">
                         <a href="{% url 'categories_list_ang' %}">{% trans "Categories-Angular" %}</a>
                     </li>

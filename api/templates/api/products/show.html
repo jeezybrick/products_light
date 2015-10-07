@@ -6,7 +6,7 @@
 {{ itemDetailError }}
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="itemDetailLoad">
     <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="add-action-button col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <a ng-href="#/{{ itemDetail.id }}/action/add" class="btn btn-success" type="button"
                     ng-click="addAction(item.pk)">
                 <i class="fa fa-plus fa-lg"></i> Add action
@@ -20,7 +20,7 @@
         </div>
         <div class="col-lg-2">
             <a href="#/{{ itemDetail.id }}/edit"
-               class="btn btn-info pull-right" ng-show="showDetailOfItem">Edit item</a>
+               class="btn btn-info pull-right" ng-show="showDetailOfItem"><i class="fa fa-pencil fa-lg"></i> Edit item</a>
         </div>
     </div>
     <h3>Name:{{ itemDetail.name }}</h3>
@@ -43,7 +43,7 @@
 
     {% if user.is_authenticated %}
         <h4 ng-hide="greet">Rate item:
-            <rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)"
+            <rating ng-model="ratte" max="max" readonly="isReadonly" on-hover="hoveringOver(value)"
                     on-leave="overStar = null" titles="['one','two','three']" ng-click="isReadonly=true;addRate();">
 
             </rating>
