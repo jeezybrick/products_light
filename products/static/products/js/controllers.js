@@ -302,7 +302,7 @@ myApp.controller('categoryListCtrl', function ($scope, Category) {
 
 });
 
-myApp.controller('CartCtrl', function ($scope, $window, Cart) {
+myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
 
     $scope.addItemToCart = function (itemId) {
 
@@ -328,9 +328,14 @@ myApp.controller('CartCtrl', function ($scope, $window, Cart) {
 
                 Cart.delete({id: itemId}, function () {
 
-                    $scope.itemDeleteSuccess = true;
-                    bootbox.alert("Item deleted from the cart");
-                    // $window.location.href = '/cart/';
+                    var myEl = angular.element(document.querySelector('#item_'+itemId));
+                    myEl.addClass('animated bounceOut');
+
+                    $scope.time = $timeout(function () {
+
+                        myEl.addClass('hidden');
+
+                    }, 800);
 
                 });
 
