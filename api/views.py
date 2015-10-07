@@ -190,6 +190,7 @@ class CartDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
 class ActionList(generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = serializers.ActionSerializer
+    permission_classes = (IsAuthorOrReadOnly, )
 
     def get(self, request):
 

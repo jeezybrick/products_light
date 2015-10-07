@@ -1,5 +1,5 @@
 __author__ = 'user'
-from .models import Category, Item, Rate, Comment, MyUser
+from .models import Category, Item, Rate, Comment, MyUser, Action
 from products import cache
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
@@ -56,6 +56,12 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
                 Item, item, **kwargs
             )
 
+    def handle_action_update(self, sender, instance, **kwargs):
+        for item in Item.objects.filter(action=instance.id):
+            super(RateOnlySignalProcessor, self).handle_save(
+                Item, item, **kwargs
+            )
+
     def setup(self, **kwargs):
         models.signals.post_save.connect(self.handle_save, sender=Item)
         models.signals.post_save.connect(
@@ -68,6 +74,10 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
             self.handle_comment_update, sender=Comment)
         models.signals.post_delete.connect(
             self.handle_comment_update, sender=Comment)
+        models.signals.post_save.connect(
+            self.handle_action_update, sender=Action)
+        models.signals.post_delete.connect(
+            self.handle_action_update, sender=Action)
 
         super(RateOnlySignalProcessor, self).setup()
 
