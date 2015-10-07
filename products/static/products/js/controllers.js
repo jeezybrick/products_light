@@ -329,7 +329,7 @@ myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
                 Cart.delete({id: itemId}, function () {
 
                     var myEl = angular.element(document.querySelector('#item_'+itemId));
-                    myEl.addClass('animated bounceOut');
+                    myEl.addClass('animated fadeOut');
 
                     $scope.time = $timeout(function () {
 
@@ -343,6 +343,10 @@ myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
 
     };
 
+    /**
+     * Choose specific item in the cart
+     */
+
     $scope.chooseItem = function (itemId) {
 
         var myEl = angular.element(document.querySelector('#item_'+itemId));
@@ -350,24 +354,36 @@ myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
 
     };
 
+     /**
+     * Choose all items with button
+     */
     $scope.toggleAll = function () {
 
         $scope.allItemActive = ! $scope.allItemActive;
 
     };
 
+    /**
+     * Choose all items with click 'All"
+     */
     $scope.chooseAll = function () {
 
         $scope.allItemActive = true;
 
     };
 
+    /**
+     * Unchoose all items
+     */
     $scope.chooseNothing = function () {
 
         $scope.allItemActive = false;
 
     };
 
+    /**
+     * Make order and show alert
+     */
      $scope.makeOrder = function () {
 
          bootbox.alert("You make order! Soon we call you!");

@@ -145,13 +145,9 @@
 
 .main-list.ng-enter {
 
-    animation: fadeInDown 1s;
+    animation: fadeIn 1s;
 }
 
-.cart-panel.ng-leave{
-
-    animation: fadeInDown 2s;
-}
 /* !ng-animate */
 
 .open-cart {
@@ -174,14 +170,15 @@
     color: #a94442;
 }
 
-.zero-quantity-item{
+.zero-quantity-item {
     background-color: #E7E7E6;
 }
 
-.main-list-cart{
-   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+.main-list-cart {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
 }
-.cart-panel a{
+
+.cart-panel a {
     color: black;
 }
 
@@ -193,9 +190,10 @@
     margin-right: 10px;
 }
 
-.panel-primary-active{
-    background-color:#337ab7;
+.panel-primary-active {
+    background-color: #337ab7;
 }
-.cart-choose-button{
+
+.cart-choose-button {
     margin: 15px 0;
 }

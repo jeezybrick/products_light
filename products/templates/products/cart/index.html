@@ -47,26 +47,28 @@
                 </div>
             {% endif %}
         </div>
+
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             {% for cart in cart %}
-            <div id="item_{{ cart.item.id }}" ng-class="{'panel-primary-active' : allItemActive}"
-                 class="cart-panel panel panel-primary">
-                <div class="panel-body">
-                    {{ cart.item.name }}
-                    <a href="javascript:void(0);" class="trash-icon pull-right" ng-click="deleteItemInCart({{ cart.item.id }})">
-                        <i class="fa fa-trash-o fa-3x"></i>
-                    </a>
-                    <a href="javascript:void(0);" class="hand-icon pull-right" ng-click="chooseItem({{ cart.item.id }})">
-                        <i class="fa fa-hand-pointer-o fa-3x"></i>
-                    </a>
+
+                <div id="item_{{ cart.item.id }}" ng-class="{'panel-primary-active' : allItemActive}"
+                     class="cart-panel panel panel-primary">
+                    <div class="panel-body">
+                        {{ cart.item.name }}
+                        <a href="javascript:void(0);" class="trash-icon pull-right" ng-click="deleteItemInCart({{ cart.item.id }})">
+                            <i class="fa fa-trash-o fa-3x"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="hand-icon pull-right" ng-click="chooseItem({{ cart.item.id }})">
+                            <i class="fa fa-hand-pointer-o fa-3x"></i>
+                        </a>
+                    </div>
+                    <div class="panel-footer">
+                        <h4>{{ cart.item.description }}</h4>
+                        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#myModal">
+                            <i class="fa fa-plus"></i> Buy this item
+                        </button>
+                    </div>
                 </div>
-                <div class="panel-footer">
-                    <h4>{{ cart.item.description }}</h4>
-                    <button class="btn btn-success" type="button" data-toggle="modal" data-target="#myModal">
-                        <i class="fa fa-plus"></i> Buy this item
-                    </button>
-                </div>
-            </div>
 
             {% empty %}
 
@@ -75,6 +77,7 @@
             </div>
 
             {% endfor %}
+
         </div>
 
         <!-- Modal for buy item -->
