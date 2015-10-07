@@ -197,3 +197,25 @@
 .cart-choose-button {
     margin: 15px 0;
 }
+
+.oldprice {
+    text-decoration: none; /*we're replacing the default line-through*/
+    position: relative;
+    display: inline-block;
+    color: #999;
+}
+
+.oldprice:after {
+    content: ""; /* required property */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-top: 2px solid red;
+    height: 55%;
+    width: 100%;
+    transform: rotateZ(-4deg);
+}
+
+.newprice {
+    color: green;
+}

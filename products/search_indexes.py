@@ -17,6 +17,7 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     rate = indexes.FloatField()
     quantity = indexes.IntegerField(model_attr='quantity', null=True)
     quantity_message = indexes.CharField()
+    action = indexes.IntegerField()
 
     def get_model(self):
         return Item

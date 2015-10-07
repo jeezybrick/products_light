@@ -9,7 +9,7 @@ from django.contrib.auth.models import AbstractUser
 # Extend User model
 class MyUser(AbstractUser):
 
-    is_shop = models.BooleanField(_("Shop"), default=False, blank=True)
+    is_shop = models.BooleanField(_("Shop"), default=True, blank=True)
     percentage_of_price = models.IntegerField(blank=True, null=True)
 
     USERNAME_FIELD = 'username'
@@ -76,10 +76,10 @@ class Cart(models.Model):
 class Action(models.Model):
     item = models.OneToOneField(Item)
     shop = models.ForeignKey(settings.AUTH_USER_MODEL)
-    description = models.CharField(max_length=1000)
-    new_price = models.IntegerField(blank=False)
-    period_from = models.DateTimeField()
-    period_to = models.DateTimeField()
+    description = models.CharField(max_length=1000, blank=False)
+    new_price = models.IntegerField(blank=True)
+    period_from = models.DateField(blank=False)
+    period_to = models.DateField(blank=False)
 
     def __unicode__(self):
         return self.item

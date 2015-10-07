@@ -90,8 +90,20 @@
                             </div>
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <h4 class="word-break">{% trans "price" %}:{{ product.object.price|truncatechars:35 }}
-                                    $.</h4>
+                                <h4 class="word-break">{% trans "price" %}:
+                                {% if product.object.action.new_price %}
+                                    <span class="oldprice">
+                                        {{ product.object.price|truncatechars:35 }}$.
+                                    </span>
+                                    <span class="newprice animated infinite pulse">
+                                        {{ product.object.action.new_price|truncatechars:35 }}$
+                                    </span>
+                                {% else %}
+                                    <span>
+                                        {{ product.object.price|truncatechars:35 }}$
+                                    </span>
+                                {% endif %}
+                                </h4>
                             </div>
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

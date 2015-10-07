@@ -3,6 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext_lazy as _
+from django.forms.extras.widgets import SelectDateWidget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field, Fieldset
 from crispy_forms.bootstrap import PrependedText
@@ -168,3 +169,25 @@ class AddItemToCart(forms.ModelForm):
     class Meta:
         model = models.Cart
         fields = ('item', )
+
+
+class ModifyAction(forms.ModelForm):
+    period_from = forms.DateTimeField(widget=SelectDateWidget())
+    period_to = forms.DateTimeField(widget=SelectDateWidget())
+
+    def __init__(self, *args, **kwargs):
+        super(ModifyAction, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_action = '#'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-7'
+
+        self.helper.add_input(Submit('submit', _('Add/edit action'),
+                                     css_class='btn btn-default btn-md col-md-offset-5'))
+
+    class Meta:
+        model = models.Action
+        fields = ('item', 'shop', 'description', 'new_price', 'period_from', 'period_to', )

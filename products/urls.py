@@ -31,6 +31,8 @@ urlpatterns = [
         views.ItemEditView.as_view(), name='products_edit'),
     url(r"^products/(?P<pk>\w+)/delete/$",
         views.ItemDeleteView.as_view(), name='products_delete'),
+    url(r"^products/(?P<pk>\w+)/action/$",
+        views.ItemActionView.as_view(), name='products_action'),
 
     url(r"^products/(?P<pk>\w+)/comments/add/$",
         views.AddCommentView.as_view(), name='comment_add'),

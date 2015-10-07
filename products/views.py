@@ -14,6 +14,7 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from products import cache
 from .models import Rate, Category, Item, MyUser
 from products import forms
+from products import models
 from haystack.query import SearchQuerySet
 
 
@@ -327,3 +328,19 @@ class CartView(LoginRequiredMixin, View):
             return HttpResponseRedirect(reverse('products_list'))
         return render(request, self.template_name, {'form': form})
 
+
+class ItemActionView(CreateView):
+
+    model = models.Action
+    template_name = 'products/actions/modify.html'
+    success_url = '/'
+    form_class = forms.ModifyAction
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemActionView, self).get_context_data(**kwargs)
+        context['foo'] = _('Add')
+        return context
+
+    def form_valid(self, form):
+        messages.success(self.request, _('Action add!'))
+        return super(ItemActionView, self).form_valid(form)
