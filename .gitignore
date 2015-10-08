@@ -4,3 +4,6 @@ api/__pycache__/*
 .idea/*
 *.pyc
 *.sqlite3
+celerybeat-schedule
+celeryd.log
+celeryd.pid

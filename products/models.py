@@ -10,7 +10,7 @@ from django.contrib.auth.models import AbstractUser
 class MyUser(AbstractUser):
 
     is_shop = models.BooleanField(_("Shop"), default=True, blank=True)
-    percentage_of_price = models.IntegerField(blank=True, null=True)
+    percentage_of_price = models.IntegerField(default=100, null=True)
 
     USERNAME_FIELD = 'username'
 
