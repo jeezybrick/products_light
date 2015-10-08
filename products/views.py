@@ -11,10 +11,12 @@ from django.template.response import TemplateResponse
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.http import Http404
 from products import cache
 from .models import Rate, Category, Item, MyUser
 from products import forms
 from products import models
+from products import utils
 from haystack.query import SearchQuerySet
 
 
@@ -93,17 +95,19 @@ class ItemDetailView(View):
     template_name = 'products/products/show.html'
 
     def get(self, request, **kwargs):
-        item = cache.ProductCache().get(id=kwargs["pk"])
-        user_rate = None
-        for item in item:
-            try:
-                user_rate = Rate.objects.get(
-                    user=request.user.id, item=item.id)
-            except ObjectDoesNotExist:
-                user_rate = None
+        try:
+            item = cache.ProductDetailCache().get(id=kwargs["pk"])
+        except ObjectDoesNotExist:
+            raise Http404
 
-        message = self.message_of_quantity_items(item)
-        item = self.price_with_percent(item)
+        try:
+            user_rate = Rate.objects.get(
+                user=request.user.id, item=item.id)
+        except ObjectDoesNotExist:
+            user_rate = None
+
+        message = utils.message_of_quantity_items(item)
+        item = utils.price_with_percent(item)
         context = {
             'comment_form': forms.AddComment,
             'rating_form': forms.AddRate(instance=user_rate),
@@ -112,22 +116,6 @@ class ItemDetailView(View):
             'message': message,
         }
         return render(request, self.template_name, context)
-
-    """ return message depends on quantity item """
-
-    def message_of_quantity_items(self, item):
-        if item.quantity:
-            if item.quantity == 0:
-                return 'The product is out of stock'
-            if item.quantity < 10:
-                return 'The product ends'
-
-    """ return item with percentage price """
-
-    def price_with_percent(self, item):
-        if self.request.user.percentage_of_price:
-            item.price = item.price * self.request.user.percentage_of_price / 100
-        return item
 
 
 # For add new item
