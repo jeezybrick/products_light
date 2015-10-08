@@ -156,7 +156,8 @@
                                     <div class="open-cart text-center" ng-if="item.in_cart">
                                         <div class="row">
                                             <div class="col-lg-4">
-                                                <a href="javascript:void(0);" ng-click="deleteItemInCart(item.pk)">
+                                                <a href="javascript:void(0);" ng-click="deleteItemInCart(item.pk)"
+                                                   tooltip-placement="top" tooltip="Delete item from the cart" tooltip-popup-delay='600'>
                                                     <i ng-class="{'fa fa-times fa-2x':hovering, 'fa fa-check fa-2x':!hovering}"
                                                        ng-mouseenter="hovering=true"
                                                        ng-mouseleave="hovering=false"></i>
