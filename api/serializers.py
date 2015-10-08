@@ -42,6 +42,12 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class RateSerializer(serializers.ModelSerializer):
 
+    def validate_value(self, value):
+        if value > 10 or value < 0:
+            raise serializers.ValidationError(
+                "Invalid value!")
+        return value
+
     class Meta:
         model = models.Rate
         fields = ('value', 'item')

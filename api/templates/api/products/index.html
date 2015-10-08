@@ -168,7 +168,18 @@
                                 </button>
 
                                 <div class="open-cart text-center" ng-if="item.in_cart">
-                                    <a href="javascript:void(0);" ng-click="deleteItemInCart(item.pk)">Item in the cart!</a>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <a href="javascript:void(0);" ng-click="deleteItemInCart(item.pk)">
+                                                <i ng-class="{'fa fa-times fa-2x':hovering, 'fa fa-check fa-2x':!hovering}"
+                                                   ng-mouseenter="hovering=true"
+                                                   ng-mouseleave="hovering=false"></i>
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <a href="/cart/">Item in the cart!</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 

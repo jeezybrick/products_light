@@ -1,5 +1,6 @@
 /**
  * Created by user on 28.09.15.
+ * For item on Django views, not Angular
  */
 
   $(document).ready(function () {
