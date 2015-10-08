@@ -65,6 +65,7 @@ class ItemDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
 
 # list of categories
 class CategoryList(APIView):
+
     def get(self, request):
         categories = cache.CategoryCache().get(parent_category_id__isnull=True)
         serializer = serializers.CategorySerializer(categories, many=True)
@@ -73,6 +74,7 @@ class CategoryList(APIView):
 
 # Comments list
 class CommentList(APIView):
+
     def get(self, request):
         comments = cache.CommentCache().get()
         serializer = serializers.CommentSerializer(comments, many=True)
@@ -88,6 +90,7 @@ class CommentList(APIView):
 
 # Rating list
 class RateList(APIView):
+
     def get(self, request):
         rates = cache.RateCache().get()
         serializer = serializers.RateSerializer(rates, many=True)
@@ -108,6 +111,8 @@ class RateList(APIView):
 
 
 """List of shop-users"""
+
+
 class ShopList(generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = serializers.ShopSerializer
@@ -144,6 +149,8 @@ class ShopDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
 
 
 """ List of items in cart for auth user """
+
+
 class CartList(generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = serializers.CartSerializer
@@ -162,10 +169,12 @@ class CartList(generics.GenericAPIView):
 
     def post(self, request):
         try:
-            item = self.request.user.cart_set.get(item__id=request.data["item"])
+            item = self.request.user.cart_set.get(
+                item__id=request.data["item"])
         except ObjectDoesNotExist:
             item = None
-        serializer = serializers.CartSerializer(data=request.data, instance=item)
+        serializer = serializers.CartSerializer(
+            data=request.data, instance=item)
         if serializer.is_valid():
             serializer.save(user=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -187,7 +196,7 @@ class CartDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
         return obj
 
 
-# Action list and details
+# Action list and details for current auth user
 class ActionList(generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = serializers.ActionSerializer
@@ -207,10 +216,12 @@ class ActionList(generics.GenericAPIView):
 
     def post(self, request):
         try:
-            action = self.request.user.action_set.get(item__id=request.data["item"])
+            action = self.request.user.action_set.get(
+                item__id=request.data["item"])
         except ObjectDoesNotExist:
             action = None
-        serializer = serializers.ActionSerializer(data=request.data, instance=action)
+        serializer = serializers.ActionSerializer(
+            data=request.data, instance=action)
         if serializer.is_valid():
             serializer.save(shop=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)

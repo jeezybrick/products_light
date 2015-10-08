@@ -24,7 +24,7 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
 
         $scope.categories = Category.query(function () {
 
-                $scope.categoryLoad = true;
+            $scope.categoryLoad = true;
 
         });
 
@@ -47,7 +47,7 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
     $scope.sortByCategory = function (name) {
 
         $scope.items = Item.query(
-            params={category: name}
+            params = {category: name}
         );
 
     };
@@ -105,24 +105,9 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
     };
 
 
-    $scope.getLocation = function (val) {
-        return $http.get(apiURLs.itemListUrl, {
-            params: {
-                category: val
-            },
-            cache: true
-
-        }).then(function (response) {
-            return response.data.results.map(function (item) {
-                return item.name;
-            });
-        });
-    };
-
     /**
      * Add item to cart and query Item object
      */
-
     $scope.addItemToCart = function (itemId) {
 
         $scope.cart = new Cart();
@@ -130,19 +115,19 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
 
         $scope.cart.$save(function () {
 
-           $scope.items = Item.query();
+            $scope.items = Item.query();
 
         });
 
     };
 
+
     /**
      * Delete item form cart and query Item object
      */
-
     $scope.deleteItemInCart = function (itemId) {
 
-        Cart.delete({ id: itemId }, function() {
+        Cart.delete({id: itemId}, function () {
 
             $scope.items = Item.query();
 
@@ -151,10 +136,10 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
 
 });
 
+
 /**
  * Filter for pagination comments
  */
-
 myApp.filter('startFrom', function () {
     return function (data, start) {
         if (angular.isDefined(data)) {
@@ -167,7 +152,7 @@ myApp.filter('startFrom', function () {
 myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $location, $window, $timeout, Item, Rate, Comment, AuthUser) {
 
     $scope.id = $routeParams.itemId; // item id
-    $scope.AuthUserUsername = AuthUser.username;
+    $scope.AuthUserUsername = AuthUser.username; // Auth user username
     $scope.showDetailOfItem = true;
     $scope.itemDetailLoad = false;
 
@@ -223,14 +208,15 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
     };
 
-     /**
+    /**
      * Add comment
      */
     $scope.addComment = function () {
 
-        $scope.commentObject = new Comment({username: $scope.username,
-                                            message: $scope.message,
-                                            item: $routeParams.itemId
+        $scope.commentObject = new Comment({
+            username: $scope.username,
+            message: $scope.message,
+            item: $routeParams.itemId
         });
 
         $scope.commentObject.$save(function (data) {
@@ -243,21 +229,20 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
     };
 
-     /**
+    /**
      * Edit item
      */
+    $scope.editItem = function () {
 
-     $scope.editItem = function () {
-
-         $scope.itemDetail.$update(function () {
-             $scope.successAction();
-         },function(error){
-             $scope.errorEditItem = error;
-         });
+        $scope.itemDetail.$update(function () {
+            $scope.successAction();
+        }, function (error) {
+            $scope.errorEditItem = error;
+        });
 
     };
 
-     /**
+    /**
      * Delete item
      */
     $scope.deleteItem = function () {
@@ -267,17 +252,17 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
             if (answer == true)
 
                 $scope.itemDetail.$delete(function () {
-                $scope.showDetailOfItem = false;
-                $window.location.href = '/products_ang/';
-            },function(error){
-                $scope.errorDeleteItem = error;
-            });
+                    $scope.showDetailOfItem = false;
+                    $window.location.href = '/products_ang/';
+                }, function (error) {
+                    $scope.errorDeleteItem = error;
+                });
 
         });
 
     };
 
-     /**
+    /**
      * Function for success edit item
      */
     $scope.successAction = function () {
@@ -293,6 +278,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
     };
 
+    /**
+     * Check is Auth user is owner of this item
+     */
     $scope.isAuthUserIsOwner = function () {
 
         return $scope.AuthUserUsername === $scope.itemDetail.user;
@@ -307,7 +295,6 @@ myApp.controller('categoryListCtrl', function ($scope, Category) {
     /**
      * Get category list
      */
-
     $scope.categories = Category.query(function () {
 
         $scope.categoryLoad = true;
@@ -320,11 +307,11 @@ myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
 
     $scope.addItemToCart = function (itemId) {
 
-        var cart = new Cart();
-        cart.item = itemId;
+        $scope.cart = new Cart();
+        $scope.cart.item = itemId;
 
-        cart.$save(function () {
-           $scope.itemInTheCart = true;
+        $scope.cart.$save(function () {
+            $scope.itemInTheCart = true;
         });
 
     };
@@ -333,7 +320,6 @@ myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
     /**
      * Delete item form cart and query Item object
      */
-
     $scope.deleteItemInCart = function (itemId) {
 
         bootbox.confirm("Are you sure you want to delete this item from the cart?", function (answer) {
@@ -342,7 +328,7 @@ myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
 
                 Cart.delete({id: itemId}, function () {
 
-                    var myEl = angular.element(document.querySelector('#item_'+itemId));
+                    var myEl = angular.element(document.querySelector('#item_' + itemId));
                     myEl.addClass('animated fadeOut');
 
                     $scope.time = $timeout(function () {
@@ -363,17 +349,17 @@ myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
 
     $scope.chooseItem = function (itemId) {
 
-        var myEl = angular.element(document.querySelector('#item_'+itemId));
+        var myEl = angular.element(document.querySelector('#item_' + itemId));
         myEl.toggleClass('panel-primary-active');
 
     };
 
-     /**
+    /**
      * Choose all items with button
      */
     $scope.toggleAll = function () {
 
-        $scope.allItemActive = ! $scope.allItemActive;
+        $scope.allItemActive = !$scope.allItemActive;
 
     };
 
@@ -398,15 +384,15 @@ myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
     /**
      * Make order and show alert
      */
-     $scope.makeOrder = function () {
+    $scope.makeOrder = function () {
 
-         bootbox.alert("You make order! Soon we call you!");
+        bootbox.alert("You make order! Soon we call you!");
 
     };
 
 });
 
-myApp.controller('actionCtrl', function ($scope, $routeParams,$location, Action) {
+myApp.controller('actionCtrl', function ($scope, $routeParams, $location, Action) {
 
     $scope.itemId = $routeParams.itemId;
 
@@ -415,11 +401,12 @@ myApp.controller('actionCtrl', function ($scope, $routeParams,$location, Action)
      */
     $scope.addAction = function () {
 
-         $scope.actionObject = new Action({description: $scope.description,
-                                       new_price: $scope.new_price,
-                                       item: $scope.itemId,
-                                       period_from: $scope.period_from,
-                                       period_to: $scope.period_to
+        $scope.actionObject = new Action({
+            description: $scope.description,
+            new_price: $scope.new_price,
+            item: $scope.itemId,
+            period_from: $scope.period_from,
+            period_to: $scope.period_to
         });
 
         $scope.actionObject.$save(function (response) {
@@ -439,17 +426,17 @@ myApp.controller('loginCtrl', function ($scope) {
 });
 
 
-    /**
-     * Directive for formatting date from datepicker Angular UI( add action form )
-     */
-myApp.directive('myDate',function(dateFilter,$parse){
-  return{
-    restrict:'EAC',
-    require:'?ngModel',
-    link:function(scope,element,attrs,ngModel,ctrl){
-      ngModel.$parsers.push(function(viewValue){
-        return dateFilter(viewValue,'yyyy-MM-dd');
-      });
+/**
+ * Directive for formatting date from datepicker Angular UI( add action form )
+ */
+myApp.directive('myDate', function (dateFilter, $parse) {
+    return {
+        restrict: 'EAC',
+        require: '?ngModel',
+        link: function (scope, element, attrs, ngModel, ctrl) {
+            ngModel.$parsers.push(function (viewValue) {
+                return dateFilter(viewValue, 'yyyy-MM-dd');
+            });
+        }
     }
-  }
 });

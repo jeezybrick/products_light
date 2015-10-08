@@ -83,7 +83,8 @@ class ItemSerializer(serializers.Serializer):
     class Meta:
 
         fields = ('pk', 'author', 'name', 'price', 'description',
-                  'categories', 'comments', 'image_url', 'rate', 'quantity', 'in_cart', 'quantity_message', 'action', )
+                  'categories', 'comments', 'image_url', 'rate', 'quantity',
+                  'in_cart', 'quantity_message', 'action', )
 
 
 class ItemDetailSerializer(serializers.ModelSerializer):
@@ -110,6 +111,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
         return user_rate
 
     """ get action price"""
+
     def get_action_price(self, obj):
         request = self.context.get('request', None)
         try:
@@ -158,4 +160,5 @@ class ActionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Action
-        fields = ('item', 'description', 'new_price', 'period_from', 'period_to', )
+        fields = ('item', 'description', 'new_price',
+                  'period_from', 'period_to', )

@@ -156,18 +156,18 @@
     padding: 10px;
     color: white;
 }
-.open-cart div > a{
+
+.open-cart div > a {
     color: white;
 }
 
-.open-cart div .fa-check{
+.open-cart div .fa-check {
     color: lawngreen;
 }
 
-.open-cart div .fa-times{
+.open-cart div .fa-times {
     color: red;
 }
-
 
 /* Validation Angular */
 .edit_item_form input.ng-invalid.ng-invalid {
@@ -228,6 +228,6 @@
     color: green;
 }
 
-.add-action-button{
+.add-action-button {
     margin-bottom: 15px;
 }

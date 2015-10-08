@@ -1,9 +1,9 @@
 __author__ = 'user'
-from .models import Category, Item, Rate, Comment, MyUser, Action
-from products import cache
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.db import models
+from .models import Category, Item, Rate, Comment, MyUser, Action
+from products import cache
 from haystack import signals
 
 invalidate_signals = [post_delete, post_save]

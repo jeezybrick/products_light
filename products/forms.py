@@ -100,7 +100,8 @@ class ModifyItem(forms.ModelForm):
     description = forms.CharField(
         widget=forms.Textarea, label=_('Description'))
 
-    quantity = forms.IntegerField( min_value=0, label=_('Quantity'), required=False)
+    quantity = forms.IntegerField(
+        min_value=0, label=_('Quantity'), required=False)
 
     def __init__(self, *args, **kwargs):
         super(ModifyItem, self).__init__(*args, **kwargs)
@@ -131,7 +132,8 @@ class ModifyItem(forms.ModelForm):
 
     class Meta:
         model = models.Item
-        fields = ('name', 'price', 'image_url', 'categories', 'description', 'quantity')
+        fields = ('name', 'price', 'image_url',
+                  'categories', 'description', 'quantity')
 
 
 class AddCategory(forms.ModelForm):
@@ -190,4 +192,5 @@ class ModifyAction(forms.ModelForm):
 
     class Meta:
         model = models.Action
-        fields = ('item', 'shop', 'description', 'new_price', 'period_from', 'period_to', )
+        fields = ('item', 'shop', 'description',
+                  'new_price', 'period_from', 'period_to', )
