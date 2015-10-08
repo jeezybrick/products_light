@@ -88,6 +88,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
         many=True, required=False, read_only=True)
     user_rate = serializers.SerializerMethodField()
     action_price = serializers.SerializerMethodField()
+    user = serializers.CharField(read_only=True)
 
     def get_rates(self, obj):
         return cache.RateCache().get(item_id=obj.pk).aggregate(Avg('value'))['value__avg']
@@ -115,7 +116,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Item
-        fields = ('id', 'name', 'price', 'description', 'categories',
+        fields = ('id', 'user', 'name', 'price', 'description', 'categories',
                   'comments', 'image_url', 'rates', 'user_rate', 'quantity', 'action_price', )
 
 

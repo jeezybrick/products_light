@@ -63,5 +63,18 @@
 <script src="{% static 'products/js/ui-bootstrap.min.js' %}"></script>
 <script src="{% static 'products/js/common.js' %}"></script>
 
+<script>
+  // This allows you to access the current user id in your angular controllers.
+  angular
+      .module('myApp.services')
+      .factory('AuthUser', function() {
+        return {
+          id: "{{ user.id|default:''}}",
+          username: "{{ user.username|default:''}}"
+        }
+      });
+</script>
+
+
 </body>
 </html>

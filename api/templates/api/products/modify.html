@@ -1,6 +1,6 @@
 {% verbatim %}
 
-<div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="isAuthUserIsOwner()">
     <!-- Error message -->
     <h4 class="error-comment-message" ng-repeat="(errorName,errorMessage) in errorEditItem.data">
         {{ errorName }}:
@@ -75,5 +75,9 @@
             item page.</p>
     </div>
 
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-if="!isAuthUserIsOwner()">
+    <h1>You don't have permission to edit this item!</h1>
 </div>
 {% endverbatim %}

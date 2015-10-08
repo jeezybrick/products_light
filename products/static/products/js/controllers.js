@@ -164,9 +164,10 @@ myApp.filter('startFrom', function () {
 });
 
 
-myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $location, $window, $timeout, Item, Rate, Comment) {
+myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $location, $window, $timeout, Item, Rate, Comment, AuthUser) {
 
     $scope.id = $routeParams.itemId; // item id
+    $scope.AuthUserUsername = AuthUser.username;
     $scope.showDetailOfItem = true;
     $scope.itemDetailLoad = false;
 
@@ -291,6 +292,13 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
         }, 3000);
 
     };
+
+    $scope.isAuthUserIsOwner = function () {
+
+        return $scope.AuthUserUsername === $scope.itemDetail.user;
+
+    };
+
 });
 
 
@@ -423,7 +431,7 @@ myApp.controller('actionCtrl', function ($scope, $routeParams,$location, Action)
 
     };
 
-    });
+});
 
 myApp.controller('loginCtrl', function ($scope) {
 

@@ -10,7 +10,7 @@ from products import cache
 from api import serializers
 from rest_framework.response import Response
 from haystack.query import SearchQuerySet
-from api.permissions import IsAuthorOrReadOnly
+from api.permissions import IsAuthorOrReadOnly, ShopIsAuthorOrReadOnly
 
 
 # Pagination class
@@ -187,10 +187,11 @@ class CartDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
         return obj
 
 
+# Action list and details
 class ActionList(generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = serializers.ActionSerializer
-    permission_classes = (IsAuthorOrReadOnly, )
+    permission_classes = (ShopIsAuthorOrReadOnly, )
 
     def get(self, request):
 
