@@ -134,7 +134,7 @@ class ItemDetailView(View):
 class ItemAddView(LoginRequiredMixin, CreateView):
     model = Item
     template_name = 'products/products/modify.html'
-    success_url = '/products/'
+    success_url = '/products_ang/'
     form_class = forms.ModifyItem
 
     def get_context_data(self, **kwargs):
@@ -169,7 +169,7 @@ class CategoryListView(ListView):
 class CategoryAddView(CreateView):
     model = Category
     template_name = 'products/categories/modify.html'
-    success_url = '/categories/'
+    success_url = '/categories_ang/'
     form_class = forms.AddCategory
 
     def get_context_data(self, **kwargs):

@@ -170,7 +170,6 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     //rating
     $scope.max = 10;
     $scope.isReadonly = false;
-    $scope.rate = 0;
 
     /**
      * Get item detail
@@ -193,7 +192,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     /**
      * Post selected rating of item by user
      */
-    $scope.addRate = function () {
+    $scope.addRate = function (rate) {
+
+        $scope.rate = rate;
 
         $scope.rateObject = new Rate({
             value: $scope.rate,
