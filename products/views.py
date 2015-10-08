@@ -308,6 +308,7 @@ class ShopDetailView(View):
         return render(request, self.template_name, context)
 
 
+# List of items in cart for
 class CartView(LoginRequiredMixin, View):
     template_name = 'products/cart/index.html'
     form_class = forms.AddItemToCart
