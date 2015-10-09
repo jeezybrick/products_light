@@ -1,4 +1,4 @@
-__author__ = 'user'
+
 from django.db.models import Avg
 from haystack import indexes
 from products.models import Item, Comment, Rate, MyUser

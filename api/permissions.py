@@ -1,5 +1,3 @@
-__author__ = 'user'
-
 from rest_framework import permissions
 
 

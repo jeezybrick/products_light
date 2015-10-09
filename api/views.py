@@ -1,4 +1,4 @@
-__author__ = 'user'
+
 from django.http import Http404
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied

@@ -1,4 +1,4 @@
-__author__ = 'user'
+
 from django.core.exceptions import ImproperlyConfigured
 from products.models import Item, Category, Rate, Comment, MyUser
 from cacheback.base import Job

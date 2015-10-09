@@ -1,4 +1,4 @@
-__author__ = 'user'
+
 
 import datetime
 from celery.task import periodic_task
