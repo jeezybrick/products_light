@@ -1,15 +1,33 @@
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
+    .main-greet {
+        font-size: 48px;
+    }
 
+    .main-list-block{
+    border-left: dotted 2px darkgray;
+}
 }
 
 /* Landscape tablets and medium desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
 
+    .main-greet {
+        font-size: 40px;
+    }
+    .main-list-block{
+    border-left: dotted 2px darkgray;
+}
+
+
 }
 
 /* Portrait tablets and small desktops */
 @media (min-width: 768px) and (max-width: 991px) {
+
+    .main-greet {
+        font-size: 36px;
+    }
 
 }
 
