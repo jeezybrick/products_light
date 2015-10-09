@@ -22,7 +22,6 @@ from haystack.query import SearchQuerySet
 
 # For redirect if not Auth
 class LoginRequiredMixin(object):
-
     @classmethod
     def as_view(cls, **initkwargs):
         view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
@@ -238,7 +237,6 @@ def get_logout(request):
 
 # class for edit item
 class ItemEditView(LoginRequiredMixin, UpdateView):
-
     model = Item
     template_name = 'products/products/modify.html'
     success_url = '/products/'
@@ -302,7 +300,6 @@ class CartView(LoginRequiredMixin, View):
     form_class = forms.AddItemToCart
 
     def get(self, request):
-
         cart = self.request.user.cart_set.all()
         context = {
             'cart': cart,
@@ -320,8 +317,10 @@ class CartView(LoginRequiredMixin, View):
         return render(request, self.template_name, {'form': form})
 
 
-class ItemActionView(CreateView):
+""" View for add/edit action for item """
 
+
+class ItemActionView(CreateView):
     model = models.Action
     template_name = 'products/actions/modify.html'
     success_url = '/'

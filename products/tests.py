@@ -42,30 +42,30 @@ class SimpleTest(TestCase):
         self.item.delete()
 
     def test_home(self):
-        response = self.client.get('/')
+        response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
 
     def test_login_get(self):
-        response = self.client.get('/auth/login/')
+        response = self.client.get(reverse('login'))
         self.assertEqual(response.status_code, 200)
 
     def test_login_post(self):
         response = self.client.post(
-            '/auth/login/', {'username': 'john', 'password': 'smith'})
+            reverse('login'), {'username': 'john', 'password': 'smith'})
         self.assertEqual(response.status_code, 200)
 
     def test_register_get(self):
-        response = self.client.get('/auth/register/')
+        response = self.client.get(reverse('register'))
         self.assertEqual(response.status_code, 200)
 
     def test_register_post(self):
         response = self.client.post(
-            '/auth/register/', {'username': 'john', 'password': 'smith'})
+            reverse('register'), {'username': 'john', 'password': 'smith'})
         self.assertEqual(response.status_code, 200)
 
     """ List of items """
     def test_item_list(self):
-        response = self.client.get('/products_ang/')
+        response = self.client.get(reverse('products_list'))
         self.assertEqual(response.status_code, 200)
 
     """ Detail of item """
