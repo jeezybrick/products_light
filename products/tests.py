@@ -63,11 +63,6 @@ class SimpleTest(TestCase):
             reverse('register'), {'username': 'john', 'password': 'smith'})
         self.assertEqual(response.status_code, 200)
 
-    """ List of items """
-    def test_item_list(self):
-        response = self.client.get(reverse('products_list'))
-        self.assertEqual(response.status_code, 200)
-
     """ Detail of item """
     def test_item_detail(self):
         response = self.client.get(

@@ -106,9 +106,10 @@ class SimpleTest(TestCase):
     def test_action_list(self):
         # get by anonymous user
         response = self.client.get(reverse('action-list'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 403)
 
         # get by auth user
+        self.client.login(username='temporary3', password='temporary')
         response = self.client.get(reverse('action-list'))
         self.assertEqual(response.status_code, 200)
 
@@ -118,7 +119,13 @@ class SimpleTest(TestCase):
     """
 
     def test_add_action(self):
+        # post by anonymous user
         response = self.client.post(reverse('action-list'), self.action_values)
+        self.assertEqual(response.status_code, 403)
+
+        # post by auth user
+        self.client.login(username='temporary3', password='temporary')
+        response = self.client.get(reverse('action-list'))
         self.assertEqual(response.status_code, 200)
 
     """ Add category(no post method) """
