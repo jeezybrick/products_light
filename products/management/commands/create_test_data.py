@@ -35,16 +35,29 @@ class Command(BaseCommand):
     print('Wait.Users create...')
     [user.save() for user in users]
 
-    """Create categories"""
-    class CategoryFactory(factory.Factory):
+    """Create paent categories"""
+    class ParentCategoryFactory(factory.Factory):
         class Meta:
             model = models.Category
 
         name = factory.LazyAttribute(lambda t: random_string(length=10))
-        parent_category_id = factory.LazyAttribute(lambda t: random_parent())
+        parent_category_id = None
 
-    categories = CategoryFactory.create_batch(50)
-    print('Wait.Categories create...')
+    categories = ParentCategoryFactory.create_batch(10)
+    print('Wait.Parent categories create...')
+    [category.save() for category in categories]
+
+    """Create sub categories"""
+    class SubCategoryFactory(factory.Factory):
+        class Meta:
+            model = models.Category
+
+        name = factory.LazyAttribute(lambda t: random_string(length=10))
+        """Range of exiting id's parent_category"""
+        parent_category_id = factory.LazyAttribute(lambda t: random_price(254, 262))
+
+    categories = SubCategoryFactory.create_batch(50)
+    print('Wait.Sub categories create...')
     [category.save() for category in categories]
 
     """Create items"""
