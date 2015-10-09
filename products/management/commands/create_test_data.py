@@ -11,7 +11,7 @@ def random_string(length=100):
     return u''.join(random.choice(string.ascii_letters) for x in range(length))
 
 
-def random_price(fromm, to):
+def random_int(fromm, to):
     return random.randint(fromm, to)
 
 
@@ -54,7 +54,7 @@ class Command(BaseCommand):
 
         name = factory.LazyAttribute(lambda t: random_string(length=10))
         """Range of exiting id's parent_category"""
-        parent_category_id = factory.LazyAttribute(lambda t: random_price(254, 262))
+        parent_category_id = factory.LazyAttribute(lambda t: random_int(1, 9))
 
     categories = SubCategoryFactory.create_batch(50)
     print('Wait.Sub categories create...')
@@ -66,11 +66,11 @@ class Command(BaseCommand):
             model = models.Item
 
         name = factory.Sequence(lambda n: 'item-{0}'.format(n))
-        price = factory.LazyAttribute(lambda t: random_price(1, 10000))
-        image_url = factory.LazyAttribute(lambda t: 'https://' + random_string() + '/' + random_string() + '/')
+        price = factory.LazyAttribute(lambda t: random_int(1, 10000))
+        image_url = factory.LazyAttribute(lambda t: 'https://' + random_string(10) + '/' + random_string(10) + '/')
         description = factory.LazyAttribute(lambda t: random_string())
         user_id = 1
-        quantity = factory.LazyAttribute(lambda t: random_price(0, 50))
+        quantity = factory.LazyAttribute(lambda t: random_int(0, 50))
 
     items = ItemFactory.create_batch(100)
     print('Wait.Items create...')
@@ -84,7 +84,7 @@ class Command(BaseCommand):
         username = factory.LazyAttribute(lambda t: random_string(length=10))
         message = factory.LazyAttribute(lambda t: random_string())
         """Range of exiting id's items"""
-        item_id = factory.LazyAttribute(lambda t: random_price(5, 50))
+        item_id = factory.LazyAttribute(lambda t: random_int(1, 99))
 
     comments = CommentFactory.create_batch(100)
     print('Wait.Comments create...')

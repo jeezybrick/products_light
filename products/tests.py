@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 
 
 class SimpleTest(TestCase):
+
     def setUp(self):
         # User objects
         self.user1 = MyUser.objects.create_user('temporary', 'temporary@gmail.com', 'temporary', is_shop=False)

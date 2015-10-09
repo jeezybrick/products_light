@@ -35,7 +35,7 @@
         </span>
     </h3>
     <pre>{{ itemDetail.description }}</pre>
-    <h3 ng-show="itemDetail.image_url.length">Image url:
+    <h3 class="word-break" ng-show="itemDetail.image_url.length">Image url:
         <small>{{ itemDetail.image_url }}</small>
     </h3>
 
@@ -77,7 +77,7 @@
         <h3>
             <small>{{ comment.username }}</small>
         </h3>
-        <h4>{{ comment.message }}</h4>
+        <pre>{{ comment.message }}</pre>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
          ng-show="itemDetail.comments.length && itemDetail.comments.length > pageSize">
@@ -102,8 +102,7 @@
             Message:
             <ul>
                 <li ng-repeat="error in errorComment.message">
-                    {{ error }}
-                </li>
+                    {{ error{ er                </li>
             </ul>
         </h4>
         <form class="form-horizontal ng-pristine ng-valid" name="add_comment_form" role="form" method="POST"

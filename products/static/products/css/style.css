@@ -93,10 +93,6 @@
     margin: 10px 0 0 0;
 }
 
-.all-categories-list > a {
-    color: red;
-}
-
 .detail-item-attr {
     margin: 0;
 }
@@ -235,7 +231,10 @@
     padding: 0;
 }
 
-.category-filter{
-
+.category-filter-list > li > a{
+    color: gray;
 }
 
+#parent_category > a {
+    color: red;
+}

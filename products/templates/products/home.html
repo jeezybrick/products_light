@@ -9,12 +9,14 @@
 
     <div class="starter-template">
         <p class="lead animated zoomIn">
-            {% if user.is_authenticated %}
-                <h2 class="main-greet animated fadeInUp">{% trans "Hello" %},{{ user }}!</h2>
-            {% else %}
-                {% trans "Welcome" %}<br><a href="{% url 'register' %}">{% trans "Sign Up" %}</a> or
-                <a href="{% url 'login' %}"> {% trans "Sign In" %}</a> on web site.
-            {% endif %}
+            <h2 class="main-greet animated fadeInUp">
+                {% if user.is_authenticated %}
+                    {% trans "Hello" %},{{ user }}!
+                {% else %}
+                    {% trans "Welcome" %}<br><a href="{% url 'register' %}">{% trans "Sign Up" %}</a> or
+                    <a href="{% url 'login' %}"> {% trans "Sign In" %}</a> on web site.
+                {% endif %}
+            </h2>
         </p>
     </div>
 

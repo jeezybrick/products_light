@@ -49,11 +49,11 @@
 
                         <!-- Accordion for sort by category -->
                         <accordion close-others="oneAtATime">
-                            <accordion-group heading="Category filter" is-open="status.isFirstOpen"
+                            <accordion-group heading="Category filter" is-open="false"
                                              is-disabled="status.isFirstDisabled" popover="Click to sort by category"
                                              popover-trigger="mouseenter">
-                                <ul class="text-left">
-                                    <li class="all-categories-list"><a href="javascript:;" ng-click="showAllItems()">All
+                                <ul class="category-filter-list text-left">
+                                    <li id="parent_category" class="all-categories-list"><a href="javascript:;" ng-click="showAllItems()">All
                                         categories</a></li>
                                     <li ng-repeat="category in categories | limitTo:5">
                                         <a href="javascript:;" ng-click="sortByCategory(category.name)">{{ category.name
@@ -68,7 +68,6 @@
                             </accordion-group>
                         </accordion>
                     </div>
-
 
                 <div class="main-list-block col-lg-9 col-md-8 col-sm-12 col-xs-12">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-if="items.results.length">

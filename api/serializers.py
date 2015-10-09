@@ -73,7 +73,7 @@ class ItemSerializer(serializers.Serializer):
         request = self.context.get('request', None)
         try:
             request.user.cart_set.get(item__id=obj.pk)
-        except ObjectDoesNotExist:
+        except (ObjectDoesNotExist, AttributeError):
             in_cart = False
         else:
             in_cart = True

@@ -1,7 +1,7 @@
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
     .main-greet {
-        font-size: 48px;
+        font-size: 46px;
     }
 
     .main-list-block {

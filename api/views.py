@@ -1,7 +1,7 @@
 __author__ = 'user'
 from django.http import Http404
 from django.utils.datastructures import MultiValueDictKeyError
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from rest_framework import generics, status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
@@ -97,18 +97,19 @@ class RateList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        try:
-            rate = Rate.objects.get(
-                user=request.user.id, item=request.data["item"])
-        except ObjectDoesNotExist:
-            rate = None
-        serializer = serializers.RateSerializer(
-            data=request.data, instance=rate)
-        if serializer.is_valid():
-            serializer.save(user=self.request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        if request.user.is_authenticated():
+            try:
+                rate = Rate.objects.get(
+                    user=request.user.id, item=request.data["item"])
+            except ObjectDoesNotExist:
+                rate = None
+            serializer = serializers.RateSerializer(
+                data=request.data, instance=rate)
+            if serializer.is_valid():
+                serializer.save(user=self.request.user)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        raise PermissionDenied
 
 """List of shop-users"""
 
@@ -218,7 +219,7 @@ class ActionList(generics.GenericAPIView):
         try:
             action = self.request.user.action_set.get(
                 item__id=request.data["item"])
-        except ObjectDoesNotExist:
+        except (ObjectDoesNotExist, AttributeError):
             action = None
         serializer = serializers.ActionSerializer(
             data=request.data, instance=action)
