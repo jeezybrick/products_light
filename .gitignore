@@ -7,3 +7,4 @@ api/__pycache__/*
 celerybeat-schedule
 celeryd.log
 celeryd.pid
+nohup.out

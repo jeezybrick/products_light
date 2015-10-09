@@ -9,10 +9,13 @@ class SimpleTest(TestCase):
 
     def setUp(self):
         # User objects
-        self.user1 = MyUser.objects.create_user('temporary', 'temporary@gmail.com', 'temporary', is_shop=False)
-        self.user2 = MyUser.objects.create_user('temporary2', 'temporary_second@gmail.com', 'temporary', is_shop=False)
+        self.user1 = MyUser.objects.create_user(
+            'temporary', 'temporary@gmail.com', 'temporary', is_shop=False)
+        self.user2 = MyUser.objects.create_user(
+            'temporary2', 'temporary_second@gmail.com', 'temporary', is_shop=False)
         # Shop-user
-        self.user_shop = MyUser.objects.create_user('temporary3', 'temporary_shop@gmail.com', 'temporary', is_shop=True)
+        self.user_shop = MyUser.objects.create_user(
+            'temporary3', 'temporary_shop@gmail.com', 'temporary', is_shop=True)
         # Item object
         self.item = Item(name='Phone 8080', price='1234', image_url='http://127.0.0.1:8000/products_ang/',
                          description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum'
@@ -47,7 +50,8 @@ class SimpleTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_login_post(self):
-        response = self.client.post('/auth/login/', {'username': 'john', 'password': 'smith'})
+        response = self.client.post(
+            '/auth/login/', {'username': 'john', 'password': 'smith'})
         self.assertEqual(response.status_code, 200)
 
     def test_register_get(self):
@@ -55,20 +59,29 @@ class SimpleTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_register_post(self):
-        response = self.client.post('/auth/register/', {'username': 'john', 'password': 'smith'})
+        response = self.client.post(
+            '/auth/register/', {'username': 'john', 'password': 'smith'})
         self.assertEqual(response.status_code, 200)
 
+    """ List of items """
     def test_item_list(self):
         response = self.client.get('/products_ang/')
         self.assertEqual(response.status_code, 200)
 
+    """ Detail of item """
     def test_item_detail(self):
-        response = self.client.get(reverse('products_show', args=(self.item.id, )))
+        response = self.client.get(
+            reverse('products_show', args=(self.item.id, )))
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(reverse('products_show', args=(self.fake_item_id, )))
+        response = self.client.get(
+            reverse('products_show', args=(self.fake_item_id, )))
         self.assertEqual(response.status_code, 404)
 
+    """
+    test adding item
+    Item can add only shop-users
+    """
     def test_item_add(self):
 
         response = self.client.get(reverse('products_add'))
@@ -78,12 +91,14 @@ class SimpleTest(TestCase):
         response = self.client.get(reverse('products_add'))
         self.assertEqual(response.status_code, 403)
 
-        response = self.client.post(reverse('products_add'), {'username': 'john', 'password': 'smith'})
+        response = self.client.post(reverse('products_add'), {
+                                    'username': 'john', 'password': 'smith'})
         self.assertEqual(response.status_code, 403)
 
         self.client.login(username='temporary3', password='temporary')
         response = self.client.get(reverse('products_add'))
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(reverse('products_add'), {'username': 'john', 'password': 'smith'})
+        response = self.client.post(reverse('products_add'), {
+                                    'username': 'john', 'password': 'smith'})
         self.assertEqual(response.status_code, 200)

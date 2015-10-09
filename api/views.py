@@ -2,7 +2,7 @@ __author__ = 'user'
 from django.http import Http404
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from products.models import Item, Rate, MyUser
@@ -132,8 +132,7 @@ class ShopList(generics.GenericAPIView):
 
 
 # Detail of shop-users
-class ShopDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
-                 generics.DestroyAPIView):
+class ShopDetail(generics.RetrieveAPIView):
     serializer_class = serializers.ShopDetailSerializer
 
     def get_object(self):
@@ -155,6 +154,7 @@ class ShopDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
 class CartList(generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = serializers.CartSerializer
+    permission_classes = (ShopIsAuthorOrReadOnly, permissions.IsAuthenticated)
 
     def get(self, request):
 
@@ -182,16 +182,21 @@ class CartList(generics.GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# Detail of cart
+# Detail of cart. ID is item_id
 class CartDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
                  generics.DestroyAPIView):
+
+    permission_classes = (permissions.IsAuthenticated, )
     serializer_class = serializers.CartSerializer
 
     def get_object(self):
 
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
-        obj = self.request.user.cart_set.get(item__id=filter_kwargs['pk'])
+        try:
+            obj = self.request.user.cart_set.get(item__id=filter_kwargs['pk'])
+        except ObjectDoesNotExist:
+            raise Http404
         self.check_object_permissions(self.request, obj)
 
         return obj
