@@ -11,11 +11,42 @@ def random_string(length=100):
     return u''.join(random.choice(string.ascii_letters) for x in range(length))
 
 
+def random_email(length=10):
+    return u''.join(random.choice(string.ascii_letters) for x in range(length))
+
+
+def random_url(length=6):
+    return u''.join(random.choice(string.ascii_letters) for x in range(length))
+
+
 def random_price(fromm, to):
     return random.randint(fromm, to)
 
 
 class Command(BaseCommand):
+
+    """Create users"""
+    class UserFactory(factory.Factory):
+        class Meta:
+            model = models.MyUser
+
+        username = factory.LazyAttribute(lambda t: random_string(length=10))
+        email = factory.LazyAttribute(lambda t: random_email()+'@gmail.com')
+        password = factory.LazyAttribute(lambda t: random_string(length=10))
+
+    users = UserFactory.create_batch(10)
+    [user.save() for user in users]
+
+    """Create categories"""
+    class CategoryFactory(factory.Factory):
+        class Meta:
+            model = models.Category
+
+        name = factory.LazyAttribute(lambda t: random_string(length=10))
+        parent_category = None
+
+    categories = CategoryFactory.create_batch(50)
+    [category.save() for category in categories]
 
     """Create items"""
     class ItemFactory(factory.Factory):
@@ -24,8 +55,10 @@ class Command(BaseCommand):
 
         name = factory.Sequence(lambda n: 'item-{0}'.format(n))
         price = factory.LazyAttribute(lambda t: random_price(1, 10000))
-        image_url = 'https://github.com/jeezybrick/products_light'
+        image_url = factory.LazyAttribute(lambda t: 'https://' + random_url())
         description = factory.LazyAttribute(lambda t: random_string())
+        user_id = 1
+        quantity = factory.LazyAttribute(lambda t: random_price(0, 50))
 
     items = ItemFactory.create_batch(100)
     [item.save() for item in items]
@@ -38,7 +71,7 @@ class Command(BaseCommand):
         username = factory.LazyAttribute(lambda t: random_string(length=10))
         message = factory.LazyAttribute(lambda t: random_string())
         """Range of exiting id's items"""
-        item_id = factory.LazyAttribute(lambda t: random_price(320, 350))
+        item_id = factory.LazyAttribute(lambda t: random_price(5, 50))
 
     comments = CommentFactory.create_batch(100)
     [comment.save() for comment in comments]
