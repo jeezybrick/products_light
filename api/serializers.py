@@ -73,11 +73,10 @@ class ItemSerializer(serializers.Serializer):
 
     def get_is_item_in_cart(self, obj):
         request = self.context.get('request', None)
-        try:
-            request.user.cart_set.get(item__id=obj.pk)
-        except (ObjectDoesNotExist, AttributeError):
+        if request:
+            return models.Cart.objects.filter(user=request.user, item_id=obj.pk).exists()
+        else:
             return False
-        return True
 
     class Meta:
 

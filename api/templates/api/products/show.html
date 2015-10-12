@@ -20,7 +20,7 @@
             </h3>
         </div>
         <div class="col-lg-2" ng-if="isAuthUserIsOwner()">
-            <a href="#/{{ itemDetail.id }}/edit"
+            <a ng-href="#/{{ itemDetail.id }}/edit"
                class="btn btn-info pull-right" ng-show="showDetailOfItem"><i class="fa fa-pencil fa-lg"></i> Edit item</a>
         </div>
     </div>
