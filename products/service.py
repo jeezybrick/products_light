@@ -12,7 +12,7 @@ class CartService:
 class RateService:
 
     def get_rate(self, user, item_id):
-        return models.Rate.objects.filter(user_id=user.id, item=item_id)
+        return models.Rate.objects.filter(user_id=user.id, item=item_id).first()
 
     def get_user_rate(self, user, item_id):
         try:

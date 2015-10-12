@@ -7,7 +7,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from products.models import Item, Rate, MyUser
 from products import cache
-from products.service import CartService
+from products.service import CartService, RateService
 from api import serializers
 from api.utils import addItemIdToSession, removeItemIdFromSession
 from rest_framework.response import Response
@@ -98,11 +98,7 @@ class RateList(APIView):
 
     def post(self, request):
 
-            try:
-                rate = Rate.objects.get(
-                    user=request.user.id, item=request.data["item"])
-            except ObjectDoesNotExist:
-                rate = None
+            rate = RateService().get_rate(request.user, request.data["item"])
             serializer = serializers.RateSerializer(
                 data=request.data, instance=rate)
             if serializer.is_valid():
