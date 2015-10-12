@@ -97,7 +97,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(read_only=True)
 
     def get_rates(self, obj):
-        return cache.RateCache().get(item_id=obj.pk).aggregate(Avg('value'))['value__avg']
+        return RateService().get_avarage_rate(obj.pk)['value__avg']
 
     def get_user_rate(self, obj):
 

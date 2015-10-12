@@ -1,5 +1,6 @@
 from products import models
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 
 
@@ -20,3 +21,6 @@ class RateService:
         except ObjectDoesNotExist:
             user_rate = None
         return user_rate
+
+    def get_avarage_rate(self, item_id):
+        return models.Rate.objects.filter(item_id=item_id).aggregate(Avg('value'))

@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from rest_framework import generics, status, permissions
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
-from products.models import Item, Rate, MyUser
+from products.models import Item, MyUser
 from products import cache
 from products.service import CartService, RateService
 from api import serializers
@@ -98,7 +98,8 @@ class RateList(APIView):
 
     def post(self, request):
 
-            rate = RateService().get_rate(request.user, request.data["item"])
+            item_id = request.data.get('item', False)
+            rate = RateService().get_rate(request.user, item_id)
             serializer = serializers.RateSerializer(
                 data=request.data, instance=rate)
             if serializer.is_valid():

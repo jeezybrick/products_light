@@ -4,7 +4,6 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib import messages
-from django.db.models import Avg
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
 from django.template.response import TemplateResponse
@@ -13,7 +12,7 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.http import Http404
 from products import cache
-from products.service import CartService
+from products.service import CartService, RateService
 from .models import Rate, Category, Item, MyUser
 from products import forms
 from products import models
@@ -90,20 +89,17 @@ class ItemDetailView(View):
 
     def get(self, request, **kwargs):
 
+        # get item and current user rate to this item
         item = cache.ProductDetailCache().get(id=kwargs["pk"])
-
-        try:
-            user_rate = Rate.objects.get(
-                user=request.user.id, item=item.id)
-        except ObjectDoesNotExist:
-            user_rate = None
+        user_rate = RateService().get_rate(request.user, item.id)
 
         message = utils.message_of_quantity_items(item)
         item = utils.price_with_percent(item)
+
         context = {
             'comment_form': forms.AddComment,
             'rating_form': forms.AddRate(instance=user_rate),
-            'average_rating': Rate.objects.filter(item_id=self.kwargs["pk"]).aggregate(Avg('value')),
+            'average_rating': RateService().get_avarage_rate(item.id),
             'item': item,
             'message': message,
         }
