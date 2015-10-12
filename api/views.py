@@ -90,6 +90,7 @@ class CommentList(APIView):
 
 # Rating list
 class RateList(APIView):
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get(self, request):
         rates = cache.RateCache().get()
@@ -97,7 +98,7 @@ class RateList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        if request.user.is_authenticated():
+
             try:
                 rate = Rate.objects.get(
                     user=request.user.id, item=request.data["item"])
@@ -109,7 +110,6 @@ class RateList(APIView):
                 serializer.save(user=self.request.user)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        raise PermissionDenied
 
 """List of shop-users"""
 

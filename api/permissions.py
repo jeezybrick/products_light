@@ -17,4 +17,4 @@ class ShopIsAuthorOrReadOnly(permissions.BasePermission):
 
     def has_permission(self, request, view):
         item_id = request.GET.get('item', False)
-        return True if is_safe_method(request) else Item.objects.filter(id=item_id, user=request.user).exists()
+        return True if is_safe_method(request) else Item.objects.filter(id=item_id, user_id=request.user.id).exists()
