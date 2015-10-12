@@ -181,6 +181,8 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
     $scope.max = 10;
     $scope.isReadonly = false;
 
+    $scope.itemDetailLoadError = false;
+
     /**
      * Get item detail
      */
@@ -189,6 +191,9 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
         $scope.itemDetailLoad = true;
         $scope.rate = $scope.itemDetail.user_rate;
 
+    }, function(error){
+
+        $scope.itemDetailLoadError = error.data.detail;
     });
 
     /**

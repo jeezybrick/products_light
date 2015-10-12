@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from products import models
 from django.db.models import Avg
 from products import cache
-from products.service import CartService
+from products.service import CartService, RateService
 
 
 class UserSerializer(serializers.ModelField):
@@ -100,12 +100,9 @@ class ItemDetailSerializer(serializers.ModelSerializer):
         return cache.RateCache().get(item_id=obj.pk).aggregate(Avg('value'))['value__avg']
 
     def get_user_rate(self, obj):
+
         request = self.context.get('request', None)
-        try:
-            user_rate = models.Rate.objects.get(
-                user=request.user.id, item=obj.id).value
-        except ObjectDoesNotExist:
-            user_rate = None
+        user_rate = RateService().get_user_rate(request.user, item_id=obj.pk)
 
         return user_rate
 

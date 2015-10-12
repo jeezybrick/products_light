@@ -9,8 +9,9 @@
     <div ng-controller="itemCtrl" ng-cloak>
 
         {% verbatim %}
+        <!-- Error messages -->
             <div class="item-in-cart-message row">
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center" style="">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center">
                     <span ng-if="itemInCartSuccess">Item add to cart!</span>
                     <span ng-if="!itemLoad">Loading...</span>
                     <span ng-if="itemInCartError">Please Log In or register!</span>
