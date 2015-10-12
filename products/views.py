@@ -89,10 +89,8 @@ class ItemDetailView(View):
     template_name = 'products/products/show.html'
 
     def get(self, request, **kwargs):
-        try:
-            item = cache.ProductDetailCache().get(id=kwargs["pk"])
-        except ObjectDoesNotExist:
-            raise Http404
+
+        item = cache.ProductDetailCache().get(id=kwargs["pk"])
 
         try:
             user_rate = Rate.objects.get(
@@ -282,7 +280,7 @@ class ShopDetailView(View):
     template_name = 'products/shops/show.html'
 
     def get(self, request, **kwargs):
-        shop = cache.ShopCache().get(id=kwargs["pk"])
+        shop = cache.ShopDetailCache().get(id=kwargs["pk"])
         context = {
             'shop': shop,
         }

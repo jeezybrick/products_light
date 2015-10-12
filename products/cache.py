@@ -1,5 +1,6 @@
 
 from django.core.exceptions import ImproperlyConfigured
+from django.shortcuts import get_object_or_404
 from products.models import Item, Category, Rate, Comment, MyUser
 from cacheback.base import Job
 
@@ -42,7 +43,7 @@ class ProductDetailCache(BaseModelJob):
                 }
             )
 
-        obj = self.model.objects.get(**kwargs)
+        obj = get_object_or_404(self.model, **kwargs)
         return obj
 
     model = Item
@@ -60,7 +61,7 @@ class RateCache(BaseModelJob):
     model = Rate
 
 
-class ShopCache(BaseModelJob):
+class ShopDetailCache(BaseModelJob):
 
     lifetime = 1
 
@@ -72,7 +73,7 @@ class ShopCache(BaseModelJob):
                 }
             )
 
-        obj = self.model.objects.get(**kwargs)
+        obj = get_object_or_404(self.model, **kwargs)
         return obj
 
     model = MyUser

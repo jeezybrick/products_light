@@ -55,9 +55,7 @@ class ItemDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
 
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
-        obj = cache.ProductCache().get(id=filter_kwargs['pk']).first()
-        if obj is None:
-            raise Http404
+        obj = cache.ProductDetailCache().get(id=filter_kwargs['pk'])
         self.check_object_permissions(self.request, obj)
 
         return obj
@@ -139,10 +137,7 @@ class ShopDetail(generics.RetrieveAPIView):
 
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
-        try:
-            obj = cache.ShopCache().get(id=filter_kwargs['pk'])
-        except ObjectDoesNotExist:
-            raise Http404
+        obj = cache.ShopDetailCache().get(id=filter_kwargs['pk'])
         self.check_object_permissions(self.request, obj)
 
         return obj
