@@ -38,7 +38,7 @@ class LoginView(View):
         form = self.form_class(request)
         context = {
             'form': form,
-            'title': 'Sign In',
+            'title': _('Sign In'),
         }
         return TemplateResponse(request, self.template_name, context)
 
@@ -46,7 +46,7 @@ class LoginView(View):
         form = self.form_class(request, data=request.POST)
         context = {
             'form': form,
-            'title': 'Sign In',
+            'title': _('Sign In'),
         }
         if form.is_valid():
             auth_login(request, form.get_user())

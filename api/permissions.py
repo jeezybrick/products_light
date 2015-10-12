@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext_lazy as _
 from rest_framework import permissions
 from api.utils import is_safe_method
 from products.models import Item
@@ -13,7 +14,7 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
 
 class ShopIsAuthorOrReadOnly(permissions.BasePermission):
 
-    message = 'Only owner can add or edit action to this item'
+    message = _('Only owner can add or edit action to this item')
 
     def has_permission(self, request, view):
         item_id = request.data.get('item', False)
