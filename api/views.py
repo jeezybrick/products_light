@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from products.models import Item, Rate, MyUser
 from products import cache
 from api import serializers
+from api.utils import addItemIdToSession, removeItemIdFromSession
 from rest_framework.response import Response
 from haystack.query import SearchQuerySet
 from api.permissions import IsAuthorOrReadOnly, ShopIsAuthorOrReadOnly
@@ -178,6 +179,8 @@ class CartList(generics.GenericAPIView):
             data=request.data, instance=item)
         if serializer.is_valid():
             serializer.save(user=self.request.user)
+            # add item id to session
+            addItemIdToSession(request)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -200,6 +203,14 @@ class CartDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
         self.check_object_permissions(self.request, obj)
 
         return obj
+
+    def destroy(self, request, *args, **kwargs):
+        print(kwargs)
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        # remove item id from session
+        removeItemIdFromSession(request, kwargs['pk'])
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # Action list and details for current auth user

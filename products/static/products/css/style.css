@@ -126,6 +126,14 @@
     padding: 0;
 }
 
+#cart-on-nav-xs > a {
+    padding: 0;
+}
+
+#cart-on-nav > a {
+    padding: 0;
+}
+
 .add-cart-button {
     padding: 15px;
 }
@@ -139,9 +147,17 @@
     animation: fadeOut 2s;
 }
 
-.main-list.ng-enter {
+.wrapperOnList.ng-enter {
 
     animation: fadeIn 1s;
+}
+
+.item-in-cart-message.ng-enter {
+    animation: fadeIn 1s;
+}
+
+.item-in-cart-message.ng-leave {
+    animation: fadeOut 2s;
 }
 
 /* !ng-animate */
@@ -227,14 +243,28 @@
 .add-action-button {
     margin-bottom: 15px;
 }
-.main-list-wrapper{
+
+.main-list-wrapper {
     padding: 0;
 }
 
-.category-filter-list > li > a{
+.category-filter-list > li > a {
     color: gray;
 }
 
 #parent_category > a {
     color: red;
+}
+
+.item-in-cart-message {
+    z-index: 99999;
+}
+
+.item-in-cart-message > div {
+    background-color: #f9edbe;
+    position: fixed;
+    left: 40%;
+    top: 0;
+    border-color: #f0c36d;
+    z-index: 999999;
 }

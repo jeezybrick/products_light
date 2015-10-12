@@ -2,7 +2,7 @@
  * Created by user on 05.10.15.
  */
 
-myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Cart) {
+myApp.controller('itemCtrl', function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
 
     // sort
     $scope.sortField = 'pk';
@@ -16,8 +16,6 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
     /**
      * Get list of items and list of categories
      */
-
-
     $scope.items = Item.query(function () {
 
         $scope.itemLoad = true;
@@ -26,15 +24,18 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
 
             $scope.categoryLoad = true;
 
+        }, function(){
+            $scope.categoryLoadError = true;
         });
 
 
+    }, function(){
+        $scope.itemLoadError = true;
     });
 
     /**
      * Show item detail
      */
-
     $scope.showItem = function () {
         $scope.showDetailOfItem = true;
 
@@ -43,7 +44,6 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
     /**
      * Filter items by category
      */
-
     $scope.sortByCategory = function (name) {
 
         $scope.items = Item.query(
@@ -116,7 +116,17 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, Item, Category, Ca
         $scope.cart.$save(function () {
 
             $scope.items = Item.query();
+            $scope.itemInCartSuccess = true;
 
+            $scope.time = $timeout(function () {
+
+                $scope.itemInCartSuccess = false;
+
+            }, 2000);
+
+
+        }, function(error){
+            $scope.itemInCartError = error.data.detail;
         });
 
     };
@@ -300,6 +310,8 @@ myApp.controller('categoryListCtrl', function ($scope, Category) {
 
         $scope.categoryLoad = true;
 
+    }, function(){
+        $scope.categoryLoadError = true;
     });
 
 });

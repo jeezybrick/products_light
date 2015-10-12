@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import ugettext_lazy as _
 from products import models
 from django.db.models import Avg
 from products import cache
@@ -35,8 +36,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def validate_message(self, value):
         if len(value) < 5:
-            raise serializers.ValidationError(
-                "Text is too short!")
+            raise serializers.ValidationError(_("Text is too short!"))
         return value
 
 
@@ -44,8 +44,7 @@ class RateSerializer(serializers.ModelSerializer):
 
     def validate_value(self, value):
         if value > 10 or value < 0:
-            raise serializers.ValidationError(
-                "Invalid value!")
+            raise serializers.ValidationError(_("Invalid value!"))
         return value
 
     class Meta:
@@ -74,11 +73,8 @@ class ItemSerializer(serializers.Serializer):
         try:
             request.user.cart_set.get(item__id=obj.pk)
         except (ObjectDoesNotExist, AttributeError):
-            in_cart = False
-        else:
-            in_cart = True
-
-        return in_cart
+            return False
+        return True
 
     class Meta:
 
