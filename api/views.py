@@ -55,9 +55,8 @@ class ItemDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
 
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
-        try:
-            obj = cache.ProductDetailCache().get(id=filter_kwargs['pk'])
-        except ObjectDoesNotExist:
+        obj = cache.ProductCache().get(id=filter_kwargs['pk']).first()
+        if obj is None:
             raise Http404
         self.check_object_permissions(self.request, obj)
 
@@ -170,11 +169,8 @@ class CartList(generics.GenericAPIView):
         return Response(serializer.data)
 
     def post(self, request):
-        try:
-            item = self.request.user.cart_set.get(
-                item__id=request.data["item"])
-        except ObjectDoesNotExist:
-            item = None
+
+        item = self.request.user.cart_set.filter(item__id=request.data["item"]).first()
         serializer = serializers.CartSerializer(
             data=request.data, instance=item)
         if serializer.is_valid():
@@ -197,9 +193,8 @@ class CartDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
 
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
-        try:
-            obj = self.request.user.cart_set.get(item__id=filter_kwargs['pk'])
-        except ObjectDoesNotExist:
+        obj = self.request.user.cart_set.filter(item__id=filter_kwargs['pk']).first()
+        if obj is None:
             raise Http404
         self.check_object_permissions(self.request, obj)
 
