@@ -7,6 +7,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from products.models import Item, Rate, MyUser
 from products import cache
+from products.service import CartService
 from api import serializers
 from api.utils import addItemIdToSession, removeItemIdFromSession
 from rest_framework.response import Response
@@ -153,7 +154,7 @@ class CartList(generics.GenericAPIView):
 
     def get(self, request):
 
-        queryset = self.request.user.cart_set.all()
+        queryset = CartService().get_cart(self.request.user)
         page = self.paginate_queryset(queryset)
 
         if page is not None:

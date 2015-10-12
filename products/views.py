@@ -191,8 +191,7 @@ class AddCommentView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             first = form.save(commit=False)
-            first.item = get_object_or_404(
-                cache.ProductCache.model, id=kwargs["pk"])
+            first.item = get_object_or_404(models.Item, id=kwargs["pk"])
             first.save()
             messages.success(self.request, _('Your comment add!'))
             return HttpResponseRedirect(reverse('products_show', args=(kwargs["pk"],)))
@@ -213,8 +212,7 @@ class AddRateView(LoginRequiredMixin, View):
         form = self.form_class(request.POST, instance=rate)
         if form.is_valid():
             first = form.save(commit=False)
-            first.item = get_object_or_404(
-                cache.ProductCache.model, id=kwargs["pk"])
+            first.item = get_object_or_404(models.Item, id=kwargs["pk"])
             first.user = request.user
             first.save()
             messages.success(self.request, _('Thanks for rate!'))
