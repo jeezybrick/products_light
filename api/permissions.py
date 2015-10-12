@@ -1,6 +1,8 @@
 from rest_framework import permissions
 from api.utils import is_safe_method
-from products.models import Item, MyUser
+from products.models import Item
+
+""" check if auth user is author to this item """
 
 
 class IsAuthorOrReadOnly(permissions.BasePermission):
@@ -11,8 +13,8 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
 
 class ShopIsAuthorOrReadOnly(permissions.BasePermission):
 
-    message = 'Only owner can add action'
+    message = 'Only owner can add or edit action to this item'
 
     def has_permission(self, request, view):
-        item = Item.objects.get(id=request.data['item'])
-        return True if is_safe_method(request) else item.user == request.user
+        item_id = request.GET.get('item', False)
+        return True if is_safe_method(request) else Item.objects.filter(id=item_id, user=request.user).exists()
