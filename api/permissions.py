@@ -16,5 +16,5 @@ class ShopIsAuthorOrReadOnly(permissions.BasePermission):
     message = 'Only owner can add or edit action to this item'
 
     def has_permission(self, request, view):
-        item_id = request.GET.get('item', False)
+        item_id = request.data.get('item', False)
         return True if is_safe_method(request) else Item.objects.filter(id=item_id, user_id=request.user.id).exists()
