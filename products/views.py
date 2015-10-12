@@ -13,6 +13,7 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.http import Http404
 from products import cache
+from products.service import CartService
 from .models import Rate, Category, Item, MyUser
 from products import forms
 from products import models
@@ -72,11 +73,6 @@ class ItemListView(View):
         paginator = Paginator(products, 6)
         page = request.GET.get('page')
 
-        # Cart set for auth user
-        cart = None
-        if self.request.user.is_authenticated():
-            cart = self.request.user.cart_set.all()
-
         try:
             products = paginator.page(page)
         except PageNotAnInteger:
@@ -85,8 +81,7 @@ class ItemListView(View):
             products = paginator.page(paginator.num_pages)
 
         return render(request, self.template_name, {'products': products,
-                                                    'facets': facets,
-                                                    'cart': cart})
+                                                    'facets': facets})
 
 
 # Item detail
@@ -300,7 +295,7 @@ class CartView(LoginRequiredMixin, View):
     form_class = forms.AddItemToCart
 
     def get(self, request):
-        cart = self.request.user.cart_set.all()
+        cart = CartService().get_cart(request.user)
         context = {
             'cart': cart,
         }

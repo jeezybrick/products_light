@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from products import models
 from django.db.models import Avg
 from products import cache
+from products.service import CartService
 
 
 class UserSerializer(serializers.ModelField):
@@ -74,7 +75,7 @@ class ItemSerializer(serializers.Serializer):
     def get_is_item_in_cart(self, obj):
         request = self.context.get('request', None)
         if request:
-            return models.Cart.objects.filter(user=request.user, item_id=obj.pk).exists()
+            return CartService().get_cart(request.user, item_id=obj.pk).exists()
         else:
             return False
 
