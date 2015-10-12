@@ -155,7 +155,7 @@ class ShopDetail(generics.RetrieveAPIView):
 class CartList(generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = serializers.CartSerializer
-    permission_classes = (ShopIsAuthorOrReadOnly, permissions.IsAuthenticated)
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get(self, request):
 
