@@ -324,7 +324,7 @@ myApp.controller('categoryListCtrl', function ($scope, Category) {
 
         $scope.categoryLoad = true;
 
-    }, function(){
+    }, function(error){
         $scope.categoryLoadError = true;
     });
 
