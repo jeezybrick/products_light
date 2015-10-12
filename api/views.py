@@ -179,6 +179,7 @@ class CartList(generics.GenericAPIView):
             data=request.data, instance=item)
         if serializer.is_valid():
             serializer.save(user=self.request.user)
+
             # add item id to session
             addItemIdToSession(request)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -205,9 +206,9 @@ class CartDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
         return obj
 
     def destroy(self, request, *args, **kwargs):
-        print(kwargs)
         instance = self.get_object()
         self.perform_destroy(instance)
+
         # remove item id from session
         removeItemIdFromSession(request, kwargs['pk'])
         return Response(status=status.HTTP_204_NO_CONTENT)

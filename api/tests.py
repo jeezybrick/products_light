@@ -34,8 +34,8 @@ class SimpleTest(TestCase):
         # non exists item id
         self.fake_id = 9999
         # add action dict
-        self.action_values = {'item': self.item, 'shop': self.user_shop, 'description': 'test desc', 'new_price': 1224,
-                              'period_from': datetime.date.today, 'period_to': datetime.date.today}
+        self.action_values = {'item': str(self.item.id), 'description': 'test desc',
+                              'new_price': 1224, 'period_from': "2015-10-05", 'period_to': "2015-10-12"}
         self.client = Client()
 
     def tearDown(self):
@@ -123,10 +123,18 @@ class SimpleTest(TestCase):
         response = self.client.post(reverse('action-list'), self.action_values)
         self.assertEqual(response.status_code, 403)
 
-        # post by auth user
-        self.client.login(username='temporary3', password='temporary')
+        # post by auth user and owner
+        self.client.login(username='temporary', password='temporary')
         response = self.client.get(reverse('action-list'))
         self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(reverse('action-list'), self.action_values)
+        self.assertEqual(response.status_code, 201)
+
+        # post by auth user and NO owner of item
+        self.client.login(username='temporary', password='temporary')
+        response = self.client.post(reverse('action-list'), self.action_values)
+        self.assertEqual(response.status_code, 403)
 
     """ Add category(no post method) """
 

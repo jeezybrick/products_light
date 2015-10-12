@@ -298,6 +298,15 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
     };
 
+    /**
+     * Return true if comments exists and number of comments bigger then pagesize
+     */
+    $scope.isCommentsExistsAndCommentsLengthBiggerThenPagesize = function () {
+
+        return $scope.itemDetail.comments.length && $scope.itemDetail.comments.length > $scope.pageSize;
+
+    };
+
 });
 
 

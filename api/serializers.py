@@ -65,10 +65,10 @@ class ItemSerializer(serializers.Serializer):
     rate = serializers.FloatField()
     quantity = serializers.IntegerField()
     quantity_message = serializers.CharField()
-    in_cart = serializers.SerializerMethodField()
+    is_item_in_cart = serializers.SerializerMethodField()
     action = serializers.IntegerField()
 
-    def get_in_cart(self, obj):
+    def get_is_item_in_cart(self, obj):
         request = self.context.get('request', None)
         try:
             request.user.cart_set.get(item__id=obj.pk)
