@@ -13,22 +13,30 @@
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="itemDetailLoad">
     <div class="row">
 
-        <div class="add-action-button col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="isAuthUserIsOwner()">
-            <a ng-href="#/{{ itemDetail.id }}/action/add" class="btn btn-success" type="button"
-                    ng-click="addAction(item.pk)">
-                <i class="fa fa-plus fa-lg"></i> Add action
-            </a>
-        </div>
-
-        <div class="col-lg-10">
+        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-6">
             <h3 class="detail-item-attr">
                 ID:{{ itemDetail.id }}
             </h3>
         </div>
-        <div class="col-lg-2" ng-if="isAuthUserIsOwner()">
-            <a ng-href="#/{{ itemDetail.id }}/edit"
-               class="btn btn-info pull-right" ng-show="showDetailOfItem"><i class="fa fa-pencil fa-lg"></i> Edit item</a>
+
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 text-right" ng-if="isAuthUserIsOwner()">
+            <div class="btn-group">
+                <a class="btn btn-primary" ng-href="#/{{ itemDetail.id }}/edit">
+                    Edit
+                </a>
+                <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+                    <span class="fa fa-caret-down"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a ng-href="#/{{ itemDetail.id }}/edit"> Edit</a></li>
+                    <li><a ng-href="#/{{ itemDetail.id }}/action/add"> Add action</a></li>
+                    <li class="divider"></li>
+                    <li class="disabled"><a href="javascript:void(0);">
+                        <i class="i"></i> Add item</a>
+                    </li>
+                </ul>
+            </div>
         </div>
+
     </div>
     <h3>Name:{{ itemDetail.name }}</h3>
 
