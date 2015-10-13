@@ -36,13 +36,13 @@
                     <div class="main-list col-lg-4 col-ms-4 col-sm-6 col-xs-12">
                             <div class="row">
                                 <div class="notes_labels col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h2>ID:{{ note.id }}</h2>
+                                    <h2>{% trans "ID:" %}{{ note.id }}</h2>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h4>Name:{{ note.name|truncatechars:30 }}</h4>
+                                    <h4>{% trans "Name:" %}{{ note.name|truncatechars:30 }}</h4>
                                 </div>
                             </div>
-                            <h4>Sub:</h4>
+                            <h4>{% trans "Sub:" %}</h4>
                             <ul>
                                 {% for sub in note.category_set.all %}
                                     <li>{{ sub }}</li>
@@ -61,10 +61,10 @@
             <nav>
                 <ul class="pager">
                     {% if page_obj.has_previous %}
-                        <li><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                        <li><a href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a></li>
                     {% endif %}
                     {% if page_obj.has_next %}
-                        <li><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                        <li><a href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a></li>
                     {% endif %}
                 </ul>
             </nav>

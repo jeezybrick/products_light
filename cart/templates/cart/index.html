@@ -32,16 +32,16 @@
             <div class="cart-choose-button col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <div class="btn-group">
                     <a class="btn btn-primary" href="javascript:void(0);" ng-click="cart.toggleAll()">
-                        <i ng-class="{'fa fa-square' : !allItemActive, 'fa fa-check-square-o' : allItemActive}"></i> Choose
+                        <i ng-class="{'fa fa-square' : !allItemActive, 'fa fa-check-square-o' : allItemActive}"></i> {% trans "Choose" %}
                     </a>
                     <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
                         <span class="fa fa-caret-down"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="javascript:void(0);" ng-click="cart.chooseAll()"> All</a></li>
-                        <li class="disabled"><a href="javascript:void(0);"> First</a></li>
+                        <li><a href="javascript:void(0);" ng-click="cart.chooseAll()"> {% trans "All" %}</a></li>
+                        <li class="disabled"><a href="javascript:void(0);"> {% trans "First" %}</a></li>
                         <li class="divider"></li>
                         <li><a href="javascript:void(0);" ng-click="cart.chooseNothing()">
-                            <i class="i"></i> Nothing</a>
+                            <i class="i"></i> {% trans "Nothing" %}</a>
                         </li>
                     </ul>
                 </div>
@@ -49,7 +49,7 @@
 
             <div class="cart-choose-button col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
                     <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">
-                        <i class="fa fa-plus"></i> Buy choosed
+                        <i class="fa fa-plus"></i> {% trans "Buy choosed" %}
                     </button>
             </div>
         {% endif %}
