@@ -1,0 +1,270 @@
+.main-content {
+    margin-bottom: 80px;
+}
+
+.footer-text {
+    margin: 20px;
+}
+
+.footer-text > a {
+    float: none;
+}
+
+.main-list {
+    margin-bottom: 20px;
+    padding: 0 10px;
+    min-height: 300px;
+    max-height: 250px;
+    overflow: scroll;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.52), 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.main-list-top > h2 {
+    margin-top: 0;
+}
+
+.main-list-top > div {
+    margin-top: 20px;
+}
+
+.main-list-top-pencil {
+    margin-top: 20px;
+}
+
+.main-list-top-pencil > a {
+    color: black;
+}
+
+/*
+.lal:hover {
+    overflow: visible;
+}
+*/
+
+.splash {
+    display: none;
+}
+
+[ng-cloak].splash {
+    background-color: #428bca;
+    width: 100%;
+    text-align: center;
+    color: white;
+    display: block !important;
+}
+
+#login_nav {
+    margin-right: 15px;
+}
+
+.button-add-something {
+    margin-top: 25px;
+}
+
+.word-break {
+    word-break: break-all;
+}
+
+#editItemSuccessMessage {
+    text-align: center;
+    margin: 50px 0 0 0;
+    position: fixed;
+    top: 0;
+    padding: 0;
+    transition: all 3s;
+    -webkit-transition: all 2s;
+
+}
+
+.bg-primary {
+    padding: 20px;
+    width: 300px;
+}
+
+.bg-primary > a {
+    color: #FFFF00;
+}
+
+.signup-decision {
+    margin: 30px;
+}
+
+.delete-item-form {
+    margin: 10px 0 0 0;
+}
+
+.detail-item-attr {
+    margin: 0;
+}
+
+.rate-success-text {
+    color: darkgreen;
+}
+
+.progressbar-text {
+    color: white;
+    white-space: nowrap;
+}
+
+.comment-unit {
+    border-bottom: solid 1px black;
+}
+
+.error-comment-message {
+    color: red;
+}
+
+.comment-form {
+    margin-top: 20px;
+}
+
+.item-detail-header {
+    word-break: break-all;
+}
+
+.nav-cart {
+    padding: 0;
+}
+
+#cart-on-nav-xs > a {
+    padding: 0;
+}
+
+#cart-on-nav > a {
+    padding: 0;
+}
+
+.add-cart-button {
+    padding: 15px;
+}
+
+/* ng-animate */
+#editItemSuccessMessage.ng-enter {
+    animation: fadeInDown 1s;
+}
+
+#editItemSuccessMessage.ng-leave {
+    animation: fadeOut 2s;
+}
+
+.wrapperOnList.ng-enter {
+
+    animation: fadeIn 1s;
+}
+
+.item-in-cart-message.ng-enter {
+    animation: fadeIn 1s;
+}
+
+.item-in-cart-message.ng-leave {
+    animation: fadeOut 2s;
+}
+
+/* !ng-animate */
+
+.open-cart {
+    background-color: #428bca;
+    max-width: 115px;
+    padding: 10px;
+    color: white;
+}
+
+.open-cart div > a {
+    color: white;
+}
+
+.open-cart div .fa-check {
+    color: lawngreen;
+}
+
+.open-cart div .fa-times {
+    color: red;
+}
+
+/* Validation Angular */
+.edit_item_form input.ng-invalid.ng-invalid {
+    border-color: #a94442;
+}
+
+.help-block-error {
+    color: #a94442;
+}
+
+.zero-quantity-item {
+    background-color: #E7E7E6;
+}
+
+.main-list-cart {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+}
+
+.cart-panel a {
+    color: black;
+}
+
+.cart-panel .trash-icon {
+    color: red;
+}
+
+.cart-panel .hand-icon {
+    margin-right: 10px;
+}
+
+.panel-primary-active {
+    background-color: #337ab7;
+}
+
+.cart-choose-button {
+    margin: 15px 0;
+}
+
+.oldprice {
+    text-decoration: none; /*we're replacing the default line-through*/
+    position: relative;
+    display: inline-block;
+    color: #999;
+}
+
+.oldprice:after {
+    content: ""; /* required property */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-top: 2px solid red;
+    height: 55%;
+    width: 100%;
+    transform: rotateZ(-4deg);
+}
+
+.newprice {
+    color: green;
+}
+
+.add-action-button {
+    margin-bottom: 15px;
+}
+
+.main-list-wrapper {
+    padding: 0;
+}
+
+.category-filter-list > li > a {
+    color: gray;
+}
+
+#parent_category > a {
+    color: red;
+}
+
+.item-in-cart-message {
+    z-index: 99999;
+}
+
+.item-in-cart-message > div {
+    background-color: #f9edbe;
+    position: fixed;
+    left: 40%;
+    top: 0;
+    border-color: #f0c36d;
+    z-index: 999999;
+}
