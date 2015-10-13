@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import View, ListView
+from django.views.generic import View
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -10,10 +10,9 @@ from django.template.response import TemplateResponse
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-from django.http import Http404
 from products import cache
-from products.service import CartService, RateService
-from .models import Rate, Category, Item, MyUser
+from products.service import  RateService
+from .models import Rate, Item, MyUser
 from products import forms
 from products import models
 from products import utils
@@ -249,29 +248,6 @@ class ShopDetailView(View):
             'shop': shop,
         }
         return render(request, self.template_name, context)
-
-
-# List of items in cart for
-class CartView(LoginRequiredMixin, View):
-    template_name = 'products/cart/index.html'
-    form_class = forms.AddItemToCart
-
-    def get(self, request):
-        cart = CartService().get_cart(request.user)
-        context = {
-            'cart': cart,
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            first = form.save(commit=False)
-            first.user = request.user
-            first.save()
-            messages.success(self.request, _('Item add to cart!'))
-            return HttpResponseRedirect(reverse('products_list'))
-        return render(request, self.template_name, {'form': form})
 
 
 """ View for add/edit action for item """

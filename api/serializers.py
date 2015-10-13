@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from products import models
 from products.service import CartService, RateService
 from categories.models import Category
+from cart.models import Cart
 
 
 class UserSerializer(serializers.ModelField):
@@ -147,7 +148,7 @@ class CartSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
 
     class Meta:
-        model = models.Cart
+        model = Cart
         fields = ('user', 'item', )
 
 

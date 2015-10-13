@@ -41,9 +41,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     # my apps
-    'api',
     'products',
     'categories',
+    'cart',
+    'api',
     # third party apps
     'bootstrap3',
     'rest_framework',

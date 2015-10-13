@@ -58,14 +58,6 @@ class Rate(models.Model):
         return self.value
 
 
-class Cart(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    item = models.ForeignKey(Item)
-
-    def __unicode__(self):
-        return self.user
-
-
 class Action(models.Model):
     item = models.OneToOneField(Item)
     shop = models.ForeignKey(settings.AUTH_USER_MODEL)

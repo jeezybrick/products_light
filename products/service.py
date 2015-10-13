@@ -1,13 +1,13 @@
 from products import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Avg
-from django.shortcuts import get_object_or_404
+from cart.models import Cart
 
 
 class CartService:
 
     def get_cart(self, user, **kwargs):
-        return models.Cart.objects.filter(user_id=user.id, **kwargs)
+        return Cart.objects.filter(user_id=user.id, **kwargs)
 
 
 class RateService:

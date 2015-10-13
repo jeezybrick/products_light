@@ -135,13 +135,6 @@ class ModifyItem(forms.ModelForm):
                   'categories', 'description', 'quantity')
 
 
-class AddItemToCart(forms.ModelForm):
-
-    class Meta:
-        model = models.Cart
-        fields = ('item', )
-
-
 class ModifyAction(forms.ModelForm):
     period_from = forms.DateTimeField(widget=SelectDateWidget())
     period_to = forms.DateTimeField(widget=SelectDateWidget())

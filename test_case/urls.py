@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^', include('products.urls')),
     url(r'^', include('categories.urls')),
+    url(r'^', include('cart.urls')),
     url(r'^', include('api.urls')),
 ]
