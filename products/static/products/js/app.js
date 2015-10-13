@@ -11,10 +11,6 @@ var myApp = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'ngAnimate', 'ng
     $interpolateProvider.startSymbol('[[').endSymbol(']]');
 });
 
-var apiURLs = {
-        itemListUrl: '/api/items/'
-    },
-    jsonFormat = '?format=json';
 
 myApp.config(function ($routeProvider) {
     $routeProvider.
