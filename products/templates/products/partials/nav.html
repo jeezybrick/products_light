@@ -56,7 +56,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
-                    <li id="cart-on-nav" class="nav-cart hidden-xs">
+                    <li id="cart-on-nav" class="nav-cart hidden-xs{% ifactive "cart_list" %} active {% endifactive %}">
                         <a href="{% url 'cart_list' %}"
                                 {% if request.session.in_cart %}
                            class="animated infinite pulse"
