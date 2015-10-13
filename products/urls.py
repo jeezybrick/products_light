@@ -10,15 +10,6 @@ urlpatterns = [
         template_name='products/home.html'
     ), name='home'),
 
-    # Auth views
-    url(r'^auth/login/$', views.LoginView.as_view(),
-        name='login'),
-    url(r'^auth/logout/$', views.get_logout, name='logout'),
-    url(r"^auth/register/$", views.RegisterView.as_view(), name='register'),
-    url(r"^auth/register/success/$", TemplateView.as_view(
-        template_name='products/auth/register_success.html'
-    ), name='register_success'),
-
     # Django views
     url(r"^shops/$", views.ShopListView.as_view(), name='shop_list'),
     url(r"^shops/(?P<pk>\w+)/$", views.ShopDetailView.as_view(), name='shop_detail'),

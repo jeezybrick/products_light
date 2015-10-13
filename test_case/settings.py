@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'products',
     'categories',
     'cart',
+    'my_auth',
     'api',
     # third party apps
     'bootstrap3',

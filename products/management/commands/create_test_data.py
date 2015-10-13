@@ -32,7 +32,7 @@ class Command(BaseCommand):
         password = factory.LazyAttribute(lambda t: random_string(length=10))
 
     users = UserFactory.create_batch(10)
-    print('Wait.Users create...')
+    print('Wait.Users created...')
     [user.save() for user in users]
 
     """Create paent categories"""
@@ -44,7 +44,7 @@ class Command(BaseCommand):
         parent_category_id = None
 
     categories = ParentCategoryFactory.create_batch(10)
-    print('Wait.Parent categories create...')
+    print('Wait.Parent categories created...')
     [category.save() for category in categories]
 
     """Create sub categories"""
@@ -57,7 +57,7 @@ class Command(BaseCommand):
         parent_category_id = factory.LazyAttribute(lambda t: random_int(1, 9))
 
     categories = SubCategoryFactory.create_batch(50)
-    print('Wait.Sub categories create...')
+    print('Wait.Sub categories created...')
     [category.save() for category in categories]
 
     """Create items"""
@@ -73,7 +73,7 @@ class Command(BaseCommand):
         quantity = factory.LazyAttribute(lambda t: random_int(0, 50))
 
     items = ItemFactory.create_batch(100)
-    print('Wait.Items create...')
+    print('Wait.Items created...')
     [item.save() for item in items]
 
     """Create comments"""
@@ -87,7 +87,7 @@ class Command(BaseCommand):
         item_id = factory.LazyAttribute(lambda t: random_int(1, 99))
 
     comments = CommentFactory.create_batch(100)
-    print('Wait.Comments create...')
+    print('Wait.Comments created...')
     [comment.save() for comment in comments]
 
     def handle(self, *args, **options):

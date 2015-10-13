@@ -27,32 +27,6 @@ class LoginRequiredMixin(object):
         return login_required(view, login_url='/auth/login/')
 
 
-# For login
-class LoginView(View):
-    form_class = forms.MyLoginForm
-    template_name = 'products/auth/login.html'
-    success_url = '/'
-
-    def get(self, request):
-        form = self.form_class(request)
-        context = {
-            'form': form,
-            'title': _('Sign In'),
-        }
-        return TemplateResponse(request, self.template_name, context)
-
-    def post(self, request):
-        form = self.form_class(request, data=request.POST)
-        context = {
-            'form': form,
-            'title': _('Sign In'),
-        }
-        if form.is_valid():
-            auth_login(request, form.get_user())
-            return HttpResponseRedirect(self.success_url)
-        return TemplateResponse(request, self.template_name, context)
-
-
 # For list of items
 class ItemListView(View):
     template_name = 'products/products/index.html'
@@ -122,29 +96,12 @@ class ItemAddView(LoginRequiredMixin, CreateView):
         first = form.save(commit=False)
         first.user = self.request.user
         first.save()
-        messages.success(self.request, _('Item add!'))
+        messages.success(self.request, _('Item added!'))
         return super(ItemAddView, self).form_valid(form)
 
     def if_user_not_a_shop(self):
         if not self.request.user.is_shop:
             raise PermissionDenied
-
-
-# Registration view
-class RegisterView(View):
-    form_class = forms.MyRegForm
-    template_name = 'products/auth/register.html'
-
-    def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('register_success'))
-        return render(request, self.template_name, {'form': form})
 
 
 # For adding new comments to detail
@@ -183,12 +140,6 @@ class AddRateView(LoginRequiredMixin, View):
             messages.success(self.request, _('Thanks for rate!'))
             return HttpResponseRedirect(reverse('products_show', args=(kwargs["pk"],)))
         return render(request, self.template_name, {'form': form})
-
-
-# logout function
-def get_logout(request):
-    auth_logout(request)
-    return HttpResponseRedirect('/')
 
 
 # class for edit item

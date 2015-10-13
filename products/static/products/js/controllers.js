@@ -350,11 +350,6 @@ angular
 
 function CartCtrl($scope, $timeout, Cart) {
 
-    var vm = this;
-
-    vm.deleteItemInCart = deleteItemInCart;
-
-
     /**
      * Add item to cart
      */
@@ -373,7 +368,7 @@ function CartCtrl($scope, $timeout, Cart) {
     /**
      * Delete item form cart and query Item object
      */
-    function deleteItemInCart(itemId) {
+     $scope.deleteItemInCart = function(itemId) {
 
         bootbox.confirm("Are you sure you want to delete this item from the cart?", function (answer) {
 

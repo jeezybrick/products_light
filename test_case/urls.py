@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^', include('products.urls')),
     url(r'^', include('categories.urls')),
     url(r'^', include('cart.urls')),
+    url(r'^', include('my_auth.urls')),
     url(r'^', include('api.urls')),
 ]
