@@ -35,10 +35,13 @@ class CommentSerializer(serializers.ModelSerializer):
         model = models.Comment
         fields = ('username', 'message', 'item')
 
-    def validate_message(self, value):
-        if len(value) < 5:
+    def is_message_not_valid(self, value):
+        return len(value) < 5
+
+    def validate_message(self, message):
+        if self.is_message_not_valid(message):
             raise serializers.ValidationError(_("Text is too short!"))
-        return value
+        return message
 
 
 class RateSerializer(serializers.ModelSerializer):
