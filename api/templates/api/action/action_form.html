@@ -14,14 +14,14 @@
 
     <form name="action_add" class="form-horizontal action_add" role="form" method="POST" ng-submit="addAction()">
 
-        <div class="form-group"><label class="col-md-2 control-label" for="id_name">New price</label>
+        <div class="form-group"><label class="col-md-2 control-label" for="id_name">{% trans "New price" %}</label>
 
             <div class="col-md-7"><input class="form-control" id="id_price" maxlength="100" name="new_price"
                                          placeholder="new price of the item" required="required" title="" type="number"
                                          ng-model="new_price"></div>
         </div>
 
-        <div class="form-group"><label class="col-md-2 control-label" for="id_description">Description</label>
+        <div class="form-group"><label class="col-md-2 control-label" for="id_description">{% trans "Description" %}</label>
 
             <div class="col-md-7"><textarea class="form-control" cols="40" id="id_description" name="description"
                                             placeholder="description" required="required" rows="10"
@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div class="form-group"><label class="col-md-2 control-label" for="id_description">Pick 'from' date</label>
+        <div class="form-group"><label class="col-md-2 control-label" for="id_description">{% trans "Pick 'from' date" %}</label>
 
             <div class="col-md-7">
                 <div class="row">
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div class="form-group"><label class="col-md-2 control-label" for="id_description">Pick 'to' date</label>
+        <div class="form-group"><label class="col-md-2 control-label" for="id_description">{% trans "Pick 'to' date" %}</label>
 
             <div class="col-md-7">
                 <div class="row">
