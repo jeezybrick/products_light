@@ -27,20 +27,20 @@
     </ol>
     <hr>
 
-    <div class="row" ng-controller="CartCtrl">
+    <div class="row" ng-controller="CartCtrl as cart">
         {%  if cart %}
             <div class="cart-choose-button col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <div class="btn-group">
-                    <a class="btn btn-primary" href="javascript:void(0);" ng-click="toggleAll()">
+                    <a class="btn btn-primary" href="javascript:void(0);" ng-click="cart.toggleAll()">
                         <i ng-class="{'fa fa-square' : !allItemActive, 'fa fa-check-square-o' : allItemActive}"></i> Choose
                     </a>
                     <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
                         <span class="fa fa-caret-down"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="javascript:void(0);" ng-click="chooseAll()"> All</a></li>
+                        <li><a href="javascript:void(0);" ng-click="cart.chooseAll()"> All</a></li>
                         <li class="disabled"><a href="javascript:void(0);"> First</a></li>
                         <li class="divider"></li>
-                        <li><a href="javascript:void(0);" ng-click="chooseNothing()">
+                        <li><a href="javascript:void(0);" ng-click="cart.chooseNothing()">
                             <i class="i"></i> Nothing</a>
                         </li>
                     </ul>
@@ -60,10 +60,10 @@
                      class="cart-panel panel panel-primary">
                     <div class="panel-body">
                         {{ cart.item.name }}
-                        <a href="javascript:void(0);" class="trash-icon pull-right" ng-click="deleteItemInCart({{ cart.item.id }})">
+                        <a href="javascript:void(0);" class="trash-icon pull-right"  ng-click="cart.deleteItemInCart({{ cart.item.id }})">
                             <i class="fa fa-trash-o fa-3x"></i>
                         </a>
-                        <a href="javascript:void(0);" class="hand-icon pull-right" ng-click="chooseItem({{ cart.item.id }})">
+                        <a href="javascript:void(0);" class="hand-icon pull-right" ng-click="cart.chooseItem({{ cart.item.id }})">
                             <i class="fa fa-hand-pointer-o fa-3x"></i>
                         </a>
                     </div>
