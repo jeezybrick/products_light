@@ -1,12 +1,12 @@
-{% verbatim %}
+
 
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="isAuthUserIsOwner()">
     <!-- Error message -->
     <h4 class="error-comment-message" ng-repeat="(errorName,errorMessage) in errorEditItem.data">
-        {{ errorName }}:
+        [[ errorName ]]:
         <ul>
             <li ng-repeat="errorMessage in errorMessage">
-                {{ errorMessage }}
+                [[ errorMessage ]]
             </li>
         </ul>
     </h4>
@@ -71,7 +71,7 @@
     </form>
     <div id="editItemSuccessMessage" class="edit-item-success col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center"
          ng-if="editItemSuccess">
-        <p class="bg-primary">Item edit successfully! <a ng-href="#/{{ itemDetail.id }}">Click</a> to
+        <p class="bg-primary">Item edit successfully! <a ng-href="#/[[ itemDetail.id ]]">Click</a> to
             item page.</p>
     </div>
 
@@ -80,4 +80,3 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-if="!isAuthUserIsOwner()">
     <h1>You don't have permission to edit this item!</h1>
 </div>
-{% endverbatim %}

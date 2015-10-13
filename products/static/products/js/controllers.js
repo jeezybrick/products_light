@@ -317,6 +317,8 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
 myApp.controller('categoryListCtrl', function ($scope, Category) {
 
+    $scope.test='FFFFFFFFFFFF';
+
     /**
      * Get category list
      */

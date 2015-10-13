@@ -2,11 +2,13 @@
  * Created by user on 05.10.15.
  */
 
-var myApp = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'ngAnimate', 'ngResource', 'myApp.services']).config(function ($httpProvider, $resourceProvider) {
+var myApp = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'ngAnimate', 'ngResource', 'myApp.services'])
+    .config(function ($httpProvider, $resourceProvider, $interpolateProvider) {
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 
     $resourceProvider.defaults.stripTrailingSlashes = false;
+    $interpolateProvider.startSymbol('[[').endSymbol(']]');
 });
 
 var apiURLs = {

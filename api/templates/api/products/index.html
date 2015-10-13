@@ -8,7 +8,6 @@
 {% block content %}
     <div ng-controller="itemCtrl" ng-cloak>
 
-        {% verbatim %}
         <!-- Error messages -->
             <div class="item-in-cart-message row">
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center">
@@ -17,7 +16,6 @@
                     <span ng-if="itemInCartError">Please Log In or register!</span>
                 </div>
             </div>
-        {% endverbatim %}
 
         <div class="row">
             <div class="item-list-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -40,7 +38,6 @@
             <li ng-show="showDetailOfItem" class="active">{% trans "Detail of items" %}</li>
         </ol>
         <hr>
-        {% verbatim %}
         <!-- Ng-view -->
         <div ng-view></div>
 
@@ -70,11 +67,11 @@
                                                                                         ng-click="showAllItems()">All
                                     categories</a></li>
                                 <li ng-repeat="category in categories | limitTo:5">
-                                    <a href="javascript:;" ng-click="sortByCategory(category.name)">{{ category.name
-                                        }} <span class="badge">{{ category.count }}</span></a>
+                                    <a href="javascript:;" ng-click="sortByCategory(category.name)">[[ category.name
+                                        ]] <span class="badge">[[ category.count ]]</span></a>
                                     <ul>
                                         <li ng-repeat="sub in category.category_set| limitTo:5">
-                                            <a href="javascript:;" ng-click="sortByCategory(sub)">{{ sub }}</a>
+                                            <a href="javascript:;" ng-click="sortByCategory(sub)">[[ sub ]]</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -126,33 +123,33 @@
                                     </div>
 
                                     <div class="col-lg-8 col-md-4 col-sm-4 col-xs-6">
-                                        <h2>ID:{{ item.pk}}</h2>
+                                        <h2>ID:[[ item.pk]]</h2>
                                     </div>
 
                                     <div class="col-lg-4 col-md-8 col-sm-8 col-xs-6 text-right">
-                                        <h2><a ng-href="#/{{ item.pk }}" ng-click="showItem()">Details</a></h2>
+                                        <h2><a ng-href="#/[[ item.pk ]]" ng-click="showItem()">Details</a></h2>
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <h4 class="word-break">Name:{{ item.name}}</h4>
+                                        <h4 class="word-break">Name:[[ item.name]]</h4>
                                     </div>
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <h4 class="word-break">Price:
                                         <span ng-class="{'oldprice' : item.action}">
-                                        {{ item.price | currency:"₴" }}
+                                        [[ item.price | currency:"₴" ]]
                                         </span>
                                         <span class="newprice animated infinite pulse" ng-if="item.action">
-                                            {{ item.action | currency:"₴" }}
+                                            [[ item.action | currency:"₴" ]]
                                         </span>
                                         </h4>
                                     </div>
 
                                     <div ng-show="item.image_url" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <h4 class="word-break">image_url: {{ item.image_url }}</h4>
+                                        <h4 class="word-break">image_url: [[ item.image_url ]]</h4>
                                     </div>
 
                                     <div ng-show="item.url" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <h4 class="word-break">url: {{ item.url }}</h4>
+                                        <h4 class="word-break">url: [[ item.url ]]</h4>
                                     </div>
 
                                     <div ng-show="item.categories.length"
@@ -163,13 +160,13 @@
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <ul>
                                             <li ng-repeat="category in item.categories">
-                                                {{ category }}
+                                                [[ category ]]
                                             </li>
                                         </ul>
                                     </div>
 
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="item.rate">
-                                        <h4>Rating:{{ item.rate | limitTo:3 }}</h4>
+                                        <h4>Rating:[[ item.rate | limitTo:3 ]]</h4>
                                     </div>
 
                                     <div class="add-cart-button col-lg-7 col-md-7 col-sm-7 col-xs-12">
@@ -218,6 +215,6 @@
                 </div>
             </div>
         </div>
-        {% endverbatim %}
+
     </div>
 {% endblock %}

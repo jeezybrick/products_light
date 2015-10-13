@@ -1,13 +1,13 @@
-{% verbatim %}
+
 
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    {{ action }}
+    [[ action ]]
     <!-- Error message -->
     <h4 class="error-comment-message" ng-repeat="(errorName,errorMessage) in errorAddAction.data">
-        {{ errorName }}:
+        [[ errorName ]]:
         <ul>
             <li>
-                {{ errorMessage }}
+                [[ errorMessage ]]
             </li>
         </ul>
     </h4>
@@ -75,4 +75,3 @@
     </form>
 
 </div>
-{% endverbatim %}
