@@ -2,7 +2,11 @@
  * Created by user on 05.10.15.
  */
 
-myApp.controller('itemCtrl', function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
+angular
+    .module('myApp')
+    .controller('itemCtrl', itemCtrl);
+
+function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
 
     // sort
     $scope.sortField = 'pk';
@@ -24,12 +28,12 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, $timeout, Item, Ca
 
             $scope.categoryLoad = true;
 
-        }, function(){
+        }, function () {
             $scope.categoryLoadError = true;
         });
 
 
-    }, function(){
+    }, function () {
         $scope.itemLoadError = true;
     });
 
@@ -125,7 +129,7 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, $timeout, Item, Ca
             }, 2000);
 
 
-        }, function(error){
+        }, function (error) {
             $scope.itemInCartError = error.data.detail;
         });
 
@@ -144,22 +148,28 @@ myApp.controller('itemCtrl', function itemCtrl($scope, $http, $timeout, Item, Ca
         });
     };
 
-});
+}
 
 
 /**
  * Filter for pagination comments
  */
-myApp.filter('startFrom', function () {
-    return function (data, start) {
-        if (angular.isDefined(data)) {
-            return data.slice(start)
+
+angular
+    .module('myApp')
+    .filter('startFrom', function () {
+        return function (data, start) {
+            if (angular.isDefined(data)) {
+                return data.slice(start)
+            }
         }
-    }
-});
+    });
 
+angular
+    .module('myApp')
+    .controller('ItemDetailCtrl', ItemDetailCtrl);
 
-myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $location, $window, $timeout, Item, Rate, Comment, AuthUser) {
+function ItemDetailCtrl($scope, $routeParams, $http, $location, $window, $timeout, Item, Rate, Comment, AuthUser) {
 
     $scope.id = $routeParams.itemId; // item id
     $scope.AuthUserUsername = AuthUser.username; // Auth user username
@@ -191,7 +201,7 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
         $scope.itemDetailLoad = true;
         $scope.rate = $scope.itemDetail.user_rate;
 
-    }, function(error){
+    }, function (error) {
 
         $scope.itemDetailLoadError = error.data.detail;
     });
@@ -312,11 +322,14 @@ myApp.controller('ItemDetailCtrl', function ($scope, $routeParams, $http, $locat
 
     };
 
-});
+}
 
+angular
+    .module('myApp')
+    .controller('categoryListCtrl', categoryListCtrl);
 
-myApp.controller('categoryListCtrl', function ($scope, Category) {
-    
+function categoryListCtrl($scope, Category) {
+
 
     /**
      * Get category list
@@ -325,13 +338,17 @@ myApp.controller('categoryListCtrl', function ($scope, Category) {
 
         $scope.categoryLoad = true;
 
-    }, function(error){
+    }, function (error) {
         $scope.categoryLoadError = true;
     });
 
-});
+}
 
-myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
+angular
+    .module('myApp')
+    .controller('CartCtrl', CartCtrl);
+
+function CartCtrl($scope, $timeout, Cart) {
 
     $scope.addItemToCart = function (itemId) {
 
@@ -418,9 +435,13 @@ myApp.controller('CartCtrl', function ($scope, $window, $timeout, Cart) {
 
     };
 
-});
+}
 
-myApp.controller('actionCtrl', function ($scope, $routeParams, $location, Action) {
+angular
+    .module('myApp')
+    .controller('actionCtrl', actionCtrl);
+
+function actionCtrl($scope, $routeParams, $location, Action) {
 
     $scope.itemId = $routeParams.itemId;
 
@@ -438,7 +459,9 @@ myApp.controller('actionCtrl', function ($scope, $routeParams, $location, Action
         });
 
         $scope.actionObject.$save(function (response) {
+
             $location.path($scope.itemId);
+
         }, function (error) {
 
             $scope.errorAddAction = error;
@@ -446,25 +469,33 @@ myApp.controller('actionCtrl', function ($scope, $routeParams, $location, Action
 
     };
 
-});
+}
 
-myApp.controller('loginCtrl', function ($scope) {
+angular
+    .module('myApp')
+    .controller('loginCtrl', loginCtrl);
 
+function loginCtrl($scope) {
 
-});
+//
+}
 
 
 /**
  * Directive for formatting date from datepicker Angular UI( add action form )
  */
-myApp.directive('myDate', function (dateFilter, $parse) {
-    return {
-        restrict: 'EAC',
-        require: '?ngModel',
-        link: function (scope, element, attrs, ngModel, ctrl) {
-            ngModel.$parsers.push(function (viewValue) {
-                return dateFilter(viewValue, 'yyyy-MM-dd');
-            });
+
+
+angular
+    .module('myApp')
+    .directive('myDate', function (dateFilter, $parse) {
+        return {
+            restrict: 'EAC',
+            require: '?ngModel',
+            link: function (scope, element, attrs, ngModel, ctrl) {
+                ngModel.$parsers.push(function (viewValue) {
+                    return dateFilter(viewValue, 'yyyy-MM-dd');
+                });
+            }
         }
-    }
-});
+    });

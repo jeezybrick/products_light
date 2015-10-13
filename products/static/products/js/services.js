@@ -5,10 +5,10 @@
 
 angular.module('myApp.services', ['ngResource'])
     .factory('Item', function ($resource) {
-        return $resource('/api/items/:id/', { id: '@id' }, {
+        return $resource('/api/items/:id/', {id: '@id'}, {
             'update': {method: 'PUT'},
             'query': {method: 'GET', isArray: false},
-            'get':{method: 'GET', cache: true}
+            'get': {method: 'GET', cache: true}
         });
     })
     .factory('User', function ($resource) {
@@ -36,10 +36,10 @@ angular.module('myApp.services', ['ngResource'])
             }
         )
     }).factory('Action', function ($resource) {
-        return $resource('/api/action/:id/', { id: '@id' }, {
+        return $resource('/api/action/:id/', {id: '@id'}, {
             'update': {method: 'PUT'},
-            'get':{method: 'GET', cache: true},
+            'get': {method: 'GET', cache: true},
             'query': {method: 'GET', isArray: false}
         });
-    })
-    ;
+    });
+
