@@ -15,6 +15,4 @@ urlpatterns = [
         template_name='products/auth/register_success.html'
     ), name='register_success'),
 
-
-
 ]
