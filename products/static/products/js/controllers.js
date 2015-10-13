@@ -378,7 +378,7 @@ function CartCtrl($scope, $timeout, Cart) {
     /**
      * Delete item form cart and query Item object
      */
-    function deleteItemInCart (itemId) {
+    function deleteItemInCart(itemId) {
 
         bootbox.confirm("Are you sure you want to delete this item from the cart?", function (answer) {
 
@@ -405,7 +405,7 @@ function CartCtrl($scope, $timeout, Cart) {
      * Choose specific item in the cart
      */
 
-    function chooseItem (itemId) {
+    function chooseItem(itemId) {
 
         var myEl = angular.element(document.querySelector('#item_' + itemId));
         myEl.toggleClass('panel-primary-active');
@@ -424,7 +424,7 @@ function CartCtrl($scope, $timeout, Cart) {
     /**
      * Choose all items with click 'All"
      */
-     function chooseAll() {
+    function chooseAll() {
 
         $scope.allItemActive = true;
 
