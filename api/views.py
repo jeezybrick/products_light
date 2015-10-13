@@ -10,9 +10,10 @@ from products import cache
 from products.service import CartService, RateService
 from api import serializers
 from api.utils import addItemIdToSession, removeItemIdFromSession
+from api.permissions import IsAuthorOrReadOnly, ShopIsAuthorOrReadOnly
+from categories.cache import CategoryCache
 from rest_framework.response import Response
 from haystack.query import SearchQuerySet
-from api.permissions import IsAuthorOrReadOnly, ShopIsAuthorOrReadOnly
 
 
 # Pagination class
@@ -66,7 +67,7 @@ class ItemDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
 class CategoryList(APIView):
 
     def get(self, request):
-        categories = cache.CategoryCache().get(parent_category_id__isnull=True)
+        categories = CategoryCache().get(parent_category_id__isnull=True)
         serializer = serializers.CategorySerializer(categories, many=True)
         return Response(serializer.data)
 

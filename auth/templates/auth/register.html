@@ -1,0 +1,16 @@
+{% extends 'products/layout.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load bootstrap3 %}
+{% block title %}
+    {% trans "Sign Up" %}
+{% endblock %}
+
+{% block content %}
+<h1>{% trans "Sign Up" %}</h1><hr>
+
+            {% include 'products/partials/form_errors.html' %}
+
+            {% crispy form %}
+
+{% endblock content %}

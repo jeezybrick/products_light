@@ -1,7 +1,7 @@
 
 from django.core.exceptions import ImproperlyConfigured
 from django.shortcuts import get_object_or_404
-from products.models import Item, Category, Rate, Comment, MyUser
+from products.models import Item, Rate, Comment, MyUser
 from cacheback.base import Job
 
 
@@ -47,10 +47,6 @@ class ProductDetailCache(BaseModelJob):
         return obj
 
     model = Item
-
-
-class CategoryCache(BaseModelJob):
-    model = Category
 
 
 class CommentCache(BaseModelJob):

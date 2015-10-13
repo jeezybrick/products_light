@@ -1,0 +1,14 @@
+{% extends 'products/layout.html' %}
+{% load i18n %}
+{% block title %}
+    {% trans "Success" %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="alert alert-success text-center animated fadeInDownBig">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <h4>{% trans "Success! Now you can" %} <a href="{% url 'login' %}">{% trans "Sign In" %}.</a></h4>
+    </div>
+
+{% endblock %}

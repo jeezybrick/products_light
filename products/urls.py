@@ -58,9 +58,6 @@ urlpatterns = [
         template_name='api/categories/index.html'
     ), name='categories_list_ang'),
 
-    # Categories views
-    url(r"^categories/add/$", views.CategoryAddView.as_view(), name='categories_add'),
-    url(r"^categories/$", views.CategoryListView.as_view(), name='categories_list'),
 
     # Haystack search
     url(r'^search/', include('haystack.urls')),

@@ -7,13 +7,14 @@ from products.models import Item
 
 
 class IsAuthorOrReadOnly(permissions.BasePermission):
-
     def has_object_permission(self, request, view, obj):
         return True if is_safe_method(request) else obj.user == request.user
 
 
-class ShopIsAuthorOrReadOnly(permissions.BasePermission):
+""" check if auth user is author to this item  and this user is shop"""
 
+
+class ShopIsAuthorOrReadOnly(permissions.BasePermission):
     message = _('Only owner can add or edit action to this item')
 
     def has_permission(self, request, view):

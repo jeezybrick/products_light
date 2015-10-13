@@ -169,7 +169,7 @@ angular
     .module('myApp')
     .controller('ItemDetailCtrl', ItemDetailCtrl);
 
-function ItemDetailCtrl($scope, $routeParams, $http, $location, $window, $timeout, Item, Rate, Comment, AuthUser) {
+function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Comment, AuthUser) {
 
     $scope.id = $routeParams.itemId; // item id
     $scope.AuthUserUsername = AuthUser.username; // Auth user username
@@ -350,6 +350,14 @@ angular
 
 function CartCtrl($scope, $timeout, Cart) {
 
+    var vm = this;
+
+    vm.deleteItemInCart = deleteItemInCart;
+
+
+    /**
+     * Add item to cart
+     */
     $scope.addItemToCart = function (itemId) {
 
         $scope.cart = new Cart();
@@ -365,7 +373,7 @@ function CartCtrl($scope, $timeout, Cart) {
     /**
      * Delete item form cart and query Item object
      */
-    $scope.deleteItemInCart = function (itemId) {
+    function deleteItemInCart(itemId) {
 
         bootbox.confirm("Are you sure you want to delete this item from the cart?", function (answer) {
 
@@ -484,8 +492,6 @@ function loginCtrl($scope) {
 /**
  * Directive for formatting date from datepicker Angular UI( add action form )
  */
-
-
 angular
     .module('myApp')
     .directive('myDate', function (dateFilter, $parse) {

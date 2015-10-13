@@ -3,9 +3,8 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 from products import models
-from django.db.models import Avg
-from products import cache
 from products.service import CartService, RateService
+from categories.models import Category
 
 
 class UserSerializer(serializers.ModelField):
@@ -21,11 +20,11 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
     count = serializers.SerializerMethodField()
 
     def get_count(self, obj):
-        category = get_object_or_404(models.Category, id=obj.pk)
+        category = get_object_or_404(Category, id=obj.pk)
         return category.item_set.count()
 
     class Meta:
-        model = models.Category
+        model = Category
         fields = ('name', 'id', 'category_set', 'count', )
 
 

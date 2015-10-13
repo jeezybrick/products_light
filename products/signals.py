@@ -2,8 +2,10 @@
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.db import models
-from .models import Category, Item, Rate, Comment, MyUser, Action
+from .models import Item, Rate, Comment, MyUser, Action
+from categories.models import Category
 from products import cache
+from categories.cache import CategoryCache
 from haystack import signals
 
 invalidate_signals = [post_delete, post_save]
@@ -11,7 +13,7 @@ invalidate_signals = [post_delete, post_save]
 
 @receiver(invalidate_signals, sender=Category)
 def invalidate_category(sender, instance, **kwargs):
-    cache.CategoryCache().invalidate(parent_category_id__isnull=True)
+    CategoryCache().invalidate(parent_category_id__isnull=True)
 
 
 @receiver(invalidate_signals, sender=Item)

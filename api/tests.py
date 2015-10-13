@@ -1,6 +1,5 @@
 # Create your tests here.
 
-import datetime
 from django.test import Client, TestCase
 from products import models
 from django.core.urlresolvers import reverse

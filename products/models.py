@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
+from categories.models import Category
 
 # Create your models here.
 
@@ -9,7 +10,7 @@ from django.contrib.auth.models import AbstractUser
 # Extend User model
 class MyUser(AbstractUser):
 
-    is_shop = models.BooleanField(_("Shop"), default=True, blank=True)
+    is_shop = models.NullBooleanField(_("Shop"), default=True)
     percentage_of_price = models.IntegerField(default=100, null=True)
 
     USERNAME_FIELD = 'username'
@@ -21,18 +22,10 @@ class MyUser(AbstractUser):
         unique_together = ('email',)
 
 
-class Category(models.Model):
-    name = models.CharField(_("Name"), max_length=50, blank=False)
-    parent_category = models.ForeignKey("self", blank=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Item(models.Model):
     name = models.CharField(_("Name of item"), max_length=100, blank=False)
     price = models.IntegerField(_("Price"), blank=False)
-    image_url = models.URLField(_("Link to image"), null=True, blank=True, max_length=50)
+    image_url = models.URLField(_("Link to image"), blank=True, max_length=50)
     categories = models.ManyToManyField(Category, blank=True)
     description = models.CharField(
         _("Description"), max_length=1000, blank=False)
@@ -76,10 +69,10 @@ class Cart(models.Model):
 class Action(models.Model):
     item = models.OneToOneField(Item)
     shop = models.ForeignKey(settings.AUTH_USER_MODEL)
-    description = models.CharField(max_length=1000, blank=False)
+    description = models.CharField(max_length=1000)
     new_price = models.IntegerField(blank=True)
-    period_from = models.DateField(blank=False)
-    period_to = models.DateField(blank=False)
+    period_from = models.DateField()
+    period_to = models.DateField()
 
     def __unicode__(self):
         return self.item
