@@ -19,7 +19,7 @@ def invalidate_category(sender, instance, **kwargs):
 @receiver(invalidate_signals, sender=Item)
 def invalidate_item(sender, instance, **kwargs):
     cache.ProductCache().invalidate(pk=instance.pk)
-    # doesnt work
+    # for item-detail
     cache.ProductDetailCache().invalidate(id=str(instance.pk))
 
 
