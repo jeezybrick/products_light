@@ -5,10 +5,6 @@ from products import views
 
 
 urlpatterns = [
-    # Home view
-    url(r"^$", TemplateView.as_view(
-        template_name='products/home.html'
-    ), name='home'),
 
     # Django views
     url(r"^shops/$", views.ShopListView.as_view(), name='shop_list'),
