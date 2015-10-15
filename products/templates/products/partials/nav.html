@@ -69,7 +69,7 @@
                     <li><a href="{% url 'logout' %}">{% trans "Sign out" %}</a>
                     </li>
                 {% else %}
-                    <li>
+                    <li class="{% ifactive "login" %} active {% endifactive %}">
                         <a href="{% url 'login' %}">{% trans "Sign In" %}</a>
                     </li>
                 {% endif %}
