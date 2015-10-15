@@ -133,8 +133,13 @@
     padding: 0;
 }
 
+#cart-on-nav{
+
+}
+
 #cart-on-nav > a {
-    padding: 0;
+    padding: 5px;
+    min-height: 55px;
 }
 
 .add-cart-button {
