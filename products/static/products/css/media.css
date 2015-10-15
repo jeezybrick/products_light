@@ -35,6 +35,10 @@
 /* Landscape phones and portrait tablets */
 @media (max-width: 767px) {
 
+    .main-greet {
+        letter-spacing: 0.05em;
+    }
+
 }
 
 /* Portrait phones and smaller */
@@ -42,6 +46,10 @@
 
     #editItemSuccessMessage {
         margin: 55px 0 0 0;
+    }
+
+    .main-greet {
+        letter-spacing: 0.02em;
     }
 
 }

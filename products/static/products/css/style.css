@@ -1,3 +1,9 @@
+.main-greet {
+    text-transform: uppercase;
+    line-height: 1.5em;
+    letter-spacing: 0.07em;
+}
+
 .main-content {
     margin-bottom: 80px;
 }
@@ -34,12 +40,6 @@
 .main-list-top-pencil > a {
     color: black;
 }
-
-/*
-.lal:hover {
-    overflow: visible;
-}
-*/
 
 .splash {
     display: none;
