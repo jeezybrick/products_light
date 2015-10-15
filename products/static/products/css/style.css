@@ -138,8 +138,8 @@
 }
 
 #cart-on-nav > a {
-    padding: 5px;
-    min-height: 55px;
+    padding:0 5px;
+    min-height: 50px;
 }
 
 .add-cart-button {
