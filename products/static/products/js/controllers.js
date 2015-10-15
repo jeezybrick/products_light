@@ -9,7 +9,7 @@ angular
 function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
 
     // sort
-    $scope.sortField = 'pk';
+    $scope.sortField = '-pk';
     $scope.reverse = true;
     $scope.showTriangle = false;
 
@@ -171,10 +171,18 @@ angular
 
 function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Comment, AuthUser) {
 
+    // Init
     $scope.id = $routeParams.itemId; // item id
     $scope.AuthUserUsername = AuthUser.username; // Auth user username
     $scope.showDetailOfItem = true;
     $scope.itemDetailLoad = false;
+
+    //add pre-comment model
+    $scope.comment = {
+        username:'Ivan',
+        message:'Hello world!1',
+        item: $routeParams.itemId
+    };
 
     //message after rate item
     $scope.greet = false;
@@ -199,12 +207,28 @@ function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Com
     $scope.itemDetail = Item.get({id: $routeParams.itemId}, function () {
 
         $scope.itemDetailLoad = true;
-        $scope.rate = $scope.itemDetail.user_rate;
+
+        /**
+         * Add rate model
+         */
+        $scope.rate = {
+            value: $scope.itemDetail.user_rate,
+            item: $routeParams.itemId
+        };
 
     }, function (error) {
 
         $scope.itemDetailLoadError = error.data.detail;
     });
+
+
+    /**
+     * Add rate model
+     */
+     $scope.rate = {
+        value: $scope.itemDetail.user_rate,
+        item: $routeParams.itemId
+    };
 
     /**
      * For hovering rating stars
@@ -217,17 +241,15 @@ function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Com
     /**
      * Post selected rating of item by user
      */
-    $scope.addRate = function (rate) {
+    $scope.addRate = function () {
 
-        $scope.rate = rate;
-
-        $scope.rateObject = new Rate({
-            value: $scope.rate,
-            item: $routeParams.itemId
-        });
+        $scope.rateObject = new Rate($scope.rate);
 
         $scope.rateObject.$save(function () {
+
+            $scope.greet = true;
             $scope.dynamic = 100;
+
         }, function (error) {
             //
         });
@@ -239,11 +261,7 @@ function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Com
      */
     $scope.addComment = function () {
 
-        $scope.commentObject = new Comment({
-            username: $scope.username,
-            message: $scope.message,
-            item: $routeParams.itemId
-        });
+        $scope.commentObject = new Comment($scope.comment);
 
         $scope.commentObject.$save(function (data) {
             $scope.hideCommentForm = true;

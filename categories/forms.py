@@ -11,7 +11,9 @@ class AddCategory(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AddCategory, self).__init__(*args, **kwargs)
         self.fields['parent_category'].choices = categories_as_choices()
-        self.fields['parent_category'].initial = 'default'
+
+        # for empty choice
+        self.fields['parent_category'].choices.insert(0, ('', '---------'))
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
