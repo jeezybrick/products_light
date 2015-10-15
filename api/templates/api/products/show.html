@@ -56,7 +56,7 @@
         <small>[[ itemDetail.image_url ]]</small>
     </h3>
 
-    <h4 ng-show="itemDetail.rates">{% trans "Average rating:" %}[[ itemDetail.rates | limitTo:3 ]]</h4>
+    <h3 ng-show="itemDetail.rates">{% trans "Average rating:" %}[[ itemDetail.rates | limitTo:3 ]]</h3>
 
     {% if user.is_authenticated %}
         <h4 ng-hide="greet">{% trans "Rate item:" %}

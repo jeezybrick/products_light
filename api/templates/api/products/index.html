@@ -9,7 +9,7 @@
     <div ng-controller="itemCtrl" ng-cloak>
 
         <!-- Error messages -->
-            <div class="item-in-cart-message row">
+            <div class="item-in-cart row" ng-if="!itemLoad || itemInCartSuccess || itemInCartError">
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center">
                     <span ng-if="itemInCartSuccess">{% trans "Item add to cart!" %}</span>
                     <span ng-if="!itemLoad">{% trans "Loading..." %}</span>

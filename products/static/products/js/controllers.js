@@ -86,7 +86,6 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
     /**
      * For sorting by price
      */
-
     $scope.changeSortState = function (status) {
         $scope.sortField = status;
         $scope.reverse = !$scope.reverse;
@@ -157,7 +156,6 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
 /**
  * Filter for pagination comments
  */
-
 angular
     .module('myApp')
     .filter('startFrom', function () {
@@ -167,6 +165,7 @@ angular
             }
         }
     });
+
 
 angular
     .module('myApp')

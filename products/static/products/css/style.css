@@ -155,12 +155,12 @@
     animation: fadeIn 1s;
 }
 
-.item-in-cart-message.ng-enter {
+.item-in-cart.ng-enter {
     animation: fadeIn 1s;
 }
 
-.item-in-cart-message.ng-leave {
-    animation: fadeOut 2s;
+.item-in-cart.ng-leave {
+    animation: fadeOut 1.5s;
 }
 
 /* !ng-animate */
@@ -259,11 +259,11 @@
     color: red;
 }
 
-.item-in-cart-message {
+.item-in-cart {
     z-index: 99999;
 }
 
-.item-in-cart-message > div {
+.item-in-cart > div {
     background-color: #f9edbe;
     position: fixed;
     left: 40%;
