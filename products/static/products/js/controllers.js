@@ -8,10 +8,13 @@ angular
 
 function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
 
-    // sort
+    // sort init
     $scope.sortField = '-pk';
     $scope.reverse = true;
     $scope.showTriangle = false;
+
+    //filter init
+    $scope.search = { categories:'' };
 
     $scope.showDetailOfItem = false;
     $scope.isCollapsed = true;
