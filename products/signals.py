@@ -20,7 +20,7 @@ def invalidate_category(sender, instance, **kwargs):
 def invalidate_item(sender, instance, **kwargs):
     cache.ProductCache().invalidate(pk=instance.pk)
     # doesnt work
-    cache.ProductDetailCache().invalidate(id=instance.pk)
+    cache.ProductDetailCache().invalidate(id=str(instance.pk))
 
 
 @receiver(post_save, sender=Rate)
@@ -35,7 +35,7 @@ def invalidate_comment(sender, instance, **kwargs):
 
 @receiver(post_save, sender=MyUser)
 def invalidate_shop(sender, instance, **kwargs):
-    cache.ShopDetailCache().invalidate(id=instance.pk)
+    cache.ShopDetailCache().invalidate(id=str(instance.pk))
 
 
 class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):

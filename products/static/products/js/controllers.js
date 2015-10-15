@@ -14,7 +14,7 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
     $scope.showTriangle = false;
 
     //filter init
-    $scope.search = { categories:'' };
+    //$scope.search = { categories:'' };
 
     $scope.showDetailOfItem = false;
     $scope.isCollapsed = true;
