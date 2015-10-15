@@ -48,6 +48,7 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
             obj.action.new_price
         except:
             return None
+
         return obj.action.new_price
 
     def index_queryset(self, using=None):

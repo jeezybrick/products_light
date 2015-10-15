@@ -8,7 +8,7 @@
     <h4 class="error-comment-message" ng-repeat="(errorName,errorMessage) in errorAddAction.data">
         [[ errorName ]]:
         <ul>
-            <li>
+            <li ng-repeat="errorMessage in errorMessage">
                 [[ errorMessage ]]
             </li>
         </ul>

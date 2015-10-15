@@ -157,6 +157,14 @@ class CartSerializer(serializers.ModelSerializer):
 
 class ActionSerializer(serializers.ModelSerializer):
 
+    def is_price_not_valid(self, value):
+        return value > 1000000 or value < 0
+
+    def validate_new_price(self, price):
+        if self.is_price_not_valid(price):
+            raise serializers.ValidationError(_("Invalid price!"))
+        return price
+
     class Meta:
         model = models.Action
         fields = ('item', 'description', 'new_price',
