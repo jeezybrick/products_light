@@ -82,6 +82,10 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
             self.handle_action_update, sender=Action)
         models.signals.post_delete.connect(
             self.handle_action_update, sender=Action)
+        models.signals.post_save.connect(
+            self.handle_action_update, sender=MyUser)
+        models.signals.post_delete.connect(
+            self.handle_action_update, sender=MyUser)
 
         super(RateOnlySignalProcessor, self).setup()
 
@@ -104,5 +108,9 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
             self.handle_action_update, sender=Action)
         models.signals.post_delete.disconnect(
             self.handle_action_update, sender=Action)
+        models.signals.post_save.disconnect(
+            self.handle_action_update, sender=MyUser)
+        models.signals.post_delete.disconnect(
+            self.handle_action_update, sender=MyUser)
 
         super(RateOnlySignalProcessor, self).teardown()

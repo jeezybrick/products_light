@@ -175,6 +175,7 @@ class ShopListView(View):
     def get(self, request):
 
         shops = SearchQuerySet().models(MyUser).filter(is_shop=True).order_by('-id')
+
         # Pagination
         paginator = Paginator(shops, 6)
         page = request.GET.get('page')

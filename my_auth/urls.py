@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^auth/logout/$', views.get_logout, name='logout'),
     url(r"^auth/register/$", views.RegisterView.as_view(), name='register'),
     url(r"^auth/register/success/$", TemplateView.as_view(
-        template_name='products/auth/register_success.html'
+        template_name='my_auth/register_success.html'
     ), name='register_success'),
 
 ]
