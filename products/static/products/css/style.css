@@ -156,10 +156,12 @@
 }
 
 .item-in-cart.ng-enter {
+    z-index: 99999;
     animation: fadeIn 1s;
 }
 
 .item-in-cart.ng-leave {
+    z-index: 99999;
     animation: fadeOut 1.5s;
 }
 

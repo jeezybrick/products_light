@@ -2,6 +2,7 @@
 
 from django.test import Client, TestCase
 from products import models
+from cart.models import Cart
 from django.core.urlresolvers import reverse
 
 
@@ -46,25 +47,25 @@ class SimpleTest(TestCase):
     """ List of items """
 
     def test_item_list(self):
-        response = self.client.get(reverse('item-list'))
+        response = self.client.get(reverse('item_list_api'))
         self.assertEqual(response.status_code, 200)
 
     """ Detail of item """
 
     def test_item_detail(self):
         response = self.client.get(
-            reverse('item-detail', args=(self.item.id,)))
+            reverse('item_detail_api', args=(self.item.id,)))
         self.assertEqual(response.status_code, 200)
 
         response = self.client.get(
-            reverse('item-detail', args=(self.fake_id,)))
+            reverse('item_detail_api', args=(self.fake_id,)))
         self.assertEqual(response.status_code, 404)
 
     """ test add item """
 
     def test_item_add(self):
         response = self.client.post(
-            reverse('item-list'), {'username': 'john', 'password': 'smith'})
+            reverse('item_list_api'), {'username': 'john', 'password': 'smith'})
         # no post method
         self.assertEqual(response.status_code, 405)
 
@@ -72,44 +73,44 @@ class SimpleTest(TestCase):
 
     def test_item_edit(self):
         # PUT and DELETE without auth
-        response = self.client.put(reverse('item-detail', args=(self.item.id,)),
+        response = self.client.put(reverse('item_detail_api', args=(self.item.id,)),
                                    {'name': 'john', 'price': 322})
         self.assertEqual(response.status_code, 403)
 
         response = self.client.delete(
-            reverse('item-detail', args=(self.item.id,)))
+            reverse('item_detail_api', args=(self.item.id,)))
         self.assertEqual(response.status_code, 403)
 
         # PUT and DELETE by no owner of item
         self.client.login(username='temporary', password='temporary')
-        response = self.client.put(reverse('item-detail', args=(self.item.id,)),
+        response = self.client.put(reverse('item_detail_api', args=(self.item.id,)),
                                    {'name': 'john', 'price': 322})
         self.assertEqual(response.status_code, 403)
 
         response = self.client.delete(
-            reverse('item-detail', args=(self.item.id,)))
+            reverse('item_detail_api', args=(self.item.id,)))
         self.assertEqual(response.status_code, 403)
 
         # PUT and DELETE by owner
         self.client.login(username='temporary3', password='temporary')
-        response = self.client.put(reverse('item-detail', args=(self.item.id,)),
+        response = self.client.put(reverse('item_detail_api', args=(self.item.id,)),
                                    {'name': 'john', 'price': 322})
         self.assertEqual(response.status_code, 415)
 
         response = self.client.delete(
-            reverse('item-detail', args=(self.item.id,)))
+            reverse('item_detail_api', args=(self.item.id,)))
         self.assertEqual(response.status_code, 204)
 
     """ List of action """
 
     def test_action_list(self):
         # get by anonymous user
-        response = self.client.get(reverse('action-list'))
+        response = self.client.get(reverse('action_list_api'))
         self.assertEqual(response.status_code, 403)
 
         # get by auth user
         self.client.login(username='temporary3', password='temporary')
-        response = self.client.get(reverse('action-list'))
+        response = self.client.get(reverse('action_list_api'))
         self.assertEqual(response.status_code, 200)
 
     """
@@ -119,43 +120,43 @@ class SimpleTest(TestCase):
 
     def test_add_action(self):
         # get and post by anonymous user
-        response = self.client.get(reverse('action-list'))
+        response = self.client.get(reverse('action_list_api'))
         self.assertEqual(response.status_code, 403)
 
-        response = self.client.post(reverse('action-list'), self.action_values)
+        response = self.client.post(reverse('action_list_api'), self.action_values)
         self.assertEqual(response.status_code, 403)
 
         # get and post by auth user and owner
         self.client.login(username='temporary3', password='temporary')
-        response = self.client.get(reverse('action-list'))
+        response = self.client.get(reverse('action_list_api'))
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(reverse('action-list'), self.action_values)
+        response = self.client.post(reverse('action_list_api'), self.action_values)
         self.assertEqual(response.status_code, 201)
 
         # post by auth user and NO owner of item
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('action-list'), self.action_values)
+        response = self.client.post(reverse('action_list_api'), self.action_values)
         self.assertEqual(response.status_code, 403)
 
     """ Add category(no post method) """
 
     def test_add_category(self):
         response = self.client.post(
-            reverse('category-list'), {'username': 'john', 'password': 'smith'})
+            reverse('category_list_api'), {'username': 'john', 'password': 'smith'})
         # no post method
         self.assertEqual(response.status_code, 405)
 
     """ Add comment by auth and no auth user """
 
     def test_add_comment(self):
-        response = self.client.post(reverse('comment-list'), {'username': 'john', 'message': 'smith',
-                                                              'item': self.item.id})
+        response = self.client.post(reverse('comment_list_api'), {'username': 'john', 'message': 'smith',
+                                                                  'item': self.item.id})
         self.assertEqual(response.status_code, 201)
 
         # bad POST
-        response = self.client.post(reverse('comment-list'), {'username': 'john', 'message': 'smith',
-                                                              'item': self.fake_id})
+        response = self.client.post(reverse('comment_list_api'), {'username': 'john', 'message': 'smith',
+                                                                  'item': self.fake_id})
         self.assertEqual(response.status_code, 400)
 
     """ Add rating to item by AUTH user """
@@ -163,90 +164,90 @@ class SimpleTest(TestCase):
     def test_add_rate(self):
         # 403 for no auth user
         response = self.client.post(
-            reverse('rate-list'), {'value': 5, 'item': self.item.id})
+            reverse('rate_list_api'), {'value': 5, 'item': self.item.id})
         self.assertEqual(response.status_code, 403)
 
         # 201 FOR AUTH USER
         self.client.login(username='temporary3', password='temporary')
         response = self.client.post(
-            reverse('rate-list'), {'value': 5, 'item': self.item.id})
+            reverse('rate_list_api'), {'value': 5, 'item': self.item.id})
         self.assertEqual(response.status_code, 201)
 
         # bad POST
         response = self.client.post(
-            reverse('rate-list'), {'value': -2, 'item': self.fake_id})
+            reverse('rate_list_api'), {'value': -2, 'item': self.fake_id})
         self.assertEqual(response.status_code, 400)
 
     """ Shop list """
 
     def test_shop_list(self):
-        response = self.client.get(reverse('shop-list'))
+        response = self.client.get(reverse('shop_list_api'))
         self.assertEqual(response.status_code, 200)
 
         # post not allowed
-        response = self.client.post(reverse('shop-list'), {'test': 5})
+        response = self.client.post(reverse('shop_list_api'), {'test': 5})
         self.assertEqual(response.status_code, 405)
 
     """ Shop detail """
 
     def test_shop_detail(self):
         response = self.client.get(
-            reverse('shop-detail', args=(self.user_shop.id,)))
+            reverse('shop_detail_api', args=(self.user_shop.id,)))
         self.assertEqual(response.status_code, 200)
 
         # post not allowed
         response = self.client.post(
-            reverse('shop-detail', args=(self.user_shop.id,)), {'test': 5})
+            reverse('shop_detail_api', args=(self.user_shop.id,)), {'test': 5})
         self.assertEqual(response.status_code, 405)
 
     """ List of item added by current auth user in the cart """
 
     def test_cart_list(self):
         # get,post by anonymous user
-        response = self.client.get(reverse('cart-list'))
+        response = self.client.get(reverse('cart_list_api'))
         self.assertEqual(response.status_code, 403)
 
         # post item in the cart
-        response = self.client.post(reverse('cart-list'), {'item': self.item})
+        response = self.client.post(reverse('cart_list_api'), {'item': self.item})
         self.assertEqual(response.status_code, 403)
 
         # get,post by auth user
         self.client.login(username='temporary3', password='temporary')
-        response = self.client.get(reverse('cart-list'))
+        response = self.client.get(reverse('cart_list_api'))
         self.assertEqual(response.status_code, 200)
 
         # post item in the cart
         response = self.client.post(
-            reverse('cart-list'), {'item': self.item.id})
+            reverse('cart_list_api'), {'item': self.item.id})
         self.assertEqual(response.status_code, 201)
 
         # bad request
         response = self.client.post(
-            reverse('cart-list'), {'item': self.fake_id})
+            reverse('cart_list_api'), {'item': self.fake_id})
         self.assertEqual(response.status_code, 400)
 
     """ Detail of item in the cart """
 
     def test_cart_detail(self):
         # create cart
-        cart = models.Cart(user=self.user1, item=self.item)
+        cart = Cart(user=self.user1, item=self.item)
         cart.save()
 
         # get,post by anonymous user
         response = self.client.get(
-            reverse('cart-detail', args=(self.item.id,)))
+            reverse('cart_detail_api', args=(self.item.id,)))
         self.assertEqual(response.status_code, 403)
 
         # get,post by auth user
         self.client.login(username='temporary3', password='temporary')
 
         # Add item to the cart
-        self.client.post(reverse('cart-list'), {'item': self.item.id})
+        self.client.post(reverse('cart_list'), {'item': self.item.id})
         response = self.client.get(
-            reverse('cart-detail', args=(self.item.id,)))
+            reverse('cart_detail_api', args=(self.item.id,)))
         self.assertEqual(response.status_code, 200)
 
         # Get to non exists cart detail
         response = self.client.get(
-            reverse('cart-detail', args=(self.fake_id,)))
+            reverse('cart_detail_api', args=(self.fake_id,)))
         self.assertEqual(response.status_code, 404)
