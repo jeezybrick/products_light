@@ -65,6 +65,9 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
             )
 
     def setup(self, **kwargs):
+
+        models.signals.m2m_changed.connect(self.handle_save, sender=Item)
+        models.signals.m2m_changed.connect(self.handle_save, sender=Category)
         models.signals.post_save.connect(self.handle_save, sender=Item)
         models.signals.post_delete.connect(self.handle_delete, sender=Item)
         models.signals.post_save.connect(

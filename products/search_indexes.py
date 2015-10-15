@@ -6,6 +6,7 @@ from products.models import Item, Comment, Rate, MyUser
 
 class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    id = indexes.CharField(model_attr='id')
     author = indexes.CharField(model_attr='user')
     name = indexes.CharField(model_attr='name')
     price = indexes.IntegerField(model_attr='price')
