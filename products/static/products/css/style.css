@@ -1,7 +1,10 @@
 .main-greet {
     text-transform: uppercase;
     line-height: 1.5em;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.05em;
+}
+.main-greet > div {
+    -webkit-animation-delay: 0.8s;
 }
 
 .main-content {
