@@ -9,9 +9,9 @@
 
     <div ng-controller="CategoryListCtrl as category">
         <!-- If error -->
-        <div class="item-in-cart-message row" ng-if="categoryLoadError">
+        <div class="item-in-cart row" ng-if="categoryLoadError">
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center">
-                <span>{% trans "Some error:( Try to reload page." %}</span>
+                <span>Error: [[categoryLoadError ]]</span>
             </div>
         </div>
 

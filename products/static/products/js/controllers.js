@@ -359,7 +359,7 @@ function CategoryListCtrl($scope, Category) {
         $scope.categoryLoad = true;
 
     }, function (error) {
-        $scope.categoryLoadError = true;
+        $scope.categoryLoadError = error.data.detail;
     });
 
 }
