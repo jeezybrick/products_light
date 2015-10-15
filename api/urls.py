@@ -22,6 +22,8 @@ urlpatterns = [
         views.CartDetail.as_view(), name='cart_detail_api'),
 
     url(r'^api/action/$', views.ActionList.as_view(), name='action_list_api'),
+    url(r'^api/action/(?P<pk>[0-9]+)/$',
+        views.ActionDetail.as_view(), name='action_detail_api'),
 
 
 ]

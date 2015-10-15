@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from rest_framework import generics, status, permissions
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
-from products.models import Item, MyUser
+from products.models import Item, MyUser, Action
 from products import cache
 from products.service import CartService, RateService
 from api import serializers
@@ -233,3 +233,22 @@ class ActionList(generics.GenericAPIView):
             serializer.save(shop=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Detail of cart. ID is item_id
+class ActionDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
+                 generics.DestroyAPIView):
+
+    permission_classes = (ShopIsAuthorOrReadOnly, permissions.IsAuthenticated)
+    serializer_class = serializers.ActionSerializer
+
+    def get_object(self):
+
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        obj = Action.objects.filter(shop=self.request.user, item_id=filter_kwargs['pk']).first()
+        if obj is None:
+            raise Http404
+        self.check_object_permissions(self.request, obj)
+
+        return obj

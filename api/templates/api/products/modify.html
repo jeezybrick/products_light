@@ -12,7 +12,7 @@
         </ul>
     </h4>
 
-    <!-- form for edit or delete item by owner only-->
+    <!-- form for edit or delete item only by owner -->
     <form name="edit_item_form" class="form-horizontal edit_item_form" role="form" method="POST" ng-submit="editItem()">
 
         <div class="form-group"><label class="col-md-2 control-label" for="id_name">{% trans "Name of item" %}</label>
@@ -67,7 +67,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-6 col-md-offset-2 text-center">
-                <input type="submit" class="btn btn-primary" name="submit" value="Edit item">
+                <button id="testButton" type="submit" class="btn btn-primary" name="submit">Edit item</button>
             </div>
         </div>
     </form>
@@ -79,6 +79,8 @@
             <a ng-href="#/[[ itemDetail.id ]]">{% trans "Click" %}</a> {% trans "to item page." %}
         </p>
     </div>
+
+
 
 </div>
 

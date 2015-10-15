@@ -460,7 +460,7 @@ function CartCtrl($scope, $timeout, Cart) {
     }
 
     /**
-     * Make order and show alert
+     * Show alert after making order
      */
     function makeOrder() {
 
@@ -477,6 +477,16 @@ angular
 function ActionCtrl($scope, $routeParams, $location, Action) {
 
     $scope.itemId = $routeParams.itemId;
+    /*
+    $scope.action = Action.get({item_id: $routeParams.itemId}, function () {
+
+        //
+
+    }, function (error) {
+
+        //
+    });
+    */
 
     /**
      * Add action
