@@ -58,6 +58,7 @@
         <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="itemLoad">
             <div class="row">
 
+                <!-- categories accordion block -->
                 <div class="category-filter col-lg-3 col-md-4 col-sm-12 col-xs-12 text-center"
                      ng-if="items.results.length"
                      ng-hide="showDetailOfItem">
@@ -90,7 +91,8 @@
                     </accordion>
                 </div>
 
-                <div class="main-list-block col-lg-9 col-md-8 col-sm-12 col-xs-12">
+                <!-- Item list block -->
+                <div class="main-list-block col-lg-9 col-md-8 col-sm-12 col-xs-12" ng-if="items.results.length">
 
                     <!-- Sort by price -->
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
@@ -109,13 +111,6 @@
                         <h4>
                             {% trans "Category filter (angular filter):" %}<input ng-model="search.categories" type="text"/>
                         </h4>
-                    </div>
-
-                    <!-- message if no items in row -->
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <h2 ng-hide="items.results.length">{% trans "No items:(" %}
-                            <a href="javascript:;" ng-click="showAllItems()">{% trans "Try show all items." %}</a>
-                        </h2>
                     </div>
 
                     <!-- ng-repeat -->
@@ -240,6 +235,13 @@
                             </ul>
                         </nav>
                     </div>
+                </div>
+
+                <!-- message if no items in row -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h2 ng-hide="items.results.length">{% trans "No items:(" %}
+                        <a href="javascript:;" ng-click="showAllItems()">{% trans "Try show all items." %}</a>
+                    </h2>
                 </div>
             </div>
         </div>
