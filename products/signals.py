@@ -53,7 +53,7 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
             )
 
     def handle_category_update(self, sender, instance, **kwargs):
-        for item in Item.objects.filter(categories__in=instance.id):
+        for item in Item.objects.filter(categories__in=str(instance.id)):
             super(RateOnlySignalProcessor, self).handle_save(
                 Item, item, **kwargs
             )

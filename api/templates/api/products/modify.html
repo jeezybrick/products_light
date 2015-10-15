@@ -1,6 +1,7 @@
 {% load i18n %}
 
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="isAuthUserIsOwner()">
+
     <!-- Error message -->
     <h4 class="error-comment-message" ng-repeat="(errorName,errorMessage) in errorEditItem.data">
         [[ errorName ]]:
@@ -11,6 +12,7 @@
         </ul>
     </h4>
 
+    <!-- form for edit or delete item by owner only-->
     <form name="edit_item_form" class="form-horizontal edit_item_form" role="form" method="POST" ng-submit="editItem()">
 
         <div class="form-group"><label class="col-md-2 control-label" for="id_name">{% trans "Name of item" %}</label>
@@ -70,6 +72,7 @@
         </div>
     </form>
 
+    <!-- block for show user success message if item edit right -->
     <div id="editItemSuccessMessage" class="edit-item-success col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center"
          ng-if="editItemSuccess">
         <p class="bg-primary">Item edit successfully!
@@ -79,6 +82,7 @@
 
 </div>
 
+<!-- non-author permission message -->
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-if="!isAuthUserIsOwner()">
     <h1>{% trans "You don't have permission to edit this item!" %}</h1>
 </div>
