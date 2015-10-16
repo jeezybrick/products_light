@@ -1,9 +1,10 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser
 from categories.models import Category
 from core.models import TimeStampedModel
-from django.contrib.auth.models import AbstractUser
+from products.managers import AverageManager
 
 # Create your models here.
 
@@ -35,6 +36,9 @@ class Rate(models.Model):
     value = models.IntegerField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     item = models.ForeignKey(Item, related_name='rates')
+
+    # add our custom model manager
+    objects = AverageManager()
 
     def __unicode__(self):
         return self.value
