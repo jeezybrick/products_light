@@ -16,6 +16,7 @@ from products import models
 from products import utils
 from my_auth.models import MyUser
 from haystack.query import SearchQuerySet
+from haystack.inputs import Raw
 
 
 # For redirect if not Auth
@@ -34,25 +35,25 @@ class ItemListView(View):
         # Sort by category
         category = request.GET.get('category', False)
         if not category:
-            products = SearchQuerySet().models(Item).all().order_by('-id')
+            products_list = SearchQuerySet().models(Item).filter(quantity=Raw("[* TO *]")).exclude(quantity__exact=0).order_by('-id')
         else:
-            products = SearchQuerySet().models(Item).filter(
+            products_list = SearchQuerySet().models(Item).filter(
                 categories__name=category).order_by('-id')
         # Facet
         facets = SearchQuerySet().models(Item).facet('categories').facet_counts()
         # Pagination
-        paginator = Paginator(products, 6)
+        paginator = Paginator(products_list, 6)
         page = request.GET.get('page')
 
         try:
-            products = paginator.page(page)
+            products_list = paginator.page(page)
         except PageNotAnInteger:
-            products = paginator.page(1)
+            products_list = paginator.page(1)
         except EmptyPage:
-            products = paginator.page(paginator.num_pages)
+            products_list = paginator.page(paginator.num_pages)
 
-        return render(request, self.template_name, {'products': products,
-                                                    'facets': facets})
+        return render(request, self.template_name, {'products_list': products_list,
+                                                    'facets': facets, })
 
 
 # Item detail

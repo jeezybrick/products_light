@@ -3,4 +3,8 @@ from my_auth.models import MyUser
 
 # Register your models here.
 
-admin.site.register(MyUser)
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = ("username", "email", "is_shop", "created_at", 'updated')
+
+admin.site.register(MyUser, UserAdmin)
