@@ -35,7 +35,7 @@ class ItemListView(View):
         # Sort by category
         category = request.GET.get('category', False)
         if not category:
-            products_list = SearchQuerySet().models(Item).filter(quantity=Raw("[* TO *]")).exclude(quantity__exact=0).order_by('-id')
+            products_list = SearchQuerySet().models(Item).all().order_by('-id')
         else:
             products_list = SearchQuerySet().models(Item).filter(
                 categories__name=category).order_by('-id')
