@@ -5,17 +5,11 @@ from django.db import models
 from .models import Item, Rate, Comment, Action
 from categories.models import Category
 from products import cache
-from categories.cache import CategoryCache
 from haystack import signals
 from my_auth.models import MyUser
 from my_auth.cache import ShopDetailCache
 
 invalidate_signals = [post_delete, post_save]
-
-
-@receiver(invalidate_signals, sender=Category)
-def invalidate_category(sender, instance, **kwargs):
-    CategoryCache().invalidate(parent_category_id__isnull=True)
 
 
 @receiver(invalidate_signals, sender=Item)
@@ -33,11 +27,6 @@ def invalidate_rate(sender, instance, **kwargs):
 @receiver(post_save, sender=Comment)
 def invalidate_comment(sender, instance, **kwargs):
     cache.CommentCache().invalidate()
-
-
-@receiver(post_save, sender=MyUser)
-def invalidate_shop(sender, instance, **kwargs):
-    ShopDetailCache().invalidate(id=str(instance.pk))
 
 
 class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
