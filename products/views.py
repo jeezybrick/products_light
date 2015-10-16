@@ -102,6 +102,9 @@ class ItemAddView(LoginRequiredMixin, CreateView):
         if not self.request.user.is_shop:
             raise PermissionDenied
 
+    def get_success_url(self):
+        return reverse("products_list_ang")
+
 
 # For adding new comments to detail
 class AddCommentView(View):
@@ -145,7 +148,6 @@ class AddRateView(LoginRequiredMixin, View):
 class ItemEditView(LoginRequiredMixin, UpdateView):
     model = Item
     template_name = 'products/products/modify.html'
-    success_url = '/products/'
     form_class = forms.ModifyItem
 
     def get_context_data(self, **kwargs):
@@ -157,14 +159,19 @@ class ItemEditView(LoginRequiredMixin, UpdateView):
         messages.success(self.request, _('Item edit!'))
         return super(ItemEditView, self).form_valid(form)
 
+    def get_success_url(self):
+        return reverse("products_list")
+
 
 # Delete item view
 class ItemDeleteView(DeleteView):
     model = Item
-    success_url = '/products/'
 
     def form_valid(self):
         messages.success(self.request, _('Item delete!'))
+
+    def get_success_url(self):
+        return reverse("products_list")
 
 
 # List of shops
@@ -207,7 +214,6 @@ class ShopDetailView(View):
 class ItemActionView(CreateView):
     model = models.Action
     template_name = 'products/actions/modify.html'
-    success_url = '/'
     form_class = forms.ModifyAction
 
     def get_context_data(self, **kwargs):
@@ -218,3 +224,6 @@ class ItemActionView(CreateView):
     def form_valid(self, form):
         messages.success(self.request, _('Action add!'))
         return super(ItemActionView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse("home")
