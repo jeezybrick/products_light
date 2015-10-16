@@ -3,15 +3,12 @@
 
 
 def message_of_quantity_items(item):
-    try:
-        item.quantity
-    except:
-        return None
-    else:
+    if item.quantity is not None:
         if item.quantity == 0:
-            return 'The product is out of stock'
+            return 'The item is out of stock :('
         if item.quantity < 10:
-            return 'The product ends'
+            return 'This item end soon! Hurry up!'
+    return None
 
 
 """ return item with percentage price """
