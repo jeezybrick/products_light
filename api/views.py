@@ -1,11 +1,12 @@
 
 from django.http import Http404
 from django.utils.datastructures import MultiValueDictKeyError
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import generics, status, permissions
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
-from products.models import Item, MyUser, Action
+from my_auth.models import MyUser
+from products.models import Item, Action
 from products import cache
 from products.service import RateService
 from cart.service import CartService

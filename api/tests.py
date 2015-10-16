@@ -1,20 +1,21 @@
 # Create your tests here.
 
 from django.test import Client, TestCase
+from django.core.urlresolvers import reverse
 from products import models
 from cart.models import Cart
-from django.core.urlresolvers import reverse
+from my_auth.models import MyUser
 
 
 class SimpleTest(TestCase):
     def setUp(self):
         # User objects
-        self.user1 = models.MyUser.objects.create_user('temporary', 'temporary@gmail.com',
+        self.user1 = MyUser.objects.create_user('temporary', 'temporary@gmail.com',
                                                        'temporary', is_shop=False)
-        self.user2 = models.MyUser.objects.create_user('temporary2', 'temporary_second@gmail.com',
+        self.user2 = MyUser.objects.create_user('temporary2', 'temporary_second@gmail.com',
                                                        'temporary', is_shop=False)
         # Shop-user
-        self.user_shop = models.MyUser.objects.create_user('temporary3', 'temporary_shop@gmail.com',
+        self.user_shop = MyUser.objects.create_user('temporary3', 'temporary_shop@gmail.com',
                                                            'temporary', is_shop=True)
         # Create Item object
         self.item = models.Item(name='Phone 8080', price='1234', image_url='http://127.0.0.1:8000/products_ang/',

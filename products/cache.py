@@ -1,7 +1,8 @@
 
 from django.core.exceptions import ImproperlyConfigured
 from django.shortcuts import get_object_or_404
-from products.models import Item, Rate, Comment, MyUser
+from products.models import Item, Rate, Comment
+from my_auth.models import MyUser
 from cacheback.base import Job
 
 

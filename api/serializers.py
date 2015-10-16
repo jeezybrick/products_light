@@ -7,12 +7,13 @@ from products.service import RateService
 from categories.models import Category
 from cart.models import Cart
 from cart.service import CartService
+from my_auth.models import MyUser
 
 
 class UserSerializer(serializers.ModelField):
 
     class Meta:
-        model = models.MyUser
+        model = MyUser
         fields = ('url', 'username', 'email', 'is_staff', )
 
 
@@ -143,7 +144,7 @@ class ShopSerializer(serializers.Serializer):
 class ShopDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = models.MyUser
+        model = MyUser
         fields = ('id', 'username', 'email', 'items', )
 
 

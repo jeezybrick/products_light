@@ -5,6 +5,7 @@ import random
 import string
 from django.core.management.base import BaseCommand
 from products import models
+from my_auth.models import MyUser
 
 
 def random_string(length=100):
@@ -25,7 +26,7 @@ class Command(BaseCommand):
     """Create users"""
     class UserFactory(factory.Factory):
         class Meta:
-            model = models.MyUser
+            model = MyUser
 
         username = factory.LazyAttribute(lambda t: random_string(length=10))
         email = factory.LazyAttribute(lambda t: random_string()+'@gmail.com')

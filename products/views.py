@@ -6,16 +6,15 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
-from django.template.response import TemplateResponse
-from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from products import cache
-from products.service import  RateService
-from .models import Rate, Item, MyUser
+from products.service import RateService
+from .models import Rate, Item
 from products import forms
 from products import models
 from products import utils
+from my_auth.models import MyUser
 from haystack.query import SearchQuerySet
 
 

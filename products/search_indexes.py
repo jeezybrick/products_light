@@ -1,7 +1,8 @@
 
 from django.db.models import Avg
 from haystack import indexes
-from products.models import Item, Comment, Rate, MyUser
+from products.models import Item, Comment, Rate
+from my_auth.models import MyUser
 
 
 class ItemIndex(indexes.SearchIndex, indexes.Indexable):

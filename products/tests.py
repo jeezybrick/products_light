@@ -1,7 +1,8 @@
 # Create your tests here.
 
 from django.test import Client, TestCase
-from .models import MyUser, Item
+from .models import Item
+from my_auth.models import MyUser
 from django.core.urlresolvers import reverse
 
 

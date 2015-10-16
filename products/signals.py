@@ -2,11 +2,12 @@
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.db import models
-from .models import Item, Rate, Comment, MyUser, Action
+from .models import Item, Rate, Comment, Action
 from categories.models import Category
 from products import cache
 from categories.cache import CategoryCache
 from haystack import signals
+from my_auth.models import MyUser
 
 invalidate_signals = [post_delete, post_save]
 

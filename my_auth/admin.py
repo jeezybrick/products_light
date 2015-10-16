@@ -1,6 +1,6 @@
 from django.contrib import admin
-from products import models
+from my_auth.models import MyUser
 
 # Register your models here.
 
-admin.site.register(models.MyUser)
+admin.site.register(MyUser)

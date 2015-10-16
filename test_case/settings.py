@@ -41,11 +41,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     # my apps
-    'products',
+    'my_auth',
     'categories',
     'cart',
-    'my_auth',
     'api',
+    'products',
     # third party apps
     'bootstrap3',
     'rest_framework',
@@ -145,4 +145,4 @@ CELERY_ALWAYS_EAGER = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-AUTH_USER_MODEL = 'products.MyUser'
+AUTH_USER_MODEL = 'my_auth.MyUser'

@@ -8,6 +8,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field, Fieldset
 from crispy_forms.bootstrap import PrependedText
 from products import models
+from my_auth.models import MyUser
 
 
 class MyLoginForm(AuthenticationForm):
@@ -64,7 +65,7 @@ class MyRegForm(UserCreationForm):
                                      css_class='btn btn-default btn-md col-md-offset-5'))
 
     class Meta:
-        model = models.MyUser
+        model = MyUser
         fields = ('last_name', 'first_name', 'username',
                   'email', 'password1', 'password2',)
 
