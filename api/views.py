@@ -7,7 +7,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from products.models import Item, MyUser, Action
 from products import cache
-from products.service import CartService, RateService
+from products.service import RateService
+from cart.service import CartService
 from api import serializers
 from api.utils import addItemIdToSession, removeItemIdFromSession
 from api.permissions import IsAuthorOrReadOnly, ShopIsAuthorOrReadOnly

@@ -3,9 +3,10 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 from products import models
-from products.service import CartService, RateService
+from products.service import RateService
 from categories.models import Category
 from cart.models import Cart
+from cart.service import CartService
 
 
 class UserSerializer(serializers.ModelField):
