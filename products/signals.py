@@ -8,6 +8,7 @@ from products import cache
 from categories.cache import CategoryCache
 from haystack import signals
 from my_auth.models import MyUser
+from my_auth.cache import ShopDetailCache
 
 invalidate_signals = [post_delete, post_save]
 
@@ -36,7 +37,7 @@ def invalidate_comment(sender, instance, **kwargs):
 
 @receiver(post_save, sender=MyUser)
 def invalidate_shop(sender, instance, **kwargs):
-    cache.ShopDetailCache().invalidate(id=str(instance.pk))
+    ShopDetailCache().invalidate(id=str(instance.pk))
 
 
 class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
