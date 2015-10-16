@@ -11,7 +11,7 @@ from products.managers import AverageManager
 
 class Item(TimeStampedModel):
     name = models.CharField(_("Name of item"), max_length=100, blank=False)
-    price = models.IntegerField(_("Price"), blank=False)
+    price = models.PositiveIntegerField(_("Price"), blank=False)
     image_url = models.URLField(_("Link to image"), blank=True, max_length=50)
     categories = models.ManyToManyField(Category, blank=True)
     description = models.CharField(
@@ -33,7 +33,7 @@ class Comment(TimeStampedModel):
 
 
 class Rate(models.Model):
-    value = models.IntegerField()
+    value = models.PositiveIntegerField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     item = models.ForeignKey(Item, related_name='rates')
 
@@ -48,7 +48,7 @@ class Action(models.Model):
     item = models.OneToOneField(Item)
     shop = models.ForeignKey(settings.AUTH_USER_MODEL)
     description = models.CharField(max_length=1000)
-    new_price = models.IntegerField(blank=True)
+    new_price = models.PositiveIntegerField(blank=True)
     period_from = models.DateField()
     period_to = models.DateField()
 
