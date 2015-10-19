@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from categories.models import Category
 from core.models import TimeStampedModel
-from products.managers import AverageRateManager
+from products.managers import RateManager
 
 # Create your models here.
 
@@ -41,7 +41,8 @@ class Rate(models.Model):
 
     # add our custom model manager
     objects = models.Manager()  # The default manager.
-    average = AverageRateManager()  # Average rating for item
+    average = RateManager()  # Average rating for item
+    auth_user_rating = RateManager()  # Average rating for item
 
     def __unicode__(self):
         return self.value

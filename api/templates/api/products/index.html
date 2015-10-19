@@ -78,13 +78,13 @@
                                     <a href="javascript:;" ng-click="showAllItems()">{% trans "All categories" %}</a>
                                 </li>
 
-                                <li ng-repeat="category in categories | limitTo:5">
+                                <li ng-repeat="category in categories track by $index | limitTo:5">
                                     <a href="javascript:;" ng-click="sortByCategory(category.name)">[[ category.name]]
                                         <span class="badge">[[ category.count ]]</span>
                                     </a>
 
                                     <ul>
-                                        <li ng-repeat="sub in category.category_set| limitTo:5">
+                                        <li ng-repeat="sub in category.category_set track by $index| limitTo:5">
                                             <a href="javascript:;" ng-click="sortByCategory(sub)">[[ sub ]]</a>
                                         </li>
                                     </ul>
