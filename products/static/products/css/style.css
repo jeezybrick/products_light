@@ -147,7 +147,7 @@
 }
 
 .add-cart-button {
-    padding: 15px;
+    padding: 30px;
 }
 
 /* ng-animate */
@@ -281,4 +281,7 @@
     top: 0;
     border-color: #f0c36d;
     z-index: 999999;
+}
+.comments-count-block{
+    margin-top: 15px;
 }

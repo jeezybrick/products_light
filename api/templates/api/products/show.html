@@ -92,7 +92,7 @@
     <hr>
 
     <!-- show comments if they exists for this item -->
-    <h3 ng-show="itemDetail.comments.length">{% trans "Comments" %}</h3>
+    <h3 id="comments" ng-show="itemDetail.comments.length">{% trans "Comments" %}</h3>
 
     <!-- block for new comment posting by user -->
     <div class="comment-unit col-md-8 col-sm-10 animated slideInUp" ng-show="appendComment">

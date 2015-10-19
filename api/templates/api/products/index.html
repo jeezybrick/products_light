@@ -22,13 +22,18 @@
             <div class="item-list-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="row">
                     <div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
-                        <h1 id="test">{% trans "list of items" %}</h1>
+                        <h1 id="test">{% trans "List of items" %}</h1>
                     </div>
-                    <div class="button-add-something col-lg-6 col-md-3 col-sm-3 col-xs-12">
-                        <a href="{% url 'products_add' %}"
-                           class="btn btn-warning pull-right" ng-hide="showDetailOfItem">
-                            <i class="fa fa-plus fa-lg"></i> {% trans "Add item" %}</a>
-                    </div>
+
+                    <!-- Check if user is shop -->
+                    {% if user.is_shop %}
+                        <div class="button-add-something col-lg-6 col-md-3 col-sm-3 col-xs-12">
+                            <a href="{% url 'products_add' %}"
+                               class="btn btn-warning pull-right" ng-hide="showDetailOfItem">
+                                <i class="fa fa-plus fa-lg"></i> {% trans "Add item" %}</a>
+                        </div>
+                    {% endif %}
+
                 </div>
             </div>
         </div>
@@ -141,6 +146,40 @@
 
                                     </div>
 
+                                    <div class="row">
+                                            <!-- Add to cart block -->
+                                         <div class="add-cart-button col-lg-7 col-md-6 col-sm-6 col-xs-7">
+                                            <button ng-if="!item.is_item_in_cart" class="btn btn-success" type="button"
+                                                    ng-click="addItemToCart(item.pk)"
+                                                    ng-class="{'disabled' : item.quantity == 0}">
+                                                <i class="fa fa-shopping-cart fa-lg"></i> {% trans "Add to cart" %}
+                                            </button>
+
+                                            <!-- block for add/delete item to/form cart -->
+                                            <div class="open-cart text-center" ng-if="item.is_item_in_cart">
+                                                <div class="row">
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                        <a href="javascript:void(0);" ng-click="deleteItemInCart(item.pk)"
+                                                           tooltip-placement="top" tooltip="Delete item from the cart"
+                                                           tooltip-popup-delay='600'>
+                                                            <i ng-class="{'fa fa-times fa-2x':hovering, 'fa fa-check fa-2x':!hovering}"
+                                                               ng-mouseenter="hovering=true"
+                                                               ng-mouseleave="hovering=false"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                                        <a href="{% url 'cart_list' %}">{% trans "Item in the cart!" %}</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="comments-count-block col-lg-5 col-md-6 col-sm-6 col-xs-5 text-center">
+                                            <h3><a ng-href="#/[[item.pk]]" ng-click="showItem()">{% trans "Comments " %}</a><span class="badge"> [[ item.comments.length ]]</span></h3>
+                                        </div>
+                                    </div>
+
                                     <div class="col-lg-8 col-md-4 col-sm-4 col-xs-6">
                                         <h2>{% trans "ID:" %}[[ item.pk]]</h2>
                                     </div>
@@ -191,31 +230,7 @@
                                         <h4>{% trans "Rating:" %}[[ item.rate | limitTo:3 ]]</h4>
                                     </div>
 
-                                    <div class="add-cart-button col-lg-7 col-md-7 col-sm-7 col-xs-12">
-                                        <button ng-if="!item.is_item_in_cart" class="btn btn-success" type="button"
-                                                ng-click="addItemToCart(item.pk)"
-                                                ng-class="{'disabled' : item.quantity == 0}">
-                                            <i class="fa fa-shopping-cart fa-lg"></i> {% trans "Add to cart" %}
-                                        </button>
 
-                                        <!-- block for add/delete item to/form cart -->
-                                        <div class="open-cart text-center" ng-if="item.is_item_in_cart">
-                                            <div class="row">
-                                                <div class="col-lg-4">
-                                                    <a href="javascript:void(0);" ng-click="deleteItemInCart(item.pk)"
-                                                       tooltip-placement="top" tooltip="Delete item from the cart"
-                                                       tooltip-popup-delay='600'>
-                                                        <i ng-class="{'fa fa-times fa-2x':hovering, 'fa fa-check fa-2x':!hovering}"
-                                                           ng-mouseenter="hovering=true"
-                                                           ng-mouseleave="hovering=false"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="col-lg-8">
-                                                    <a href="{% url 'cart_list' %}">{% trans "Item in the cart!" %}</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
