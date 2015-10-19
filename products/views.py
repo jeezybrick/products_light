@@ -16,7 +16,6 @@ from products import models
 from products import utils
 from my_auth.models import MyUser
 from haystack.query import SearchQuerySet
-from haystack.inputs import Raw
 
 
 # For redirect if not Auth

@@ -2,9 +2,11 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 from categories import cache
 from categories.models import Category
 from categories.forms import AddCategory
+from products.views import LoginRequiredMixin
 
 
 # Category list
@@ -18,10 +20,9 @@ class CategoryListView(ListView):
 
 
 # For add new category
-class CategoryAddView(CreateView):
+class CategoryAddView(LoginRequiredMixin, CreateView):
     model = Category
     template_name = 'categories/modify.html'
-    success_url = '/categories_ang/'
     form_class = AddCategory
 
     def get_context_data(self, **kwargs):
@@ -30,8 +31,11 @@ class CategoryAddView(CreateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, _('Category add!'))
+        messages.success(self.request, _('Category added!'))
         return super(CategoryAddView, self).form_valid(form)
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse("categories_list_ang")
