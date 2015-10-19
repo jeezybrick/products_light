@@ -69,7 +69,7 @@
                 <!-- ng-repeat -->
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div id="categoryList" class="main-list col-lg-4 col-ms-4 col-sm-6 col-xs-12"
-                         ng-repeat="category in categories | filter:search">
+                         ng-repeat="category in categories  | filter:search">
 
                         <div class="notes">
                             <div class="row">
@@ -90,7 +90,7 @@
                             <!-- Sub category -->
                             <h3 ng-show="category.category_set.length">{% trans "Sub:" %}</h3>
                             <ul>
-                                <li ng-repeat="sub in category.category_set">
+                                <li ng-repeat="sub in category.category_set track by $index">
                                     [[ sub ]]
                                 </li>
                             </ul>

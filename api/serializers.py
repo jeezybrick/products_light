@@ -32,14 +32,14 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
 
-    max_length = 5
+    max_message_length = 5
 
     class Meta:
         model = models.Comment
         fields = ('username', 'message', 'item')
 
     def is_message_not_valid(self, value):
-        return len(value) < self.max_length
+        return len(value) < self.max_message_length
 
     def validate_message(self, message):
         if self.is_message_not_valid(message):
