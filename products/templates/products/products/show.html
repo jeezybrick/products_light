@@ -58,7 +58,7 @@
                 <hr/>
             </div>
         <div class="col-md-8 col-sm-10">
-        <h2 id="foo">{% trans "Comments" %}</h2>
+        <h2>{% trans "Comments" %}</h2>
         {% for comment in item.comments.all %}
             <h4><small>{{ comment.username }}</small></h4>
             <h4>{{ comment.message }}</h4>

@@ -35,13 +35,13 @@
 
         <!-- Begin faceting. -->
         <div class="faceting col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <h2>By Category</h2>
+            <h2>{% trans "By Category" %}</h2>
 
             <div>
                 <dl class="all-categories-list">
                     {% if facets.fields.categories %}
-                        <dt>Category:</dt>
-                        <a href="/products/">All categories</a>
+                        <dt>{% trans "Category:" %}</dt>
+                        <a href="/products/">{% trans "All categories" %}</a>
                         {# Provide only the top 5 categories #}
                         {% for category in facets.fields.categories|slice:":5" %}
                             <dd>
@@ -50,7 +50,7 @@
                             </dd>
                         {% endfor %}
                     {% else %}
-                        <p>No category facets.</p>
+                        <p>{% trans "No category facets." %}</p>
                     {% endif %}
                 </dl>
             </div>
@@ -67,16 +67,16 @@
                         <div class="row">
                             <div class="main-list-top col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 {% if product.object.quantity == 0 %}
-                                    <div class="alert alert-danger" role="alert">The product is out of stock</div>
+                                    <div class="alert alert-danger" role="alert">{% trans "The product is out of stock" %}</div>
                                 {% elif product.object.quantity < 10 %}
-                                    <div class="alert alert-warning animated infinite pulse" role="alert">The product
-                                        ends
+                                    <div class="alert alert-warning animated infinite pulse" role="alert">
+                                        {% trans "The product ends" %}
                                     </div>
                                 {% endif %}
                             </div>
 
                             <div class="main-list-top col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                <h2>ID:{{ product.object.id }}</h2>
+                                <h2>{% trans "ID:{{ product.object.id }}</h2>
                             </div>
 
                             <div class="main-list-top-pencil col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
@@ -150,10 +150,10 @@
     <nav>
         <ul class="pager">
             {% if products.has_previous %}
-                <li><a href="?page={{ products.previous_page_number }}">Previous</a></li>
+                <li><a href="?page={{ products.previous_page_number }}">{% trans "Previous" %}</a></li>
             {% endif %}
             {% if products.has_next %}
-                <li><a href="?page={{ products.next_page_number }}">Next</a></li>
+                <li><a href="?page={{ products.next_page_number }}">{% trans "Next" %}</a></li>
             {% endif %}
         </ul>
     </nav>
