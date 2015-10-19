@@ -12,13 +12,13 @@ from products import forms
 class LoginView(View):
     form_class = forms.MyLoginForm
     template_name = 'my_auth/login.html'
-    success_url = '/'
+    title = _('Sign In')
 
     def get(self, request):
         form = self.form_class(request)
         context = {
             'form': form,
-            'title': _('Sign In'),
+            'title': self.title,
         }
         return TemplateResponse(request, self.template_name, context)
 
@@ -26,12 +26,15 @@ class LoginView(View):
         form = self.form_class(request, data=request.POST)
         context = {
             'form': form,
-            'title': _('Sign In'),
+            'title': self.title,
         }
         if form.is_valid():
             auth_login(request, form.get_user())
-            return HttpResponseRedirect(self.success_url)
+            return HttpResponseRedirect(self.get_success_url())
         return TemplateResponse(request, self.template_name, context)
+
+    def get_success_url(self):
+        return reverse("home")
 
 
 # Registration view
@@ -54,4 +57,4 @@ class RegisterView(View):
 # logout function
 def get_logout(request):
     auth_logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect(reverse("home"))

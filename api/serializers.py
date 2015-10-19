@@ -3,7 +3,6 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 from products import models
-from products.service import RateService
 from categories.models import Category
 from cart.models import Cart
 from cart.service import CartService
@@ -33,12 +32,14 @@ class CategorySerializer(serializers.HyperlinkedModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
 
+    max_length = 5
+
     class Meta:
         model = models.Comment
         fields = ('username', 'message', 'item')
 
     def is_message_not_valid(self, value):
-        return len(value) < 5
+        return len(value) < self.max_length
 
     def validate_message(self, message):
         if self.is_message_not_valid(message):
@@ -48,8 +49,11 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class RateSerializer(serializers.ModelSerializer):
 
+    max_value = 10
+    min_value = 0
+
     def is_value_not_valid(self, value):
-        return value > 10 or value < 0
+        return value > self.max_value or value < self.min_value
 
     def validate_value(self, value):
         if self.is_value_not_valid(value):
@@ -116,12 +120,12 @@ class ItemDetailSerializer(serializers.ModelSerializer):
     def get_action_price(self, obj):
         request = self.context.get('request', None)
         try:
-            user_rate = models.Action.objects.get(
+            price = models.Action.objects.get(
                 shop=request.user.id, item=obj.id).new_price
         except ObjectDoesNotExist:
-            user_rate = None
+            price = None
 
-        return user_rate
+        return price
 
     class Meta:
         model = models.Item
@@ -159,8 +163,11 @@ class CartSerializer(serializers.ModelSerializer):
 
 class ActionSerializer(serializers.ModelSerializer):
 
+    max_price = 1000000
+    min_price = 0
+
     def is_price_not_valid(self, value):
-        return value > 1000000 or value < 0
+        return value > self.max_price or value < self.min_price
 
     def validate_new_price(self, price):
         if self.is_price_not_valid(price):

@@ -131,9 +131,10 @@ class ItemEditView(LoginRequiredMixin, UpdateView):
 # Delete item view
 class ItemDeleteView(DeleteView):
     model = Item
+    success_msg = _('Item delete!')
 
     def form_valid(self):
-        messages.success(self.request, _('Item delete!'))
+        messages.success(self.request, self.success_msg)
 
     def get_success_url(self):
         return reverse("products_list")
