@@ -123,11 +123,14 @@
                     </div>
 
                     <!-- ng-repeat -->
+
+
                     <div class="main-list-wrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
                         <div class="main-list col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
                              ng-repeat="item in items.results | filter:search | orderBy:sortField:reverse"
                              ng-class="{'zero-quantity-item' : item.quantity == 0}">
-
+                            <a ng-href="#/[[item.pk]]">
                             <div class="notes">
                                 <div class="row">
 
@@ -230,10 +233,11 @@
                                         <h4>{% trans "Rating:" %}[[ item.rate | limitTo:3 ]]</h4>
                                     </div>
 
-
                                 </div>
                             </div>
+                            </a>
                         </div>
+
                     </div>
 
                     <!-- pagination -->
