@@ -14,6 +14,7 @@ from api import serializers
 from api.utils import addItemIdToSession, removeItemIdFromSession
 from api.permissions import IsAuthorOrReadOnly, ShopIsAuthorOrReadOnly
 from categories.cache import CategoryCache
+from  my_auth.cache import ShopDetailCache
 from rest_framework.response import Response
 from haystack.query import SearchQuerySet
 
@@ -138,7 +139,7 @@ class ShopDetail(generics.RetrieveAPIView):
 
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
-        obj = cache.ShopDetailCache().get(id=filter_kwargs['pk'])
+        obj = ShopDetailCache().get(id=filter_kwargs['pk'])
         self.check_object_permissions(self.request, obj)
 
         return obj
