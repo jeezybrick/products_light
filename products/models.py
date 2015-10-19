@@ -40,9 +40,7 @@ class Rate(models.Model):
     item = models.ForeignKey(Item, related_name='rates')
 
     # add our custom model manager
-    objects = models.Manager()  # The default manager.
-    average = RateManager()  # Average rating for item
-    auth_user_rating = RateManager()  # Average rating for item
+    objects = RateManager()
 
     def __unicode__(self):
         return self.value

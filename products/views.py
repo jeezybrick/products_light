@@ -73,7 +73,7 @@ class ItemDetailView(View):
         context = {
             'comment_form': forms.AddComment,
             'rating_form': forms.AddRate(instance=user_rate),
-            'average_rating': models.Rate.average.filter(item_id=item.id),
+            'average_rating': models.Rate.objects.average(item_id=item.id),
             'item': item,
             'message': message_of_quantity_count,
         }
@@ -113,6 +113,7 @@ class ItemEditView(LoginRequiredMixin, UpdateView):
     model = Item
     template_name = 'products/products/modify.html'
     form_class = forms.ModifyItem
+    success_msg = _('Item edited!')
 
     def get_context_data(self, **kwargs):
         context = super(ItemEditView, self).get_context_data(**kwargs)
@@ -120,7 +121,7 @@ class ItemEditView(LoginRequiredMixin, UpdateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, _('Item edited!'))
+        messages.success(self.request, self.success_msg)
         return super(ItemEditView, self).form_valid(form)
 
     def get_success_url(self):

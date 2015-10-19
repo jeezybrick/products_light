@@ -102,12 +102,12 @@ class ItemDetailSerializer(serializers.ModelSerializer):
     user = serializers.CharField(read_only=True)
 
     def get_rates(self, obj):
-        return models.Rate.average.filter(item_id=obj.pk)
+        return models.Rate.objects.average(item_id=obj.pk)
 
     def get_user_rate(self, obj):
 
         request = self.context.get('request', None)
-        user_rate = RateService().get_user_rate(request.user, item_id=obj.pk)
+        user_rate = models.Rate.objects.auth_user_rating(user_id=request.user.id, item_id=obj.pk)
 
         return user_rate
 
