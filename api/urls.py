@@ -2,10 +2,6 @@
 from django.conf.urls import url
 from api import views
 
-from api.handlers import custom404
-
-
-handler404 = custom404
 
 urlpatterns = [
     url(r'^api/items/$', views.ItemList.as_view(), name='item_list_api'),
