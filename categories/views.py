@@ -24,6 +24,7 @@ class CategoryAddView(LoginRequiredMixin, CreateView):
     model = Category
     template_name = 'categories/modify.html'
     form_class = AddCategory
+    success_msg = _('Category added!')
 
     def get_context_data(self, **kwargs):
         context = super(CategoryAddView, self).get_context_data(**kwargs)
@@ -31,7 +32,7 @@ class CategoryAddView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, _('Category added!'))
+        messages.success(self.request, self.success_msg)
         return super(CategoryAddView, self).form_valid(form)
 
     def form_invalid(self, form):

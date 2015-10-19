@@ -21,6 +21,7 @@ class LoginRequiredMixin(object):
 class CartView(LoginRequiredMixin, View):
     template_name = 'cart/index.html'
     form_class = forms.AddItemToCart
+    success_msg = _('Item add to cart!')
 
     def get(self, request):
         cart = CartService().get_cart(request.user)
@@ -35,6 +36,6 @@ class CartView(LoginRequiredMixin, View):
             first = form.save(commit=False)
             first.user = request.user
             first.save()
-            messages.success(self.request, _('Item add to cart!'))
+            messages.success(self.request, self.success_msg)
             return HttpResponseRedirect(reverse('products_list'))
         return render(request, self.template_name, {'form': form})

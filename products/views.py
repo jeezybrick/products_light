@@ -15,6 +15,7 @@ from products import forms
 from products import models
 from products import utils
 from my_auth.models import MyUser
+from my_auth.cache import ShopDetailCache
 from haystack.query import SearchQuerySet
 
 
@@ -65,15 +66,16 @@ class ItemDetailView(View):
         item = cache.ProductDetailCache().get(id=kwargs["pk"])
         user_rate = RateService().get_rate(request.user, item.id)
 
-        message = utils.message_of_quantity_items(item)
+        # quantity-count message
+        message_of_quantity_count = utils.message_of_quantity_items(item)
         item = utils.price_with_percent(item)
 
         context = {
             'comment_form': forms.AddComment,
             'rating_form': forms.AddRate(instance=user_rate),
-            'average_rating': RateService().get_avarage_rate(item.id),
+            'average_rating': models.Rate.average.filter(item_id=item.id),
             'item': item,
-            'message': message,
+            'message': message_of_quantity_count,
         }
         return render(request, self.template_name, context)
 
@@ -82,8 +84,8 @@ class ItemDetailView(View):
 class ItemAddView(LoginRequiredMixin, CreateView):
     model = Item
     template_name = 'products/products/modify.html'
-    success_url = '/products_ang/'
     form_class = forms.ModifyItem
+    success_msg = _('Item added!')
 
     def get_context_data(self, **kwargs):
         context = super(ItemAddView, self).get_context_data(**kwargs)
@@ -95,7 +97,7 @@ class ItemAddView(LoginRequiredMixin, CreateView):
         first = form.save(commit=False)
         first.user = self.request.user
         first.save()
-        messages.success(self.request, _('Item added!'))
+        messages.success(self.request, self.success_msg)
         return super(ItemAddView, self).form_valid(form)
 
     def if_user_not_a_shop(self):
@@ -140,6 +142,7 @@ class ItemDeleteView(DeleteView):
 class AddCommentView(View):
     form_class = forms.AddComment
     template_name = 'products/products/show.html'
+    success_msg = _('Your comment added!')
 
     def post(self, request, **kwargs):
         form = self.form_class(request.POST)
@@ -147,7 +150,7 @@ class AddCommentView(View):
             first = form.save(commit=False)
             first.item = get_object_or_404(models.Item, id=kwargs["pk"])
             first.save()
-            messages.success(self.request, _('Your comment add!'))
+            messages.success(self.request, self.success_msg)
             return HttpResponseRedirect(reverse('products_show', args=(kwargs["pk"],)))
         return render(request, self.template_name, {'form': form})
 
@@ -156,6 +159,7 @@ class AddCommentView(View):
 class AddRateView(LoginRequiredMixin, View):
     form_class = forms.AddRate
     template_name = 'products/products/show.html'
+    success_msg = _('Thanks for your rating!')
 
     def post(self, request, **kwargs):
         item = get_object_or_404(Item, id=kwargs["pk"])
@@ -169,7 +173,7 @@ class AddRateView(LoginRequiredMixin, View):
             first.item = get_object_or_404(models.Item, id=kwargs["pk"])
             first.user = request.user
             first.save()
-            messages.success(self.request, _('Thanks for rate!'))
+            messages.success(self.request, self.success_msg)
             return HttpResponseRedirect(reverse('products_show', args=(kwargs["pk"],)))
         return render(request, self.template_name, {'form': form})
 
@@ -201,7 +205,7 @@ class ShopDetailView(View):
     template_name = 'products/shops/show.html'
 
     def get(self, request, **kwargs):
-        shop = cache.ShopDetailCache().get(id=kwargs["pk"])
+        shop = ShopDetailCache().get(id=kwargs["pk"])
         context = {
             'shop': shop,
         }
@@ -215,6 +219,7 @@ class ItemActionView(CreateView):
     model = models.Action
     template_name = 'products/actions/modify.html'
     form_class = forms.ModifyAction
+    success_msg = _('Action add!')
 
     def get_context_data(self, **kwargs):
         context = super(ItemActionView, self).get_context_data(**kwargs)
@@ -222,8 +227,8 @@ class ItemActionView(CreateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, _('Action add!'))
+        messages.success(self.request, self.success_msg)
         return super(ItemActionView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse("home")
+        return reverse("products_list_ang")
