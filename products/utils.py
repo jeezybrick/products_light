@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext_lazy as _
 
 """ return message depends on quantity item """
 
@@ -5,9 +6,9 @@
 def message_of_quantity_items(item):
     if item.quantity is not None:
         if item.quantity == 0:
-            return 'The item is out of stock :('
+            return _('The item is out of stock :(')
         if item.quantity < 10:
-            return 'This item end soon! Hurry up!'
+            return _('This item end soon! Hurry up!')
     return None
 
 
