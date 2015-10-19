@@ -7,13 +7,14 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist
 from products import cache
 from products.service import RateService
 from .models import Rate, Item
 from products import forms
 from products import models
 from products import utils
+from products.validators import if_user_not_a_shop
 from my_auth.models import MyUser
 from my_auth.cache import ShopDetailCache
 from haystack.query import SearchQuerySet
@@ -90,7 +91,7 @@ class ItemAddView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(ItemAddView, self).get_context_data(**kwargs)
         context['foo'] = _('Add')
-        self.if_user_not_a_shop()
+        if_user_not_a_shop(self)  # Check if auth user is shop
         return context
 
     def form_valid(self, form):
@@ -99,10 +100,6 @@ class ItemAddView(LoginRequiredMixin, CreateView):
         first.save()
         messages.success(self.request, self.success_msg)
         return super(ItemAddView, self).form_valid(form)
-
-    def if_user_not_a_shop(self):
-        if not self.request.user.is_shop:
-            raise PermissionDenied
 
     def get_success_url(self):
         return reverse("products_list_ang")
@@ -118,6 +115,7 @@ class ItemEditView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ItemEditView, self).get_context_data(**kwargs)
         context['foo'] = _('Edit')
+        if_user_not_a_shop(self)  # Check if auth user is shop
         return context
 
     def form_valid(self, form):

@@ -5,6 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import generics, status, permissions
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
+from rest_framework.response import Response
 from my_auth.models import MyUser
 from products.models import Item, Action
 from products import cache
@@ -14,8 +15,7 @@ from api import serializers
 from api.utils import addItemIdToSession, removeItemIdFromSession
 from api.permissions import IsAuthorOrReadOnly, ShopIsAuthorOrReadOnly
 from categories.cache import CategoryCache
-from  my_auth.cache import ShopDetailCache
-from rest_framework.response import Response
+from my_auth.cache import ShopDetailCache
 from haystack.query import SearchQuerySet
 
 

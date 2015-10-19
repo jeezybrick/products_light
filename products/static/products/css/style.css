@@ -1,3 +1,7 @@
+.navbar-toggle{
+    margin-left: 15px;
+}
+
 .main-greet {
     text-transform: uppercase;
     line-height: 1.5em;
