@@ -2,8 +2,6 @@
 
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-    [[ action ]]
-
     <!-- Error message -->
     <h4 class="error-comment-message" ng-repeat="(errorName,errorMessage) in errorAddAction.data">
         [[ errorName ]]:
@@ -13,6 +11,18 @@
             </li>
         </ul>
     </h4>
+
+    <h1 class="item-detail-name">{% trans "Adding action to:" %}[[ itemDetail.name ]]</h1>
+
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+        <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+        <li><a href="{% url 'products_list_ang' %}"
+               ng-click="showDetailOfItem=false">{% trans "List of items" %}</a></li>
+        <li><a ng-href="#/[[ itemDetail.id ]]">{% trans "Detail of item" %}</a></li>
+        <li class="active">{% trans "Comments" %}</li>
+    </ol>
+    <hr>
 
     <!-- form for add/edit action for item by owner -->
     <form name="action_add" class="form-horizontal action_add" role="form" method="POST" ng-submit="addAction()">

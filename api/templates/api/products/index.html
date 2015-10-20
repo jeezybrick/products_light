@@ -17,8 +17,11 @@
                 </div>
             </div>
 
+        <!-- Ng-view -->
+        <div ng-view></div>
+
         <!-- header -->
-        <div class="row">
+        <div class="row" ng-hide="showDetailOfItem">
             <div class="item-list-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="row">
                     <div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
@@ -39,11 +42,9 @@
         </div>
 
         <!-- breadcrumb -->
-        <ol class="breadcrumb">
+        <ol class="breadcrumb" ng-hide="showDetailOfItem">
             <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-            <li><a href="{% url 'products_list_ang' %}"
-                   ng-click="showDetailOfItem=false">{% trans "List of items" %}</a></li>
-            <li ng-show="showDetailOfItem" class="active">{% trans "Detail of items" %}</li>
+            <li>{% trans "List of items" %}</li>
         </ol>
         <hr>
 
@@ -51,8 +52,7 @@
         {% include 'products/partials/success_message.html' %}
         <!-- !success messages -->
 
-        <!-- Ng-view -->
-        <div ng-view></div>
+
 
         <!-- Preloader ng-cloak-->
         <div class="splash" ng-cloak>

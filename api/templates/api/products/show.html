@@ -16,7 +16,16 @@
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="itemDetailLoad">
     <div class="row">
 
-        <h1 style="margin-top: 0;">[[ itemDetail.name ]]</h1>
+        <h1 class="item-detail-name">[[ itemDetail.name ]]</h1>
+
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+            <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+            <li><a href="{% url 'products_list_ang' %}"
+                   ng-click="showDetailOfItem=false">{% trans "List of items" %}</a></li>
+            <li ng-show="showDetailOfItem" class="active">{% trans "Detail of item" %}</li>
+        </ol>
+        <hr>
 
         <!-- Tabs -->
         <ul class="nav nav-tabs" role="tablist">
@@ -91,14 +100,14 @@
                 </progressbar>
             </div>
 
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-sm" style="margin-top: 30px;">
+        <div class="item-detail-description col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-sm">
             <pre>[[ itemDetail.description ]]</pre>
         </div>
 
     </div>
 
     <!-- Description -->
-    <div class="col-sm-12 hidden-lg hidden-md hidden-xs" style="margin-top: 30px;">
+    <div class="item-detail-description col-sm-12 hidden-lg hidden-md hidden-xs">
         <pre>[[ itemDetail.description ]]</pre>
     </div>
 

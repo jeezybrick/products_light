@@ -322,3 +322,10 @@
     background-color: #fff;
     border-color: #ddd;
 }
+.item-detail-name{
+    margin-top: 0;
+}
+.item-detail-description{
+    margin-top: 30px;
+}
+

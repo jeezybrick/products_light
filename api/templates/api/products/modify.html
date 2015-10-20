@@ -12,6 +12,18 @@
         </ul>
     </h4>
 
+    <h1 class="item-detail-name">{% trans "Editing" %}[[ itemDetail.name ]]</h1>
+
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+        <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+        <li><a href="{% url 'products_list_ang' %}"
+               ng-click="showDetailOfItem=false">{% trans "List of items" %}</a></li>
+        <li><a ng-href="#/[[ itemDetail.id ]]">{% trans "Detail of item" %}</a></li>
+        <li class="active">{% trans "Edit" %}</li>
+    </ol>
+    <hr>
+
     <!-- form for edit or delete item only by owner -->
     <form name="edit_item_form" class="form-horizontal edit_item_form" role="form" method="POST" ng-submit="editItem()">
 
