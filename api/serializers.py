@@ -36,7 +36,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Comment
-        fields = ('username', 'message', 'item')
+        fields = ('username', 'message', 'item', 'created_at')
 
     def is_message_not_valid(self, value):
         return len(value) < self.max_message_length
