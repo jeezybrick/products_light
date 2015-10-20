@@ -192,7 +192,7 @@ function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Aut
          * Add rate model
          */
         $scope.rate = {
-            value: $scope.itemDetail.user_rate,
+            value: $scope.itemDetail.rates,
             item: $routeParams.itemId
         };
 
