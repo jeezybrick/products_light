@@ -21,7 +21,7 @@
                                          placeholder="name of item" required="required" title="" type="text"
                                          ng-model="itemDetail.name"></div>
             <div class="col-lg-11 col-md-10 col-sm-12 col-xs-12 text-center" ng-show="edit_item_form.name.$error.required">
-                <span class="help-block-error"><strong>This field is required.</strong></span>
+                <span class="help-block-error"><strong>{% trans "This field is required." %}</strong></span>
             </div>
         </div>
 
@@ -31,7 +31,7 @@
                                          placeholder="price" required="required" title="" type="number"
                                          ng-model="itemDetail.price"></div>
             <div class="col-lg-11 col-md-10 col-sm-12 col-xs-12 text-center" ng-show="edit_item_form.price.$error.required">
-                <span class="help-block-error"><strong>This field is required.</strong></span>
+                <span class="help-block-error"><strong>{% trans "This field is required." %}</strong></span>
             </div>
         </div>
 
@@ -55,7 +55,7 @@
                                             placeholder="description" required="required" rows="10"
                                             title="" ng-model="itemDetail.description"></textarea></div>
             <div class="col-lg-11 col-md-10 col-sm-12 col-xs-12 text-center" ng-show="edit_item_form.description.$error.required">
-                <span class="help-block-error"><strong>This field is required.</strong></span>
+                <span class="help-block-error"><strong>{% trans "This field is required." %}</strong></span>
             </div>
 
         </div>
@@ -68,7 +68,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-6 col-md-offset-2 text-center">
-                <button id="testButton" type="submit" class="btn btn-primary" name="submit">Edit item</button>
+                <button id="testButton" type="submit" class="btn btn-primary" name="submit">{% trans "Edit item" %}</button>
             </div>
         </div>
     </form>
@@ -76,7 +76,7 @@
     <!-- block for show user success message if item edit right -->
     <div id="editItemSuccessMessage" class="edit-item-success col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center"
          ng-if="editItemSuccess">
-        <p class="bg-primary">Item edit successfully!
+        <p class="bg-primary">{% trans "Item edit successfully!" %}
             <a ng-href="#/[[ itemDetail.id ]]">{% trans "Click" %}</a> {% trans "to item page." %}
         </p>
     </div>

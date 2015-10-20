@@ -160,7 +160,7 @@ angular
     .module('myApp')
     .controller('ItemDetailCtrl', ItemDetailCtrl);
 
-function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Comment, AuthUser) {
+function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, AuthUser) {
 
     // Init
     $scope.id = $routeParams.itemId; // item id
@@ -168,23 +168,12 @@ function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Com
     $scope.showDetailOfItem = true;
     $scope.itemDetailLoad = false;
 
-    //add pre-comment model
-    $scope.comment = {
-        username:'Ivan',
-        message:'Hello world!1',
-        item: $routeParams.itemId
-    };
-
     //message after rate item
     $scope.greet = false;
 
     //progressbar
     $scope.maxx = 100;
     $scope.dynamic = 0;
-
-    //pagination for comments
-    $scope.pageSize = 4;
-    $scope.currentPage = 1;
 
     //rating
     $scope.max = 10;
@@ -243,23 +232,6 @@ function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Com
 
         }, function (error) {
             $scope.rateError = error;
-        });
-
-    };
-
-    /**
-     * Add comment
-     */
-    $scope.addComment = function () {
-
-        $scope.commentObject = new Comment($scope.comment);
-
-        $scope.commentObject.$save(function (data) {
-            $scope.hideCommentForm = true;
-            $scope.appendComment = data;
-            $scope.errorComment = false;
-        }, function (error) {
-            $scope.errorComment = error;
         });
 
     };
@@ -568,10 +540,22 @@ function CommentsController($scope, $routeParams, Item, AuthUser, Comment, $loca
 
     };
 
+    /**
+     * Scroll to add comments form
+     */
     $scope.scrollTo = function(id) {
       $location.hash(id);
       $anchorScroll();
-   }
+   };
+
+    /**
+     * Return true if comments exists and number of comments bigger then pagesize
+     */
+    $scope.isCommentsExistsAndCommentsLengthBiggerThenPagesize = function () {
+
+        return $scope.itemDetail.comments.length && $scope.itemDetail.comments.length > $scope.pageSize;
+
+    };
 
 }
 

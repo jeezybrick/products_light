@@ -50,7 +50,7 @@
 }
 
 .main-list-top > div {
-    margin-top: 20px;
+    margin: 15px 0 0 0;
 }
 
 .main-list-top-pencil {
@@ -300,4 +300,25 @@
 }
 .comments-count-block{
     margin-top: 15px;
+}
+.id-block {
+    padding: 10px 30px;
+}
+.item-image{
+    padding-top: 30px;
+}
+.pager li>button {
+    display: inline-block;
+    padding: 5px 14px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    color: #337ab7;
+}
+
+.pager li>button[class~="disabled"] {
+    color: #777;
+    cursor: not-allowed;
+    background-color: #fff;
+    border-color: #ddd;
 }

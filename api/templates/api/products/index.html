@@ -130,7 +130,15 @@
 
                             <div class="notes">
                                 <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" style="padding-top: 30px;">
+
+                                    <div class="col-lg-10 col-md-9 col-sm-9 col-xs-6">
+                                        <h3 class="detail-item-attr">
+                                            <small>
+                                                {% trans "ID:" %}[[ item.pk ]]
+                                            </small>
+                                        </h3>
+                                    </div>
+                                    <div class="item-image col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
                                         <a ng-href="#/[[ item.pk ]]" ng-click="showItem()">
                                             <img src="{% static 'products/images/item.jpg' %}"
                                                  class="img-rounded" width="190" height="150" alt="Avatar">
@@ -155,12 +163,12 @@
 
                                     <div class="row">
 
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 10px 30px">
+                                        <div class="id-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <a ng-href="#/[[ item.pk ]]" ng-click="showItem()">[[ item.name]]</a>
                                         </div>
 
-                                        <!-- Show new price if it defined in action for this item -->
-                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 10px 30px">
+                                        <!-- Price and comments count block-->
+                                        <div class="id-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <div class="row">
                                                 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 text-left">
                                                     <h4 class="word-break">
@@ -242,13 +250,17 @@
                             <ul class="pager">
 
                                 <!-- disabled if item list has no previous page -->
-                                <li ng-class="{disabled:isItemsNotPrevious(items)}">
-                                    <a href="javascript:void(0);" ng-click="pagination(items.previous)">{% trans "Previous" %}</a>
+                                <li>
+                                    <button ng-click="pagination(items.previous)"
+                                            ng-class="{disabled:isItemsNotPrevious(items)}">{% trans "Previous" %}
+                                    </button>
                                 </li>
 
                                 <!-- disabled if item list has no next page -->
-                                <li ng-class="{disabled:IsItemsNotNext(items)}">
-                                    <a href="javascript:void(0);" ng-click="pagination(items.next)">{% trans "Next" %}</a>
+                                <li>
+                                    <button ng-click="pagination(items.next)"
+                                            ng-class="{disabled:IsItemsNotNext(items)}">{% trans "Next" %}
+                                    </button>
                                 </li>
                             </ul>
                         </nav>
