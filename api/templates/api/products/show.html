@@ -30,10 +30,10 @@
         <!-- Tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
-                <a ng-href="#/[[ itemDetail.id ]]" aria-controls="home" role="tab" data-toggle="tab">{% trans "About item" %}</a>
+                <a ng-href="#/[[ itemDetail.id ]]" data-target="#/[[ itemDetail.id ]]">{% trans "About item" %}</a>
             </li>
             <li role="presentation">
-                <a ng-href="#/[[ itemDetail.id ]]/comments" aria-controls="profile" role="tab" data-toggle="tab">{% trans "Comments" %}</a>
+                <a ng-href="#/[[ itemDetail.id ]]/comments" data-target="#/[[ itemDetail.id ]]/comments">{% trans "Comments" %}</a>
             </li>
         </ul>
 
@@ -101,18 +101,12 @@
                 </progressbar>
             </div>
 
+        <!-- Description -->
         <div class="item-detail-description col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-sm">
             <pre>[[ itemDetail.description ]]</pre>
         </div>
 
-    </div>
-
-    <!-- Description -->
-    <div class="item-detail-description col-sm-12 hidden-lg hidden-md hidden-xs">
-        <pre>[[ itemDetail.description ]]</pre>
-    </div>
-
-    <!-- Categories -->
+        <!-- Categories -->
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <h3 ng-show="itemDetail.categories.length">{% trans "Categories:" %} </h3>
         <ul>
@@ -121,6 +115,15 @@
             </li>
         </ul>
     </div>
+
+    </div>
+
+    <!-- Description for sm-display-->
+    <div class="item-detail-description col-sm-12 hidden-lg hidden-md hidden-xs">
+        <pre>[[ itemDetail.description ]]</pre>
+    </div>
+
+
     <hr>
 
 </div>
