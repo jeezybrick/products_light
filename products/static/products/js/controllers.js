@@ -441,16 +441,20 @@ angular
 function ActionCtrl($scope, $routeParams, $location, Action) {
 
     $scope.itemId = $routeParams.itemId;
-    /*
-    $scope.action = Action.get({item_id: $routeParams.itemId}, function () {
 
-        //
+    /**
+     * Get action for this item
+     */
+
+    $scope.action = Action.get({item_id: $routeParams.itemId}, function (response) {
+
+        $scope.action = response.results[0];
 
     }, function (error) {
 
-        //
+        $scope.actionError = error;
     });
-    */
+
 
     /**
      * Add action
@@ -458,14 +462,14 @@ function ActionCtrl($scope, $routeParams, $location, Action) {
     $scope.addAction = function () {
 
         $scope.actionObject = new Action({
-            description: $scope.description,
-            new_price: $scope.new_price,
+            description: $scope.action.description,
+            new_price: $scope.action.new_price,
             item: $scope.itemId,
             period_from: $scope.period_from,
             period_to: $scope.period_to
         });
 
-        $scope.actionObject.$save(function (response) {
+        $scope.actionObject.$save(function () {
 
             $location.path($scope.itemId);
 

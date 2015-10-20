@@ -2,6 +2,7 @@
 
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
+        [[ action ]]
     <!-- Error message -->
     <h4 class="error-comment-message" ng-repeat="(errorName,errorMessage) in errorAddAction.data">
         [[ errorName ]]:
@@ -12,15 +13,15 @@
         </ul>
     </h4>
 
-    <h1 class="item-detail-name">{% trans "Adding action to:" %}[[ itemDetail.name ]]</h1>
+    <h1 class="item-detail-name">{% trans "Modify action" %}</h1>
 
     <!-- breadcrumb -->
     <ol class="breadcrumb">
         <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
         <li><a href="{% url 'products_list_ang' %}"
                ng-click="showDetailOfItem=false">{% trans "List of items" %}</a></li>
-        <li><a ng-href="#/[[ itemDetail.id ]]">{% trans "Detail of item" %}</a></li>
-        <li class="active">{% trans "Comments" %}</li>
+        <li><a ng-href="#/[[ itemId ]]">{% trans "Detail of item" %}</a></li>
+        <li class="active">{% trans "Modify action" %}</li>
     </ol>
     <hr>
 
@@ -31,14 +32,14 @@
 
             <div class="col-md-7"><input class="form-control" id="id_price" maxlength="100" name="new_price"
                                          placeholder="new price of the item" required="required" title="" type="number"
-                                         ng-model="new_price"></div>
+                                         ng-model="action.new_price"></div>
         </div>
 
         <div class="form-group"><label class="col-md-2 control-label" for="id_description">{% trans "Description" %}</label>
 
             <div class="col-md-7"><textarea class="form-control" cols="40" id="id_description" name="description"
                                             placeholder="description" required="required" rows="10"
-                                            title="" ng-model="description"></textarea></div>
+                                            title="" ng-model="action.description"></textarea></div>
             <div class="col-lg-11 col-md-10 col-sm-12 col-xs-12 text-center"
                  ng-show="edit_item_form.description.$error.required">
                 <span class="help-block-error"><strong>This field is required.</strong></span>
@@ -84,7 +85,7 @@
 
         <div class="form-group">
             <div class="col-md-6 col-md-offset-2 text-center">
-                <input type="submit" class="btn btn-primary" name="submit" value="Add action">
+                <input type="submit" class="btn btn-primary" name="submit" value="Submit">
             </div>
         </div>
     </form>
