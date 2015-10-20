@@ -467,8 +467,8 @@ function ActionCtrl($scope, $routeParams, $location, Action) {
             description: $scope.action.description,
             new_price: $scope.action.new_price,
             item: $scope.itemId,
-            period_from: $scope.action.period_from,
-            period_to: $scope.action.period_to
+            period_from: moment($scope.action.period_from).format('YYYY-MM-DD'),
+            period_to: moment($scope.action.period_to).format('YYYY-MM-DD')
         });
 
         $scope.actionObject.$save(function () {
