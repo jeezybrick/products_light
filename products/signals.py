@@ -2,6 +2,7 @@
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.db import models
+from django.shortcuts import get_object_or_404
 from .models import Item, Rate, Comment, Action
 from categories.models import Category
 from products import cache
