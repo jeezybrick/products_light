@@ -140,7 +140,7 @@
                                     </div>
                                     <div class="item-image col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
                                         <a ng-href="#/[[ item.pk ]]" ng-click="showItem()">
-                                            <img src="{% static 'products/images/item.jpg' %}"
+                                            <img src="[[ item.image_url ]]"
                                                  class="img-rounded" width="190" height="150" alt="Avatar">
 
                                         </a>
@@ -171,16 +171,18 @@
                                         <div class="id-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                             <div class="row">
                                                 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 text-left">
-                                                    <h4 class="word-break">
+                                                    <h4>
                                                     <span ng-class="{'oldprice' : item.action}">
                                                         [[ item.price | currency:"₴" ]]
                                                     </span>
+                                                        </h4>
+                                                    <h4>
                                                     <span class="newprice animated infinite pulse" ng-if="item.action">
                                                         [[ item.action | currency:"₴" ]]
                                                     </span>
                                                     </h4>
                                                 </div>
-                                                <div class="col-lg-5 col-ms-5 col-sm-5 col-xs-5 text-right">
+                                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 text-right">
                                                     <small>{% trans "Comments " %}<span class="badge"> [[ item.comments.length ]]</span></small>
                                                 </div>
                                             </div>
