@@ -141,7 +141,9 @@
                                     <div class="item-image col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
                                         <a ng-href="#/[[ item.pk ]]" ng-click="showItem()">
                                             <img ng-src="[[ item.image_url ]]"
-                                                 class="img-rounded" width="190" height="150" alt="Avatar">
+                                                 class="img-rounded" width="190" height="150" alt="Avatar" ng-if="item.image_url.length">
+                                            <img src="{% static "products/images/no-image.png" %}"
+                                                 class="img-rounded" width="190" height="150" alt="Avatar" ng-if="!item.image_url.length">
 
                                         </a>
                                     </div>

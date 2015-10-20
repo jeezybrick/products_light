@@ -68,8 +68,12 @@
     </div>
 
     <div class="col-lg-6 col-md-6 col-sm-4 col-xs-12 text-center animated fadeInLeft">
-        <img ng-src="[[ itemDetail.image_url ]]"
+        <a ng-href="[[ itemDetail.image_url ]]" ng-if="itemDetail.image_url.length">
+            <img ng-src="[[ itemDetail.image_url ]]"
              class="img-rounded img-responsive" alt="Avatar">
+        </a>
+        <img src="{% static "products/images/no-image.png" %}"
+             class="img-rounded img-responsive" alt="Avatar" ng-if="!itemDetail.image_url.length">
     </div>
 
     <!-- Price and action price -->
