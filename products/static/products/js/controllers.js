@@ -446,9 +446,11 @@ function ActionCtrl($scope, $routeParams, $location, Action) {
      * Get action for this item
      */
 
-    $scope.action = Action.get({item_id: $routeParams.itemId}, function (response) {
+    $scope.action = Action.get({item_id: $routeParams.itemId}, function (data) {
 
-        $scope.action = response.results[0];
+        $scope.action = data;
+        $scope.action.period_from = new Date($scope.action.period_from);
+        $scope.action.period_to = new Date($scope.action.period_to);
 
     }, function (error) {
 
@@ -465,8 +467,8 @@ function ActionCtrl($scope, $routeParams, $location, Action) {
             description: $scope.action.description,
             new_price: $scope.action.new_price,
             item: $scope.itemId,
-            period_from: $scope.period_from,
-            period_to: $scope.period_to
+            period_from: $scope.action.period_from,
+            period_to: $scope.action.period_to
         });
 
         $scope.actionObject.$save(function () {
