@@ -1,0 +1,107 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation">
+        <a ng-href="#/[[ itemDetail.id ]]" aria-controls="home" role="tab"
+           data-toggle="tab">{% trans "About item" %}</a>
+    </li>
+    <li role="presentation" class="active">
+        <a ng-href="#/[[ itemDetail.id ]]/comments" aria-controls="profile" role="tab"
+           data-toggle="tab">{% trans "Comments" %}</a>
+    </li>
+</ul>
+
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+    <!-- show comments if they exists for this item -->
+    <h3 id="comments" ng-show="itemDetail.comments.length">{% trans "Comments" %}</h3>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right" style="margin-top: 20px;">
+    <button ng-click="scrollTo('add-comment-form')" class="btn btn-default">Add comment</button>
+</div>
+
+<!-- block for new comment posting by user -->
+<div class="comment-unit col-md-8 col-sm-10 animated slideInUp" ng-show="appendComment">
+    <h3>
+        <small>[[ appendComment.username ]]</small>
+    </h3>
+    <pre>[[ appendComment.message ]]</pre>
+</div>
+
+<!-- ng-repeat comments -->
+<div class="comments-wrapper" ng-if="commentsLoad">
+    <div class="comment-unit col-md-8 col-sm-10"
+         ng-repeat="comment in itemDetail.comments|startFrom:(currentPage - 1) * pageSize | limitTo:pageSize">
+        <h3>
+            <small>[[ comment.username ]]</small>
+        </h3>
+        <pre>[[ comment.message ]]</pre>
+    </div>
+</div>
+
+
+<!-- angular pagination for comments -->
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+    <pagination total-items="itemDetail.comments.length" ng-model="currentPage"
+                items-per-page="pageSize"></pagination>
+</div>
+
+
+<div class="comment-form col-md-8 col-sm-10">
+
+    <h1 ng-hide="hideCommentForm">
+        <small>{% trans "Add comment" %}</small>
+    </h1>
+
+    <!-- Error blocks -->
+    <h4 class="error-comment-message" ng-show="errorComment.data.username">
+        {% trans "Username:" %}
+        <ul>
+            <li ng-repeat="error in errorComment.data.username">
+                [[ error ]]
+            </li>
+        </ul>
+    </h4>
+
+    <h4 class="error-comment-message" ng-show="errorComment.data.message">
+        {% trans "Message:" %}
+        <ul>
+            <li ng-repeat="error in errorComment.data.message">
+                [[ error ]]
+            </li>
+        </ul>
+    </h4>
+
+    <!-- form form add new comments-->
+    <form class="form-horizontal ng-pristine ng-valid" name="add_comment_form" role="form" method="POST"
+          ng-submit="addComment()" ng-hide="hideCommentForm" id="add-comment-form">
+
+        <div class="form-group"><label class="col-md-2 control-label" for="id_username">{% trans "Username" %}</label>
+
+            <div class="col-md-7"><input class="form-control" id="id_username" maxlength="50" name="username"
+                                         placeholder="username" required="required" title=""
+                                         type="text" ng-model="comment.username"></div>
+        </div>
+
+        <div class="form-group"><label class="col-md-2 control-label" for="id_message">{% trans "Message" %}</label>
+
+            <div class="col-md-7"><textarea class="form-control" cols="40" id="id_message" name="message"
+                                            placeholder="message" required="required" rows="10"
+                                            title="" ng-model="comment.message"></textarea></div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-6 col-md-offset-2 text-center">
+                <button type="submit" class="btn btn-primary" name="submit">{% trans "Add comment" %}</button>
+            </div>
+        </div>
+
+    </form>
+
+    <div class="alert alert-success" ng-show="hideCommentForm">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {% trans "Thanks for comment!" %}
+    </div>
+
+</div>

@@ -13,6 +13,10 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
     $scope.reverse = true;
     $scope.showTriangle = false;
 
+    //rating
+    $scope.maxx = 10;
+    $scope.isReadonly = false;
+
     //filter init
     $scope.search = { categories:undefined };
 
@@ -152,21 +156,6 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
 
 }
 
-
-/**
- * Filter for pagination comments
- */
-angular
-    .module('myApp')
-    .filter('startFrom', function () {
-        return function (data, start) {
-            if (angular.isDefined(data)) {
-                return data.slice(start)
-            }
-        }
-    });
-
-
 angular
     .module('myApp')
     .controller('ItemDetailCtrl', ItemDetailCtrl);
@@ -253,7 +242,7 @@ function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Com
             $scope.dynamic = 100;
 
         }, function (error) {
-            //
+            $scope.rateError = error;
         });
 
     };
@@ -280,8 +269,11 @@ function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Com
      */
     $scope.editItem = function () {
 
-        $scope.itemDetail.$update(function () {
+        $scope.itemDetail.$update(function (response) {
+            console.log(response);
             $scope.successAction();
+             $scope.itemDetail = response;
+
         }, function (error) {
             $scope.errorEditItem = error;
         });
@@ -521,8 +513,67 @@ angular
 function LoginCtrl($scope) {
 
 //
+
 }
 
+
+angular
+    .module('myApp')
+    .controller('CommentsController', CommentsController);
+
+function CommentsController($scope, $routeParams, Item, AuthUser, Comment, $location, $anchorScroll) {
+
+    // Init
+    $scope.id = $routeParams.itemId; // item id
+    $scope.AuthUserUsername = AuthUser.username; // Auth user username
+
+    //pagination for comments
+    $scope.pageSize = 4;
+    $scope.currentPage = 1;
+
+    //add pre-comment model
+    $scope.comment = {
+        username:'Ivan',
+        message:'Hello world!1',
+        item: $routeParams.itemId
+    };
+
+    /**
+     * Get item detail
+     */
+    $scope.itemDetail = Item.get({id: $routeParams.itemId}, function () {
+
+        $scope.commentsLoad = true;
+
+    }, function (error) {
+
+        $scope.itemDetailLoadError = error.data.detail;
+    });
+
+
+    /**
+     * Add comment
+     */
+    $scope.addComment = function () {
+
+        $scope.commentObject = new Comment($scope.comment);
+
+        $scope.commentObject.$save(function (data) {
+            $scope.hideCommentForm = true;
+            $scope.appendComment = data;
+            $scope.errorComment = false;
+        }, function (error) {
+            $scope.errorComment = error;
+        });
+
+    };
+
+    $scope.scrollTo = function(id) {
+      $location.hash(id);
+      $anchorScroll();
+   }
+
+}
 
 /**
  * Directive for formatting date from datepicker Angular UI( add action form )
@@ -537,6 +588,19 @@ angular
                 ngModel.$parsers.push(function (viewValue) {
                     return dateFilter(viewValue, 'yyyy-MM-dd');
                 });
+            }
+        }
+    });
+
+/**
+ * Filter for pagination comments
+ */
+angular
+    .module('myApp')
+    .filter('startFrom', function () {
+        return function (data, start) {
+            if (angular.isDefined(data)) {
+                return data.slice(start)
             }
         }
     });

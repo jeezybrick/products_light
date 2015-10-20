@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load staticfiles %}
 
 <!-- Preloader for load detail -->
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-if="!itemDetailLoad">
@@ -8,18 +9,32 @@
 <div class="item-in-cart row">
     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center">
         <span ng-if="itemDetailLoadError">[[ itemDetailLoadError ]]</span>
+        <span ng-if="rateError">{% trans "Please,Sign In or Sign Up" %}</span>
     </div>
 </div>
 
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="itemDetailLoad">
     <div class="row">
 
+        <h1 style="margin-top: 0;">[[ itemDetail.name ]]</h1>
+
+        <!-- Tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a ng-href="#/[[ itemDetail.id ]]" aria-controls="home" role="tab" data-toggle="tab">{% trans "About item" %}</a>
+            </li>
+            <li role="presentation">
+                <a ng-href="#/[[ itemDetail.id ]]/comments" aria-controls="profile" role="tab" data-toggle="tab">{% trans "Comments" %}</a>
+            </li>
+        </ul>
+
         <div class="col-lg-10 col-md-9 col-sm-9 col-xs-6">
             <h3 class="detail-item-attr">
-                {% trans "ID:" %}[[ itemDetail.id ]]
+               <small>
+                   {% trans "ID:" %}[[ itemDetail.id ]]
+               </small>
             </h3>
         </div>
-
 
         <!-- Button dropdown -->
         <div class="col-lg-2 col-md-3 col-sm-3 col-xs-6 text-right" ng-if="isAuthUserIsOwner()">
@@ -41,46 +56,53 @@
         </div>
 
     </div>
-    <h3>{% trans "Name:" %}[[ itemDetail.name ]]</h3>
 
-    <h3>{% trans "Price:" %}
-        <span ng-class="{'oldprice' : itemDetail.action_price}">
-            [[ itemDetail.price | currency:"₴" ]]
-        </span>
+    <div class="col-lg-6 col-md-6 col-sm-4 col-xs-12 text-center">
+        <img src="{% static 'products/images/item.jpg' %}"
+             class="img-rounded img-responsive" alt="Avatar">
+    </div>
 
-        <!-- show new price if it defined in action -->
-        <span class="newprice animated infinite pulse" ng-if="itemDetail.action_price">
-            [[ itemDetail.action_price| currency:"₴"  ]]
-        </span>
-    </h3>
+    <!-- Price and action price -->
+    <div class="col-lg-6 col-md-6 col-sm-8 col-xs-12">
 
-    <pre>[[ itemDetail.description ]]</pre>
+        <h3>{% trans "Price:" %}
+            <span ng-class="{'oldprice' : itemDetail.action_price}">
+                [[ itemDetail.price | currency:"₴" ]]
+            </span>
 
-    <h3 class="word-break" ng-show="itemDetail.image_url.length">{% trans "Image url:" %}
-        <small>[[ itemDetail.image_url ]]</small>
-    </h3>
+                <!-- show new price if it defined in action -->
+            <span class="newprice animated infinite pulse" ng-if="itemDetail.action_price">
+                [[ itemDetail.action_price| currency:"₴"  ]]
+            </span>
+        </h3>
 
-    <!-- average rating for item -->
-    <h3 ng-show="itemDetail.rates">{% trans "Average rating:" %}[[ itemDetail.rates | limitTo:3 ]]</h3>
+        <!-- Rating block-->
+            <h4 ng-hide="greet">{% trans "Average rating:" %}
+                <rating ng-model="itemDetail.rates" max="max" readonly="isReadonly" on-hover="hoveringOver(value)"
+                        on-leave="overStar = null" titles="['one','two','three']" ng-click="isReadonly=true;addRate();">
 
-    <!-- if user auth show him rate stars -->
-    {% if user.is_authenticated %}
-        <h4 ng-hide="greet">{% trans "Rate item:" %}
-            <rating ng-model="rate.value" max="max" readonly="isReadonly" on-hover="hoveringOver(value)"
-                    on-leave="overStar = null" titles="['one','two','three']" ng-click="isReadonly=true;addRate();">
+                </rating>
+            </h4>
+            <h4 class="rate-success-text" ng-if="greet">{% trans "Thanks for rate" %}</h4>
 
-            </rating>
-        </h4>
-        <h4 class="rate-success-text" ng-if="greet">{% trans "Thanks for rate" %}</h4>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="isReadonly">
+                <progressbar max="maxx" value="dynamic" class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
+                    <span class="progressbar-text">[[dynamic]] / [[maxx]]</span>
+                </progressbar>
+            </div>
 
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="isReadonly">
-            <progressbar max="maxx" value="dynamic" class="col-lg-3 col-md-4 col-sm-5 col-xs-6">
-                <span class="progressbar-text">[[dynamic]] / [[maxx]]</span>
-            </progressbar>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 hidden-sm" style="margin-top: 30px;">
+            <pre>[[ itemDetail.description ]]</pre>
         </div>
 
-    {% endif %}
+    </div>
 
+    <!-- Description -->
+    <div class="col-sm-12 hidden-lg hidden-md hidden-xs" style="margin-top: 30px;">
+        <pre>[[ itemDetail.description ]]</pre>
+    </div>
+
+    <!-- Categories -->
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <h3 ng-show="itemDetail.categories.length">{% trans "Categories:" %} </h3>
         <ul>
@@ -90,90 +112,5 @@
         </ul>
     </div>
     <hr>
-
-    <!-- show comments if they exists for this item -->
-    <h3 id="comments" ng-show="itemDetail.comments.length">{% trans "Comments" %}</h3>
-
-    <!-- block for new comment posting by user -->
-    <div class="comment-unit col-md-8 col-sm-10 animated slideInUp" ng-show="appendComment">
-        <h3>
-            <small>[[ appendComment.username ]]</small>
-        </h3>
-        <pre>[[ appendComment.message ]]</pre>
-    </div>
-
-    <!-- ng-repeat comments -->
-    <div class="comment-unit col-md-8 col-sm-10"
-         ng-repeat="comment in itemDetail.comments|startFrom:(currentPage - 1) * pageSize | limitTo:pageSize">
-        <h3>
-            <small>[[ comment.username ]]</small>
-        </h3>
-        <pre>[[ comment.message ]]</pre>
-    </div>
-
-    <!-- angular pagination for comments -->
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
-         ng-show="isCommentsExistsAndCommentsLengthBiggerThenPagesize()">
-        <pagination total-items="itemDetail.comments.length" ng-model="currentPage"
-                    items-per-page="pageSize"></pagination>
-    </div>
-
-
-    <div class="comment-form col-md-8 col-sm-10">
-
-        <h1 ng-hide="hideCommentForm">
-            <small>{% trans "Add comment" %}</small>
-        </h1>
-
-        <!-- Error blocks -->
-        <h4 class="error-comment-message" ng-show="errorComment.data.username">
-            {% trans "Username:" %}
-            <ul>
-                <li ng-repeat="error in errorComment.data.username">
-                    [[ error ]]
-                </li>
-            </ul>
-        </h4>
-
-        <h4 class="error-comment-message" ng-show="errorComment.data.message">
-            {% trans "Message:" %}
-            <ul>
-                <li ng-repeat="error in errorComment.data.message">
-                    [[ error ]]</li>
-            </ul>
-        </h4>
-
-        <!-- form form add new comments-->
-        <form class="form-horizontal ng-pristine ng-valid" name="add_comment_form" role="form" method="POST"
-              ng-submit="addComment()" ng-hide="hideCommentForm">
-
-            <div class="form-group"><label class="col-md-2 control-label" for="id_username">{% trans "Username" %}</label>
-
-                <div class="col-md-7"><input class="form-control" id="id_username" maxlength="50" name="username"
-                                             placeholder="username" required="required" title=""
-                                             type="text" ng-model="comment.username"></div>
-            </div>
-
-            <div class="form-group"><label class="col-md-2 control-label" for="id_message">{% trans "Message" %}</label>
-
-                <div class="col-md-7"><textarea class="form-control" cols="40" id="id_message" name="message"
-                                                placeholder="message" required="required" rows="10"
-                                                title="" ng-model="comment.message"></textarea></div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-6 col-md-offset-2 text-center">
-                    <button type="submit" class="btn btn-primary" name="submit">{% trans "Add comment" %}</button>
-                </div>
-            </div>
-
-        </form>
-
-        <div class="alert alert-success" ng-show="hideCommentForm">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {% trans "Thanks for comment!" %}
-        </div>
-
-    </div>
 
 </div>

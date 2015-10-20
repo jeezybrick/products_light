@@ -8,7 +8,7 @@ angular.module('myApp.services', ['ngResource'])
         return $resource('/api/items/:id/', {id: '@id'}, {
             'update': {method: 'PUT'},
             'query': {method: 'GET', isArray: false},
-            'get': {method: 'GET', cache: true}
+            'get': {method: 'GET', cache: false}
         });
     })
     .factory('User', function ($resource) {

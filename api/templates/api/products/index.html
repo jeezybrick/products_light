@@ -124,12 +124,19 @@
 
                     <!-- ng-repeat -->
                     <div class="main-list-wrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="main-list col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
+                        <div class="main-list col-lg-4 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
                              ng-repeat="item in items.results | filter:search | orderBy:sortField:reverse"
                              ng-class="{'zero-quantity-item' : item.quantity == 0}">
 
                             <div class="notes">
                                 <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" style="padding-top: 30px;">
+                                        <a ng-href="#/[[ item.pk ]]" ng-click="showItem()">
+                                            <img src="{% static 'products/images/item.jpg' %}"
+                                                 class="img-rounded" width="190" height="150" alt="Avatar">
+
+                                        </a>
+                                    </div>
 
                                     <!-- block for  quantity messages-->
                                     <div class="main-list-top col-lg-12 col-md-12 col-sm-12 col-xs-12"
@@ -147,8 +154,33 @@
                                     </div>
 
                                     <div class="row">
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 10px 30px">
+                                            <a ng-href="#/[[ item.pk ]]" ng-click="showItem()">[[ item.name]]</a>
+                                        </div>
+
+                                        <!-- Show new price if it defined in action for this item -->
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 10px 30px">
+                                            <div class="row">
+                                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 text-left">
+                                                    <h4 class="word-break">
+                                                    <span ng-class="{'oldprice' : item.action}">
+                                                        [[ item.price | currency:"₴" ]]
+                                                    </span>
+                                                    <span class="newprice animated infinite pulse" ng-if="item.action">
+                                                        [[ item.action | currency:"₴" ]]
+                                                    </span>
+                                                    </h4>
+                                                </div>
+                                                <div class="col-lg-5 col-ms-5 col-sm-5 col-xs-5 text-right">
+                                                    <small>{% trans "Comments " %}<span class="badge"> [[ item.comments.length ]]</span></small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
                                             <!-- Add to cart block -->
-                                         <div class="add-cart-button col-lg-7 col-md-6 col-sm-6 col-xs-7">
+                                         <div class="add-cart-button col-lg-7 col-md-7 col-sm-8 col-xs-8">
                                             <button ng-if="!item.is_item_in_cart" class="btn btn-success" type="button"
                                                     ng-click="addItemToCart(item.pk)"
                                                     ng-class="{'disabled' : item.quantity == 0}">
@@ -172,46 +204,19 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                        </div>
-
-                                        <div class="comments-count-block col-lg-5 col-md-6 col-sm-6 col-xs-5 text-center">
-                                            <h3><a ng-href="#/[[item.pk]]" ng-click="showItem()">{% trans "Comments " %}</a><span class="badge"> [[ item.comments.length ]]</span></h3>
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-8 col-md-4 col-sm-4 col-xs-6">
-                                        <h2>{% trans "ID:" %}[[ item.pk]]</h2>
-                                    </div>
-
-                                    <div class="col-lg-4 col-md-8 col-sm-8 col-xs-6 text-right">
-                                        <h2><a ng-href="#/[[ item.pk ]]" ng-click="showItem()">{% trans "Details" %}</a></h2>
-                                    </div>
-
+                                    <!-- Rating block -->
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <h4 class="word-break">{% trans "Name:" %}[[ item.name]]</h4>
+                                        <rating ng-model="item.rate" max="maxx" readonly="true"
+                                                on-hover="hoveringOver(value)"
+                                                on-leave="overStar = null" titles="['one','two','three']">
+
+                                        </rating>
                                     </div>
 
-                                    <!-- Show new price if it defined in action for this item -->
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <h4 class="word-break">{% trans "Price:" %}
-                                            <span ng-class="{'oldprice' : item.action}">
-                                                [[ item.price | currency:"₴" ]]
-                                            </span>
-                                            <span class="newprice animated infinite pulse" ng-if="item.action">
-                                                [[ item.action | currency:"₴" ]]
-                                            </span>
-                                        </h4>
-                                    </div>
-
-                                    <div ng-show="item.image_url" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <h4 class="word-break">{% trans "image_url:" %} [[ item.image_url ]]</h4>
-                                    </div>
-
-                                    <div ng-show="item.url" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <h4 class="word-break">{% trans "url:" %} [[ item.url ]]</h4>
-                                    </div>
-
+                                    <!-- Categories block -->
                                     <div ng-show="item.categories.length"
                                          class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <h4 class="word-break">{% trans "Categories:" %} </h4>
@@ -224,12 +229,6 @@
                                             </li>
                                         </ul>
                                     </div>
-
-                                    <!-- Average rating for item with limit(example:6.5) -->
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="item.rate">
-                                        <h4>{% trans "Rating:" %}[[ item.rate | limitTo:3 ]]</h4>
-                                    </div>
-
 
                                 </div>
                             </div>

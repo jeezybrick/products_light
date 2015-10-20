@@ -7,7 +7,7 @@
         $(this).removeClass('animated bounceInDown').addClass('animated pulse');
 
     }).mouseleave(function () {
-        $(this).removeClass('animated pulse')
+        $(this).removeClass('animated pulse');
     });
 
       $('.messenger').delay(2000).slideUp();

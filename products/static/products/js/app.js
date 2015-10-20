@@ -31,6 +31,10 @@ angular
                 templateUrl: '/products_ang/edit/',
                 controller: 'ItemDetailCtrl'
             }).
+             when('/:itemId/comments', {
+                templateUrl: '/products_ang/comments/',
+                controller: 'CommentsController'
+            }).
             when('/:itemId/action/add', {
                 templateUrl: '/products_ang/action/add/',
                 controller: 'ActionCtrl'

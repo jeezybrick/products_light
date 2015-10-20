@@ -24,14 +24,19 @@
 }
 
 .main-list {
-    margin-bottom: 20px;
+    margin-bottom: 2px;
     padding: 0 10px;
-    min-height: 300px;
-    max-height: 250px;
-    overflow: scroll;
+    max-height: 450px;
+    min-height: 450px;
+    overflow: hidden;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.52), 0 2px 4px rgba(0, 0, 0, 0.12);
-}
 
+}
+.main-list:hover{
+    overflow: visible;
+    height:auto;
+    border: #999999 1px solid;
+}
 .main-list > a{
     display: block;
     position: absolute;
@@ -155,7 +160,7 @@
 }
 
 .add-cart-button {
-    padding: 30px;
+    padding: 10px 30px;
 }
 
 /* ng-animate */
@@ -181,12 +186,15 @@
     z-index: 99999;
     animation: fadeOut 1.5s;
 }
+.comments-wrapper.ng-enter{
+    animation: fadeInDownBig 1s;
+}
 
 /* !ng-animate */
 
 .open-cart {
     background-color: #428bca;
-    max-width: 115px;
+
     padding: 10px;
     color: white;
 }
