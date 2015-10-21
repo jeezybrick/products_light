@@ -160,7 +160,7 @@ angular
     .module('myApp')
     .controller('ItemDetailCtrl', ItemDetailCtrl);
 
-function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, AuthUser) {
+function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, AuthUser) {
 
     // Init
     $scope.id = $routeParams.itemId; // item id
@@ -261,8 +261,10 @@ function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Aut
             if (answer == true)
 
                 $scope.itemDetail.$delete(function () {
+
                     $scope.showDetailOfItem = false;
-                    $window.location.href = '/products_ang/';
+                    $location.path('/products');
+
                 }, function (error) {
                     $scope.errorDeleteItem = error;
                 });

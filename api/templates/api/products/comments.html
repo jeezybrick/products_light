@@ -16,10 +16,12 @@
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation">
-        <a ng-href="#/products/[[ itemDetail.id ]]" data-target="#/products/[[ itemDetail.id ]">{% trans "About item" %}</a>
+        <a ng-href="#/products/[[ itemDetail.id ]]"
+           data-target="#/products/[[ itemDetail.id ]">{% trans "About item" %}</a>
     </li>
     <li role="presentation" class="active">
-        <a ng-href="#/products/[[ itemDetail.id ]]/comments" data-target="#/products/[[ itemDetail.id ]]/comments">{% trans "Comments" %}</a>
+        <a ng-href="#/products/[[ itemDetail.id ]]/comments"
+           data-target="#/products/[[ itemDetail.id ]]/comments">{% trans "Comments" %}</a>
     </li>
 </ul>
 
@@ -34,7 +36,8 @@
 <!-- block for new comment posting by user -->
 <div class="comment-unit col-md-8 col-sm-10 animated slideInUp" ng-show="appendComment">
     <h3>
-        [[ appendComment.username ]] <small>[[appendComment.created_at | date:'medium']]</small>
+        [[ appendComment.username ]]
+        <small>[[appendComment.created_at | date:'medium']]</small>
     </h3>
     <pre>[[ appendComment.message ]]</pre>
 </div>
@@ -44,7 +47,8 @@
     <div class="comment-unit col-md-8 col-sm-10"
          ng-repeat="comment in itemDetail.comments|startFrom:(currentPage - 1) * pageSize | limitTo:pageSize">
         <h4>
-            [[ comment.username ]] <small>[[comment.created_at | date:'medium']]</small>
+            [[ comment.username ]]
+            <small>[[comment.created_at | date:'medium']]</small>
         </h4>
         <pre>[[ comment.message ]]</pre>
     </div>

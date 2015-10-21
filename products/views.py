@@ -102,7 +102,7 @@ class ItemAddView(LoginRequiredMixin, CreateView):
         return super(ItemAddView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse("products_list_ang")
+        return reverse("products_index_ang")
 
 
 # class for edit item
