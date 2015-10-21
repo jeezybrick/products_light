@@ -176,7 +176,7 @@ function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Aut
     $scope.dynamic = 0;
 
     //rating
-    $scope.max = 10;
+    $scope.max = 10; // count of stars
     $scope.isReadonly = false;
 
     $scope.itemDetailLoadError = false;

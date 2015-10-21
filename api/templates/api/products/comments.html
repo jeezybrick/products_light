@@ -16,12 +16,10 @@
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation">
-        <a ng-href="#/[[ itemDetail.id ]]" aria-controls="home" role="tab"
-           data-toggle="tab">{% trans "About item" %}</a>
+        <a ng-href="#/[[ itemDetail.id ]]" data-target="#/[[ itemDetail.id ]]">{% trans "About item" %}</a>
     </li>
     <li role="presentation" class="active">
-        <a ng-href="#/[[ itemDetail.id ]]/comments" aria-controls="profile" role="tab"
-           data-toggle="tab">{% trans "Comments" %}</a>
+        <a ng-href="#/[[ itemDetail.id ]]/comments" data-target="#/[[ itemDetail.id ]]/comments">{% trans "Comments" %}</a>
     </li>
 </ul>
 
