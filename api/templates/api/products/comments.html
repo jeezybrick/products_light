@@ -6,9 +6,9 @@
 <!-- breadcrumb -->
 <ol class="breadcrumb">
     <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-    <li><a href="{% url 'products_list_ang' %}"
+    <li><a href="{% url 'products_index_ang' %}"
            ng-click="showDetailOfItem=false">{% trans "List of items" %}</a></li>
-    <li><a ng-href="#/[[ itemDetail.id ]]">{% trans "Detail of item" %}</a></li>
+    <li><a ng-href="#/products/[[ itemDetail.id ]]">{% trans "Detail of item" %}</a></li>
     <li class="active">{% trans "Comments" %}</li>
 </ol>
 <hr>
@@ -16,10 +16,10 @@
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
     <li role="presentation">
-        <a ng-href="#/[[ itemDetail.id ]]" data-target="#/[[ itemDetail.id ]]">{% trans "About item" %}</a>
+        <a ng-href="#/products/[[ itemDetail.id ]]" data-target="#/products/[[ itemDetail.id ]">{% trans "About item" %}</a>
     </li>
     <li role="presentation" class="active">
-        <a ng-href="#/[[ itemDetail.id ]]/comments" data-target="#/[[ itemDetail.id ]]/comments">{% trans "Comments" %}</a>
+        <a ng-href="#/products/[[ itemDetail.id ]]/comments" data-target="#/products/[[ itemDetail.id ]]/comments">{% trans "Comments" %}</a>
     </li>
 </ul>
 

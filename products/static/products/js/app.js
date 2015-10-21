@@ -19,23 +19,23 @@ angular
         $interpolateProvider.startSymbol('[[').endSymbol(']]');
 
         $routeProvider.
-            when('/products_ang/', {
-                templateUrl: '/products_ang/',
+            when('/products', {
+                templateUrl: '/products_ang/list/',
                 controller: 'itemCtrl'
             }).
-            when('/:itemId', {
+            when('/products/:itemId', {
                 templateUrl: '/products_ang/show/',
                 controller: 'ItemDetailCtrl'
             }).
-            when('/:itemId/edit', {
+            when('/products/:itemId/edit', {
                 templateUrl: '/products_ang/edit/',
                 controller: 'ItemDetailCtrl'
             }).
-             when('/:itemId/comments', {
+             when('/products/:itemId/comments', {
                 templateUrl: '/products_ang/comments/',
                 controller: 'CommentsController'
             }).
-            when('/:itemId/action/add', {
+            when('/products/:itemId/action/add', {
                 templateUrl: '/products_ang/action/add/',
                 controller: 'ActionCtrl'
             });

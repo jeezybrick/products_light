@@ -17,9 +17,9 @@
     <!-- breadcrumb -->
     <ol class="breadcrumb">
         <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-        <li><a href="{% url 'products_list_ang' %}"
+        <li><a href="{% url 'products_index_ang' %}"
                ng-click="showDetailOfItem=false">{% trans "List of items" %}</a></li>
-        <li><a ng-href="#/[[ itemDetail.id ]]">{% trans "Detail of item" %}</a></li>
+        <li><a ng-href="#/products/[[ itemDetail.id ]]">{% trans "Detail of item" %}</a></li>
         <li class="active">{% trans "Edit" %}</li>
     </ol>
     <hr>
@@ -89,7 +89,7 @@
     <div id="editItemSuccessMessage" class="edit-item-success col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center"
          ng-if="editItemSuccess">
         <p class="bg-primary">{% trans "Item edit successfully!" %}
-            <a ng-href="#/[[ itemDetail.id ]]">{% trans "Click" %}</a> {% trans "to item page." %}
+            <a ng-href="#/products/[[ itemDetail.id ]]">{% trans "Click" %}</a> {% trans "to item page." %}
         </p>
     </div>
 

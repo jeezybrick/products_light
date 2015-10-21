@@ -176,7 +176,7 @@ function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Aut
     $scope.dynamic = 0;
 
     //rating
-    $scope.max = 10; // count of stars
+    $scope.max = 10;
     $scope.isReadonly = false;
 
     $scope.itemDetailLoadError = false;
@@ -242,7 +242,6 @@ function ItemDetailCtrl($scope, $routeParams, $window, $timeout, Item, Rate, Aut
     $scope.editItem = function () {
 
         $scope.itemDetail.$update(function (response) {
-            console.log(response);
             $scope.successAction();
              $scope.itemDetail = response;
 
@@ -473,7 +472,7 @@ function ActionCtrl($scope, $routeParams, $location, Action) {
 
         $scope.actionObject.$save(function () {
 
-            $location.path($scope.itemId);
+            $location.path('products/'+ $scope.itemId);
 
         }, function (error) {
 

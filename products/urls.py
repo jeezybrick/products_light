@@ -30,9 +30,12 @@ urlpatterns = [
     # Angular views
     url(r"^products_ang/$", TemplateView.as_view(
         template_name='api/products/index.html'
+    ), name='products_index_ang'),
+    url(r"^products_ang/list/$", TemplateView.as_view(
+        template_name='api/products/list.html'
     ), name='products_list_ang'),
     url(r"^products_ang/show/$", TemplateView.as_view(
-        template_name='api/products/show.html'
+        template_name='api/products/detail.html'
     ), name='products_detail_ang'),
     url(r"^products_ang/edit/$", TemplateView.as_view(
         template_name='api/products/modify.html'
