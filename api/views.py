@@ -19,11 +19,16 @@ from my_auth.cache import ShopDetailCache
 from haystack.query import SearchQuerySet
 
 
-# Pagination class
+# Standard Pagination class
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 3
     page_size_query_param = 'page_size'
     max_page_size = 1
+
+
+# Comments pagination
+class CommentsSetPagination(StandardResultsSetPagination):
+    page_size = 4
 
 
 # Item list
@@ -76,10 +81,19 @@ class CategoryList(APIView):
 
 
 # Comments list
-class CommentList(APIView):
+class CommentList(generics.GenericAPIView):
+
+    pagination_class = CommentsSetPagination
+    serializer_class = serializers.CommentSerializer
 
     def get(self, request):
         comments = cache.CommentCache().get()
+
+        page = self.paginate_queryset(comments)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = serializers.CommentSerializer(comments, many=True)
         return Response(serializer.data)
 

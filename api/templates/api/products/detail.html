@@ -80,13 +80,13 @@
     <div class="col-lg-7 col-md-6 col-sm-8 col-xs-12 animated fadeInRight">
 
         <h3>{% trans "Price:" %}
-            <span ng-class="{'oldprice' : itemDetail.action_price}">
+            <span ng-class="{'oldprice' : itemDetail.action.new_price}">
                 [[ itemDetail.price | currency:"₴" ]]
             </span>
 
                 <!-- show new price if it defined in action -->
-            <span class="newprice animated infinite pulse" ng-if="itemDetail.action_price">
-                [[ itemDetail.action_price| currency:"₴"  ]]
+            <span class="newprice animated infinite pulse" ng-if="itemDetail.action.new_price">
+                [[ itemDetail.action.new_price| currency:"₴"  ]]
             </span>
         </h3>
 

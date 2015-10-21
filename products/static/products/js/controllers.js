@@ -298,15 +298,6 @@ function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, A
 
     };
 
-    /**
-     * Return true if comments exists and number of comments bigger then pagesize
-     */
-    $scope.isCommentsExistsAndCommentsLengthBiggerThenPagesize = function () {
-
-        return $scope.itemDetail.comments.length && $scope.itemDetail.comments.length > $scope.pageSize;
-
-    };
-
 }
 
 angular
@@ -513,7 +504,7 @@ function CommentsController($scope, $routeParams, Item, AuthUser, Comment, $loca
     //add pre-comment model
     $scope.comment = {
         username:'Ivan',
-        message:'Hello world!1',
+        message:'Hello world!',
         item: $routeParams.itemId
     };
 

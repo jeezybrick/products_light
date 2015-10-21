@@ -2,7 +2,6 @@
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.db import models
-from django.shortcuts import get_object_or_404
 from .models import Item, Rate, Comment, Action
 from categories.models import Category
 from products import cache
@@ -75,6 +74,7 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
             )
 
     def setup(self, **kwargs):
+        """Listen for all model saves and some m2m saves"""
 
         models.signals.m2m_changed.connect(self.handle_category_m2m_update, sender=Item.categories.through)
         models.signals.post_save.connect(self.handle_save, sender=Item)
@@ -102,6 +102,9 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
         super(RateOnlySignalProcessor, self).setup()
 
     def teardown(self):
+        """Disconnect signals"""
+
+        models.signals.m2m_changed.disconnect(self.handle_category_m2m_update, sender=Item.categories.through)
         models.signals.post_save.disconnect(self.handle_save, sender=Item)
         models.signals.post_delete.disconnect(self.handle_delete, sender=Item)
         models.signals.post_save.disconnect(

@@ -65,6 +65,25 @@ class RateSerializer(serializers.ModelSerializer):
         fields = ('value', 'item')
 
 
+class ActionSerializer(serializers.ModelSerializer):
+
+    max_price = 1000000
+    min_price = 0
+
+    def is_price_not_valid(self, value):
+        return value > self.max_price or value < self.min_price
+
+    def validate_new_price(self, price):
+        if self.is_price_not_valid(price):
+            raise serializers.ValidationError(_("Invalid price!"))
+        return price
+
+    class Meta:
+        model = models.Action
+        fields = ('item', 'description', 'new_price',
+                  'period_from', 'period_to', )
+
+
 class ItemSerializer(serializers.Serializer):
 
     pk = serializers.IntegerField()
@@ -74,7 +93,6 @@ class ItemSerializer(serializers.Serializer):
     description = serializers.CharField()
     image_url = serializers.URLField()
     categories = serializers.StringRelatedField(many=True)
-    comments = serializers.StringRelatedField(many=True)
     rate = serializers.FloatField()
     quantity = serializers.IntegerField()
     quantity_message = serializers.CharField()
@@ -91,7 +109,7 @@ class ItemSerializer(serializers.Serializer):
     class Meta:
 
         fields = ('pk', 'author', 'name', 'price', 'description',
-                  'categories', 'comments', 'image_url', 'rate', 'quantity',
+                  'categories', 'image_url', 'rate', 'quantity',
                   'in_cart', 'quantity_message', 'action', )
 
 
@@ -102,7 +120,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
     categories = serializers.StringRelatedField(
         many=True, required=False, read_only=True)
     user_rate = serializers.SerializerMethodField()
-    action_price = serializers.SerializerMethodField()
+    action = ActionSerializer(many=False, required=False, read_only=True)
     user = serializers.CharField(read_only=True)
 
     def get_rates(self, obj):
@@ -115,22 +133,10 @@ class ItemDetailSerializer(serializers.ModelSerializer):
 
         return user_rate
 
-    """ get action price"""
-
-    def get_action_price(self, obj):
-        request = self.context.get('request', None)
-        try:
-            price = models.Action.objects.get(
-                shop=request.user.id, item=obj.id).new_price
-        except ObjectDoesNotExist:
-            price = None
-
-        return price
-
     class Meta:
         model = models.Item
         fields = ('id', 'user', 'name', 'price', 'description', 'categories',
-                  'comments', 'image_url', 'rates', 'user_rate', 'quantity', 'action_price', )
+                  'comments', 'image_url', 'rates', 'user_rate', 'quantity', 'action', )
 
 
 class ShopSerializer(serializers.Serializer):
@@ -161,20 +167,4 @@ class CartSerializer(serializers.ModelSerializer):
         fields = ('user', 'item', )
 
 
-class ActionSerializer(serializers.ModelSerializer):
 
-    max_price = 1000000
-    min_price = 0
-
-    def is_price_not_valid(self, value):
-        return value > self.max_price or value < self.min_price
-
-    def validate_new_price(self, price):
-        if self.is_price_not_valid(price):
-            raise serializers.ValidationError(_("Invalid price!"))
-        return price
-
-    class Meta:
-        model = models.Action
-        fields = ('item', 'description', 'new_price',
-                  'period_from', 'period_to', )
