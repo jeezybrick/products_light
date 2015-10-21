@@ -1,4 +1,4 @@
-.navbar-toggle{
+.navbar-toggle {
     margin-left: 15px;
 }
 
@@ -7,6 +7,7 @@
     line-height: 1.5em;
     letter-spacing: 0.05em;
 }
+
 .main-greet > div {
     -webkit-animation-delay: 0.8s;
 }
@@ -32,12 +33,14 @@
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.52), 0 2px 4px rgba(0, 0, 0, 0.12);
 
 }
-.main-list:hover{
+
+.main-list:hover {
     overflow: visible;
-    height:auto;
+    height: auto;
     border: #999999 1px solid;
 }
-.main-list > a{
+
+.main-list > a {
     display: block;
     position: absolute;
     width: 100%;
@@ -150,12 +153,12 @@
     padding: 0;
 }
 
-#cart-on-nav{
+#cart-on-nav {
 
 }
 
 #cart-on-nav > a {
-    padding:0 5px;
+    padding: 0 5px;
     min-height: 50px;
 }
 
@@ -186,7 +189,8 @@
     z-index: 99999;
     animation: fadeOut 1.5s;
 }
-.comments-wrapper.ng-enter{
+
+.comments-wrapper.ng-enter {
     animation: fadeInDownBig 1s;
 }
 
@@ -298,16 +302,20 @@
     border-color: #f0c36d;
     z-index: 999999;
 }
-.comments-count-block{
+
+.comments-count-block {
     margin-top: 15px;
 }
+
 .id-block {
     padding: 10px 30px;
 }
-.item-image{
+
+.item-image {
     padding-top: 30px;
 }
-.pager li>button {
+
+.pager li > button {
     display: inline-block;
     padding: 5px 14px;
     background-color: #fff;
@@ -316,16 +324,26 @@
     color: #337ab7;
 }
 
-.pager li>button[class~="disabled"] {
+.pager li > button[class~="disabled"] {
     color: #777;
     cursor: not-allowed;
     background-color: #fff;
     border-color: #ddd;
 }
-.item-detail-name{
+
+.item-detail-name {
     margin-top: 0;
 }
-.item-detail-description{
+
+.item-detail-description {
     margin-top: 30px;
 }
 
+.action-block {
+    margin-top: 10px;
+    padding: 20px;
+    border: 2px solid #fc6f79;
+}
+.action-accordion{
+    padding: 0;
+}

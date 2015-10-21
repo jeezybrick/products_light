@@ -21,7 +21,8 @@
     </li>
     <li role="presentation" class="active">
         <a ng-href="#/products/[[ itemDetail.id ]]/comments"
-           data-target="#/products/[[ itemDetail.id ]]/comments">{% trans "Comments" %}</a>
+           data-target="#/products/[[ itemDetail.id ]]/comments">{% trans "Comments " %}<span class="badge"> [[ itemDetail.comments.length ]]</span>
+        </a>
     </li>
 </ul>
 

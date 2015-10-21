@@ -33,7 +33,9 @@
                 <a ng-href="#/products/[[ itemDetail.id ]]" data-target="#/products/[[ itemDetail.id ]]">{% trans "About item" %}</a>
             </li>
             <li role="presentation">
-                <a ng-href="#/products/[[ itemDetail.id ]]/comments" data-target="#/products/[[ itemDetail.id ]]/comments">{% trans "Comments" %}</a>
+                <a ng-href="#/products/[[ itemDetail.id ]]/comments" data-target="#/products/[[ itemDetail.id ]]/comments">
+                    {% trans "Comments " %}<span class="badge"> [[ itemDetail.comments.length ]]</span>
+                </a>
             </li>
         </ul>
 
@@ -79,16 +81,44 @@
     <!-- Price and action price -->
     <div class="col-lg-7 col-md-6 col-sm-8 col-xs-12 animated fadeInRight">
 
-        <h3>{% trans "Price:" %}
-            <span ng-class="{'oldprice' : itemDetail.action.new_price}">
-                [[ itemDetail.price | currency:"₴" ]]
-            </span>
+        <div class="row" ng-if="itemDetail.action">
+            <div class="action-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>Action ended at:</h4>
+                <div class="clock">[[ itemDetail.action.period_to | date:"medium"]]</div>
 
-                <!-- show new price if it defined in action -->
-            <span class="newprice animated infinite pulse" ng-if="itemDetail.action.new_price">
-                [[ itemDetail.action.new_price| currency:"₴"  ]]
-            </span>
-        </h3>
+                <!-- Accordion for sort by category -->
+                <div class="action-accordion col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                    <accordion close-others="oneAtATime">
+                        <accordion-group heading="Read more" is-open="false"
+                                         is-disabled="status.isFirstDisabled" popover="Click to read more about this action"
+                                         popover-trigger="mouseenter">
+                            <pre>[[ itemDetail.action.description ]]</pre>
+
+                        </accordion-group>
+                    </accordion>
+                </div>
+
+                <!-- Price with action -->
+                <h3>{% trans "Price:" %}
+                    <span ng-class="{'oldprice' : itemDetail.action.new_price}">
+                        [[ itemDetail.price | currency:"₴" ]]
+                    </span>
+
+                            <!-- show new price if it defined in action -->
+                    <span class="newprice animated infinite pulse" ng-if="itemDetail.action.new_price">
+                        [[ itemDetail.action.new_price| currency:"₴"  ]]
+                    </span>
+                </h3>
+            </div>
+        </div>
+
+        <!-- Price without action -->
+        <div ng-hide="itemDetail.action">
+            <h3>{% trans "Price:" %}
+                <span>[[ itemDetail.price | currency:"₴" ]]</span>
+            </h3>
+        </div>
+
 
         <!-- Rating block-->
             <h4 ng-hide="greet">{% trans "Average rating:" %}
@@ -127,7 +157,5 @@
         <pre>[[ itemDetail.description ]]</pre>
     </div>
 
-
-    <hr>
 
 </div>
