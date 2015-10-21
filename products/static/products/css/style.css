@@ -47,7 +47,8 @@
     background-color: white;
     z-index: 99999999;
 }
-.actions{
+
+.actions {
     margin-bottom: 2px;
     padding: 0 10px;
     height: 190px;
@@ -56,8 +57,21 @@
     box-sizing: border-box;
 }
 
-.actions:hover {
+.categories {
+    margin-bottom: 2px;
+    padding: 0 10px;
+    height: 290px;
+    overflow: hidden;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.52), 0 2px 4px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+}
+
+.actions:hover, .categories:hover {
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.92), 0 5px 9px rgba(0, 0, 0, 0.92);
+}
+
+.main-list-actions > a {
+    color: black;
 }
 
 .main-list > a {
@@ -364,9 +378,11 @@
     padding: 20px;
     border: 2px solid #fc6f79;
 }
-.action-accordion{
+
+.action-accordion {
     padding: 0;
 }
+
 .navbar-fixed-bottom {
     z-index: 999999999999;
 }
