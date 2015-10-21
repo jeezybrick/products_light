@@ -67,20 +67,18 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
                 Item, item, **kwargs
             )
 
-    def test(self, sender, instance, **kwargs):
-        item = Item.objects.get(id=instance.id)
+    def handle_category_m2m_update(self, sender, instance, **kwargs):
 
-        super(RateOnlySignalProcessor, self).handle_delete(
-            Item, item, **kwargs
-        )
+        item = Item.objects.get(id=instance.id)
+        super(RateOnlySignalProcessor, self).handle_save(
+                Item, item, **kwargs
+            )
 
     def setup(self, **kwargs):
 
-        models.signals.m2m_changed.connect(self.handle_save, sender=Item)
-        models.signals.m2m_changed.connect(self.handle_save, sender=Category)
+        models.signals.m2m_changed.connect(self.handle_category_m2m_update, sender=Item.categories.through)
         models.signals.post_save.connect(self.handle_save, sender=Item)
-        models.signals.pre_delete.connect(self.handle_delete, sender=Item)
-        models.signals.pre_delete.connect(self.test, sender=Item)
+        models.signals.post_delete.connect(self.handle_delete, sender=Item)
         models.signals.post_save.connect(
             self.handle_category_update, sender=Category)
         models.signals.post_delete.connect(

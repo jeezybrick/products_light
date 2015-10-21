@@ -10,6 +10,6 @@
         $(this).removeClass('animated pulse');
     });
 
-      $('.messenger').delay(1500).slideUp();
+      $('.messenger').delay(2000).slideUp();
 
 });
