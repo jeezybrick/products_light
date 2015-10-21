@@ -6,7 +6,7 @@
 <!-- breadcrumb -->
 <ol class="breadcrumb">
     <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-    <li><a href="{% url 'products_index_ang' %}"
+    <li><a href="{% url 'products_index_ang' %}#/products"
            ng-click="showDetailOfItem=false">{% trans "List of items" %}</a></li>
     <li><a ng-href="#/products/[[ itemDetail.id ]]">{% trans "Detail of item" %}</a></li>
     <li class="active">{% trans "Comments" %}</li>

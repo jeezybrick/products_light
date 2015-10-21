@@ -93,6 +93,7 @@ class ItemSerializer(serializers.Serializer):
     description = serializers.CharField()
     image_url = serializers.URLField()
     categories = serializers.StringRelatedField(many=True)
+    comments = serializers.StringRelatedField(many=True)
     rate = serializers.FloatField()
     quantity = serializers.IntegerField()
     quantity_message = serializers.CharField()
@@ -110,7 +111,7 @@ class ItemSerializer(serializers.Serializer):
 
         fields = ('pk', 'author', 'name', 'price', 'description',
                   'categories', 'image_url', 'rate', 'quantity',
-                  'in_cart', 'quantity_message', 'action', )
+                  'in_cart', 'quantity_message', 'action', 'comments', )
 
 
 class ItemDetailSerializer(serializers.ModelSerializer):

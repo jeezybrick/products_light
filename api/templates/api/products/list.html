@@ -114,124 +114,126 @@
 
                     <!-- ng-repeat -->
                     <div class="main-list-wrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="main-list col-lg-4 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
-                             ng-repeat="item in items.results | filter:search | orderBy:sortField:reverse"
-                             ng-class="{'zero-quantity-item' : item.quantity == 0}">
+                        <div class="row">
+                            <div class="main-list col-lg-4 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
+                                 ng-repeat="item in items.results | filter:search | orderBy:sortField:reverse"
+                                 ng-class="{'zero-quantity-item' : item.quantity == 0}">
 
-                            <div class="notes">
-                                <div class="row">
-
-                                    <div class="col-lg-10 col-md-9 col-sm-9 col-xs-6">
-                                        <h3 class="detail-item-attr">
-                                            <small>
-                                                {% trans "ID:" %}[[ item.pk ]]
-                                            </small>
-                                        </h3>
-                                    </div>
-                                    <div class="item-image col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
-                                        <a ng-href="#/products/[[ item.pk ]]" ng-click="showItem()">
-                                            <img ng-src="[[ item.image_url ]]"
-                                                 class="img-rounded" width="190" height="150" alt="item-image" ng-if="item.image_url.length">
-                                            <img src="{% static "products/images/no-image.png" %}"
-                                                 class="img-rounded" width="190" height="150" alt="item-image" ng-if="!item.image_url.length">
-
-                                        </a>
-                                    </div>
-
-                                    <!-- block for  quantity messages-->
-                                    <div class="main-list-top col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                         ng-if="item.quantity || item.quantity == 0">
-
-                                        <div class="alert alert-danger" role="alert" ng-show="item.quantity == 0">
-                                            {% trans "The item is out of stock :(" %}
-                                        </div>
-
-                                        <div class="alert alert-warning animated infinite pulse" role="alert"
-                                             ng-show="item.quantity < 10 && item.quantity != 0">
-                                            {% trans "This item end soon! Hurry up!" %}
-                                        </div>
-
-                                    </div>
-
+                                <div class="notes">
                                     <div class="row">
 
-                                        <div class="id-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <a ng-href="#/products/[[ item.pk ]]" ng-click="showItem()">[[ item.name]]</a>
+                                        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-6">
+                                            <h3 class="detail-item-attr">
+                                                <small>
+                                                    {% trans "ID:" %}[[ item.pk ]]
+                                                </small>
+                                            </h3>
+                                        </div>
+                                        <div class="item-image col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                                            <a ng-href="#/products/[[ item.pk ]]" ng-click="showItem()">
+                                                <img ng-src="[[ item.image_url ]]"
+                                                     class="img-rounded" width="190" height="150" alt="item-image" ng-if="item.image_url.length">
+                                                <img src="{% static "products/images/no-image.png" %}"
+                                                     class="img-rounded" width="190" height="150" alt="item-image" ng-if="!item.image_url.length">
+
+                                            </a>
                                         </div>
 
-                                        <!-- Price and comments count block-->
-                                        <div class="id-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                            <div class="row">
-                                                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 text-left">
-                                                    <h4>
-                                                    <span ng-class="{'oldprice' : item.action}">
-                                                        [[ item.price | currency:"₴" ]]
-                                                    </span>
-                                                        </h4>
-                                                    <h4>
-                                                    <span class="newprice animated infinite pulse" ng-if="item.action">
-                                                        [[ item.action | currency:"₴" ]]
-                                                    </span>
-                                                    </h4>
-                                                </div>
-                                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 text-right">
-                                                    <small>{% trans "Comments " %}<span class="badge"> [[ item.comments.length ]]</span></small>
-                                                </div>
+                                        <!-- block for  quantity messages-->
+                                        <div class="main-list-top col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                             ng-if="item.quantity || item.quantity == 0">
+
+                                            <div class="alert alert-danger" role="alert" ng-show="item.quantity == 0">
+                                                {% trans "The item is out of stock :(" %}
+                                            </div>
+
+                                            <div class="alert alert-warning animated infinite pulse" role="alert"
+                                                 ng-show="item.quantity < 10 && item.quantity != 0">
+                                                {% trans "This item end soon! Hurry up!" %}
                                             </div>
 
                                         </div>
 
-                                            <!-- Add to cart block -->
-                                         <div class="add-cart-button col-lg-7 col-md-7 col-sm-8 col-xs-8">
-                                            <button ng-if="!item.is_item_in_cart" class="btn btn-success" type="button"
-                                                    ng-click="addItemToCart(item.pk)"
-                                                    ng-class="{'disabled' : item.quantity == 0}">
-                                                <i class="fa fa-shopping-cart fa-lg"></i> {% trans "Add to cart" %}
-                                            </button>
+                                        <div class="row">
 
-                                            <!-- block for add/delete item to/form cart -->
-                                            <div class="open-cart text-center" ng-if="item.is_item_in_cart">
+                                            <div class="id-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <a ng-href="#/products/[[ item.pk ]]" ng-click="showItem()">[[ item.name]]</a>
+                                            </div>
+
+                                            <!-- Price and comments count block-->
+                                            <div class="id-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                                 <div class="row">
-                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                        <a href="javascript:void(0);" ng-click="deleteItemInCart(item.pk)"
-                                                           tooltip-placement="top" tooltip="Delete item from the cart"
-                                                           tooltip-popup-delay='600'>
-                                                            <i ng-class="{'fa fa-times fa-2x':hovering, 'fa fa-check fa-2x':!hovering}"
-                                                               ng-mouseenter="hovering=true"
-                                                               ng-mouseleave="hovering=false"></i>
-                                                        </a>
+                                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 text-left">
+                                                        <h4>
+                                                        <span ng-class="{'oldprice' : item.action}">
+                                                            [[ item.price | currency:"₴" ]]
+                                                        </span>
+                                                            </h4>
+                                                        <h4>
+                                                        <span class="newprice animated infinite pulse" ng-if="item.action">
+                                                            [[ item.action | currency:"₴" ]]
+                                                        </span>
+                                                        </h4>
                                                     </div>
-                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                                        <a href="{% url 'cart_list' %}">{% trans "Item in the cart!" %}</a>
+                                                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 text-right">
+                                                        <small>{% trans "Comments " %}<span class="badge"> [[ item.comments.length ]]</span></small>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                                <!-- Add to cart block -->
+                                             <div class="add-cart-button col-lg-7 col-md-7 col-sm-8 col-xs-8">
+                                                <button ng-if="!item.is_item_in_cart" class="btn btn-success" type="button"
+                                                        ng-click="addItemToCart(item.pk)"
+                                                        ng-class="{'disabled' : item.quantity == 0}">
+                                                    <i class="fa fa-shopping-cart fa-lg"></i> {% trans "Add to cart" %}
+                                                </button>
+
+                                                <!-- block for add/delete item to/form cart -->
+                                                <div class="open-cart text-center" ng-if="item.is_item_in_cart">
+                                                    <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                            <a href="javascript:void(0);" ng-click="deleteItemInCart(item.pk)"
+                                                               tooltip-placement="top" tooltip="Delete item from the cart"
+                                                               tooltip-popup-delay='600'>
+                                                                <i ng-class="{'fa fa-times fa-2x':hovering, 'fa fa-check fa-2x':!hovering}"
+                                                                   ng-mouseenter="hovering=true"
+                                                                   ng-mouseleave="hovering=false"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                                            <a href="{% url 'cart_list' %}">{% trans "Item in the cart!" %}</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Rating block -->
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <rating ng-model="item.rate" max="maxx" readonly="true"
+                                                    on-hover="hoveringOver(value)"
+                                                    on-leave="overStar = null" titles="['one','two','three']">
+
+                                            </rating>
+                                        </div>
+
+                                        <!-- Categories block -->
+                                        <div ng-show="item.categories.length"
+                                             class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <h4 class="word-break">{% trans "Categories:" %} </h4>
+                                        </div>
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <ul>
+                                                <li ng-repeat="category in item.categories">
+                                                    [[ category ]]
+                                                </li>
+                                            </ul>
+                                        </div>
+
                                     </div>
-
-                                    <!-- Rating block -->
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <rating ng-model="item.rate" max="maxx" readonly="true"
-                                                on-hover="hoveringOver(value)"
-                                                on-leave="overStar = null" titles="['one','two','three']">
-
-                                        </rating>
-                                    </div>
-
-                                    <!-- Categories block -->
-                                    <div ng-show="item.categories.length"
-                                         class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <h4 class="word-break">{% trans "Categories:" %} </h4>
-                                    </div>
-
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <ul>
-                                            <li ng-repeat="category in item.categories">
-                                                [[ category ]]
-                                            </li>
-                                        </ul>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>

@@ -26,18 +26,27 @@
 
 .main-list {
     margin-bottom: 2px;
+    padding: 0;
+}
+
+.notes {
+    margin-bottom: 2px;
     padding: 0 10px;
-    max-height: 450px;
-    min-height: 450px;
+    height: 450px;
     overflow: hidden;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.52), 0 2px 4px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
 
 }
 
-.main-list:hover {
+.notes:hover {
     overflow: visible;
+    min-height: 450px;
     height: auto;
     border: #999999 1px solid;
+    position: absolute;
+    background-color: white;
+    z-index: 99999999;
 }
 
 .main-list > a {
