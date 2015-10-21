@@ -25,7 +25,6 @@
 }
 
 .main-list {
-    margin-bottom: 2px;
     padding: 0;
 }
 
@@ -43,7 +42,7 @@
     overflow: visible;
     min-height: 450px;
     height: auto;
-    border: #999999 1px solid;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.92), 0 5px 9px rgba(0, 0, 0, 0.92);
     position: absolute;
     background-color: white;
     z-index: 99999999;
@@ -355,4 +354,7 @@
 }
 .action-accordion{
     padding: 0;
+}
+.navbar-fixed-bottom {
+    z-index: 999999999999;
 }
