@@ -2,17 +2,8 @@
  * Created by user on 28.09.15.
  * For item on Django views, not Angular
  */
-var clock;
-clock = $('#clock').FlipClock({
-          clockFace: "DailyCounter",
-          autoStart: false
 
-      });
-
-      clock.setTime(5000);
-      clock.setCountdown(true);
-      clock.start(function(){});
-  $(document).ready(function () {
+$(document).ready(function () {
 
 
     $('.notes').mouseenter(function () {
@@ -22,16 +13,8 @@ clock = $('#clock').FlipClock({
         $(this).removeClass('animated pulse');
     });
 
-      $('.messenger').delay(2000).slideUp();
+    /* Slide up success message in 2 sec */
+    $('.messenger').delay(2000).slideUp();
 
 
-      clock = $('#clock').FlipClock({
-          clockFace: "DailyCounter",
-          autoStart: false
-
-      });
-
-      clock.setTime(5000);
-      clock.setCountdown(true);
-      clock.start(function(){});
 });
