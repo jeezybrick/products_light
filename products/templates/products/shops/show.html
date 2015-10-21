@@ -14,32 +14,44 @@
         </div>
 
         <div class="col-lg-12 col-md--12 col-sm-12 col-xs-12">
+
+            <!-- Breadcrumb -->
             <ol class="breadcrumb">
                 <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
                 <li><a href="{% url 'shop_list' %}">{% trans "List of shops" %}</a></li>
                 <li class="active">{% trans "Shop detail" %}</li>
             </ol>
             <hr>
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="messenger alert alert-success" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {{ message }}
+
+            <div class="col-lg-12 col-md--12 col-sm-12 col-xs-12">
+                <h3 class="detail-item-attr">
+                    <small>{% trans "ID:" %}{{ shop.id }}</small>
+                </h3>
+            </div>
+
+            <!-- Image of shop -->
+            <div class="col-lg-3 col-md-46 col-sm-4 col-xs-12 text-center">
+                <img src="http://light-it.net/wp-content/uploads/light_it_logo.png" class="img-responsive"
+                     alt="Light IT">
+            </div>
+
+            <!-- Name and collapse button with items belongs to this shop -->
+            <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 text-left">
+                <h2>{% trans "Shop name:" %}
+                    <small>{{ shop.username }}</small>
+                </h2>
+                <div class="row">
+                    <div class="col-lg-5 col-md-6 col-sm-7">
+                        <button class="btn btn-primary btn-lg btn-block" type="button" data-toggle="collapse"
+                                data-target="#collapseExample"
+                                aria-expanded="false" aria-controls="collapseExample">
+                            {% trans "Show items" %}
+                        </button>
                     </div>
-                {% endfor %}
-            {% endif %}
-            <h3 class="detail-item-attr">
-                ID:{{ shop.id }}
-            </h3>
-            <hr>
-            <h3 class="detail-item-attr">
-                Name:{{ shop.username }}
-            </h3>
-            <hr>
-            <button class="btn btn-primary btn-lg" type="button" data-toggle="collapse" data-target="#collapseExample"
-                    aria-expanded="false" aria-controls="collapseExample">
-                {% trans "Show items" %}
-            </button>
+                </div>
+            </div>
+
+            <!-- Collapse of items -->
             <div class="collapse" id="collapseExample">
                     {% for item in shop.items.all %}
                          <div class="main-list col-lg-4 col-ms-4 col-sm-6 col-xs-12">
@@ -47,7 +59,7 @@
                     <div class="notes">
                         <div class="row">
                             <div class="main-list-top col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                <h2>ID:{{ item.id }}</h2>
+                                <h2>{% trans "ID:" %}{{ item.id }}</h2>
                             </div>
                             <div class="main-list-top-pencil col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
                                 <a href="{% url 'products_edit' item.id %}" >
@@ -59,7 +71,7 @@
                             </div>
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <h4 class="word-break">{% trans "price" %}:{{ item.price|truncatechars:35 }}
+                                <h4 class="word-break">{% trans "price" %}:{{ item.price }}
                                     $.</h4>
                             </div>
 
@@ -72,7 +84,7 @@
                                     {% for category in item.categories.all %}
                                         <li>{{ category }}</li>
                                     {% empty %}
-                                        <small>Categories doesn't picked.</small>
+                                        <small>{% trans "Categories doesn't picked." %}</small>
                                     {% endfor %}
                                 </ul>
 
@@ -86,7 +98,7 @@
                     </div>
                 </div>
                     {% empty %}
-                        <small>This shop doesn't add items</small>
+                        <small>{% trans "This shop doesn't add items" %}:</small>
                     {% endfor %}
             </div>
             <hr/>
