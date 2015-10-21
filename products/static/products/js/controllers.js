@@ -447,6 +447,12 @@ function ActionCtrl($scope, $routeParams, $location, Action) {
     }, function (error) {
 
         $scope.actionError = error;
+
+        $scope.doesActionNotExists =function(){
+
+        return angular.equals($scope.actionError.status, 404);
+
+        };
     });
 
 
@@ -473,6 +479,8 @@ function ActionCtrl($scope, $routeParams, $location, Action) {
         });
 
     };
+
+
 
 }
 

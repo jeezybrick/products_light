@@ -17,12 +17,18 @@
     <!-- breadcrumb -->
     <ol class="breadcrumb">
         <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-        <li><a href="{% url 'products_index_ang' %}"
-               ng-click="showDetailOfItem=false">{% trans "List of items" %}</a></li>
-        <li><a ng-href="#/products/[[ itemId ]]">{% trans "Detail of item" %}</a></li>
+        <li><a href="{% url 'products_index_ang' %}#/products">
+            {% trans "List of items" %}</a></li>
+        <li>
+            <a ng-href="#/products/[[ itemId ]]">{% trans "Detail of item" %}</a>
+        </li>
         <li class="active">{% trans "Modify action" %}</li>
     </ol>
     <hr>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right" ng-if="!doesActionNotExists()">
+        <button class="btn btn-danger" type="button" ng-click="deleteAction()">{% trans "Delete action" %}</button>
+    </div>
 
     <!-- form for add/edit action for item by owner -->
     <form name="action_add" class="form-horizontal action_add" role="form" method="POST" ng-submit="addAction()">
