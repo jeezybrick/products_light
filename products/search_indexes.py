@@ -1,6 +1,5 @@
 
 from django.db.models import Avg
-from django.utils.translation import ugettext_lazy as _
 from haystack import indexes
 from products.models import Item, Comment, Rate
 from my_auth.models import MyUser
@@ -41,7 +40,7 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_quantity_message(self, obj):
         if obj.quantity is not None:
             if obj.quantity == 0:
-                return 'The item is out of stock :('
+                return 'The item is out of stock :('  # No i18n support
             if obj.quantity < get_min_quantity():
                 return 'This item end soon! Hurry up!'
         return None
