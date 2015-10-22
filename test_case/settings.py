@@ -124,6 +124,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+# Cache
 CACHES = {
     "default": {
         "BACKEND": "redis_cache.cache.RedisCache",
@@ -133,6 +135,8 @@ CACHES = {
         }
     }
 }
+
+# haystack
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
@@ -145,6 +149,8 @@ HAYSTACK_SIGNAL_PROCESSOR = 'products.signals.RateOnlySignalProcessor'
 
 CELERY_ALWAYS_EAGER = True
 
+# bootstrap3 for crispy forms
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+# Default auth model
 AUTH_USER_MODEL = 'my_auth.MyUser'

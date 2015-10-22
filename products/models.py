@@ -24,6 +24,10 @@ class Item(TimeStampedModel):
     def __str__(self):
         return self.name
 
+    # Min count of quantity items for quantity-message
+    def get_min_quantity(self):
+        return 10
+
 
 class Comment(TimeStampedModel):
     username = models.CharField(_("Username"), max_length=50, blank=False)

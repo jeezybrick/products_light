@@ -117,11 +117,12 @@
                         <div class="row">
                             <div class="main-list col-lg-4 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
                                  ng-repeat="item in items.results | filter:search | orderBy:sortField:reverse"
-                                 ng-class="{'zero-quantity-item' : item.quantity == 0}">
+                                 ng-class="{'zero-quantity-item' : isQuantityOfItemIsZero(item)}">
 
                                 <div class="notes">
                                     <div class="row">
 
+                                        <!-- ID block -->
                                         <div class="col-lg-10 col-md-9 col-sm-9 col-xs-6">
                                             <h3 class="detail-item-attr">
                                                 <small>
@@ -129,6 +130,8 @@
                                                 </small>
                                             </h3>
                                         </div>
+
+                                        <!-- Image block -->
                                         <div class="item-image col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
                                             <a ng-href="#/products/[[ item.pk ]]" ng-click="showItem()">
                                                 <img ng-src="[[ item.image_url ]]"
@@ -141,14 +144,14 @@
 
                                         <!-- block for  quantity messages-->
                                         <div class="main-list-top col-lg-12 col-md-12 col-sm-12 col-xs-12"
-                                             ng-if="item.quantity || item.quantity == 0">
+                                             ng-if="item.quantity || isQuantityOfItemIsZero(item)">
 
-                                            <div class="alert alert-danger" role="alert" ng-show="item.quantity == 0">
+                                            <div class="alert alert-danger" role="alert" ng-show="isQuantityOfItemIsZero(item)">
                                                 {% trans "The item is out of stock :(" %}
                                             </div>
 
                                             <div class="alert alert-warning animated infinite pulse" role="alert"
-                                                 ng-show="item.quantity < 10 && item.quantity != 0">
+                                                 ng-show="item.quantity < minQuantityOfItem && item.quantity != 0">
                                                 {% trans "This item end soon! Hurry up!" %}
                                             </div>
 

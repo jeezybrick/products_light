@@ -23,6 +23,8 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
     $scope.showDetailOfItem = false;
     $scope.isCollapsed = true;
     $scope.itemLoad = false;
+    $scope.minQuantityOfItem = 10;
+    $scope.zeroQuantityOfItem = 0;
 
     /**
      * Get list of items and list of categories
@@ -154,6 +156,11 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
         });
     };
 
+    $scope.isQuantityOfItemIsZero = function(item){
+
+        return angular.equals($scope.zeroQuantityOfItem, item.quantity);
+    };
+
 }
 
 angular
@@ -256,9 +263,9 @@ function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, A
      */
     $scope.deleteItem = function () {
 
-        bootbox.confirm("Are you sure you want to delete this item?", function (answer) {
+        bootbox.confirm('Are you sure you want to delete this item?', function (answer) {
 
-            if (answer == true)
+            if (answer === true)
 
                 $scope.itemDetail.$delete(function () {
 
@@ -356,9 +363,9 @@ function CartCtrl($scope, $timeout, Cart) {
      */
     function deleteItemInCart(itemId) {
 
-        bootbox.confirm("Are you sure you want to delete this item from the cart?", function (answer) {
+        bootbox.confirm('Are you sure you want to delete this item from the cart?', function (answer) {
 
-            if (answer == true)
+            if (answer === true)
 
                 Cart.delete({id: itemId}, function () {
 
@@ -420,7 +427,7 @@ function CartCtrl($scope, $timeout, Cart) {
      */
     function makeOrder() {
 
-        bootbox.alert("You make order! Soon we call you!");
+        bootbox.alert('You make order! Soon we call you!');
 
     }
 
@@ -497,9 +504,9 @@ function ActionCtrl($scope, $routeParams, $location, Action, AuthUser) {
 
     $scope.deleteAction = function () {
 
-        bootbox.confirm("Are you sure you want to delete this action?", function (answer) {
+        bootbox.confirm('Are you sure you want to delete this action?', function (answer) {
 
-            if (answer == true)
+            if (answer === true)
 
                 Action.delete({item_id: $routeParams.itemId}, function () {
 

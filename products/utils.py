@@ -19,3 +19,9 @@ def price_with_percent(item):
     if item.user.percentage_of_price:
         item.price = item.price * item.user.percentage_of_price / 100
     return item
+
+""" Min count of quantity items for quantity-message"""
+
+
+def get_min_quantity():
+    return 10

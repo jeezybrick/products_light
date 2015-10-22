@@ -56,5 +56,6 @@ class RegisterView(View):
 
 # logout function
 def get_logout(request):
+
     auth_logout(request)
     return HttpResponseRedirect(reverse("home"))
