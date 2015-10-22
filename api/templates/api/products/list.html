@@ -186,7 +186,7 @@
                                             </div>
 
                                                 <!-- Add to cart block -->
-                                             <div class="add-cart-button col-lg-7 col-md-7 col-sm-8 col-xs-8">
+                                             <div class="add-cart-button col-lg-7 col-md-7 col-sm-7 col-xs-8">
                                                 <button ng-if="!item.is_item_in_cart" class="btn btn-success" type="button"
                                                         ng-click="addItemToCart(item.pk)"
                                                         ng-class="{'disabled' : item.quantity == 0}">
@@ -196,7 +196,7 @@
                                                 <!-- block for add/delete item to/form cart -->
                                                 <div class="open-cart text-center" ng-if="item.is_item_in_cart">
                                                     <div class="row">
-                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
                                                             <a href="javascript:void(0);" ng-click="deleteItemInCart(item.pk)"
                                                                tooltip-placement="top" tooltip="Delete item from the cart"
                                                                tooltip-popup-delay='600'>

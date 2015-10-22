@@ -140,6 +140,13 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
 
         }, function (error) {
             $scope.itemInCartError = error.data.detail;
+            $timeout.cancel($scope.time);
+
+            $scope.time = $timeout(function () {
+
+                $scope.itemInCartError = false;
+
+            }, 3000);
         });
 
     };
