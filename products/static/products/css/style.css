@@ -134,12 +134,15 @@
 }
 
 .bg-primary {
+    color: #fff;
+    background-color: #555555;
     padding: 20px;
     width: 300px;
 }
 
 .bg-primary > a {
-    color: #FFFF00;
+    color: skyblue;
+    font-weight: 700;
 }
 
 .signup-decision {
@@ -202,11 +205,11 @@
 
 /* ng-animate */
 #editItemSuccessMessage.ng-enter {
-    animation: fadeInDown 1s;
+    animation: fadeInDownBig 0.5s;
 }
 
 #editItemSuccessMessage.ng-leave {
-    animation: fadeOut 2s;
+    animation: fadeOutUpBig 3s;
 }
 
 .wrapperOnList.ng-enter {
@@ -215,12 +218,13 @@
 }
 
 .item-in-cart.ng-enter {
-    z-index: 99999;
     animation: fadeIn 1s;
 }
 
+.item-in-cart.ng-enter-active, .item-in-cart.ng-leave-active {
+}
+
 .item-in-cart.ng-leave {
-    z-index: 99999;
     animation: fadeOut 1.5s;
 }
 
@@ -325,16 +329,18 @@
 }
 
 .item-in-cart {
-    z-index: 99999;
+    z-index: 99999 !important;
 }
 
 .item-in-cart > div {
-    background-color: #f9edbe;
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
     position: fixed;
     left: 40%;
     top: 0;
-    border-color: #f0c36d;
     z-index: 999999;
+    padding: 5px;
 }
 
 .comments-count-block {

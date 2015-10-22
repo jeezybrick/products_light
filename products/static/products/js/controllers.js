@@ -247,6 +247,14 @@ function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, A
 
         }, function (error) {
             $scope.rateError = error;
+
+            $timeout.cancel($scope.time);
+
+            $scope.time = $timeout(function () {
+
+                $scope.rateError = false;
+
+            }, 3000);
         });
 
     };
@@ -300,7 +308,7 @@ function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, A
 
             $scope.editItemSuccess = false;
 
-        }, 3000);
+        }, 4000);
 
     };
 

@@ -7,7 +7,7 @@
 </div>
 <!-- Error messages -->
 <div class="item-in-cart row">
-    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center">
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center" ng-if="itemDetailLoadError || rateError">
         <span ng-if="itemDetailLoadError">[[ itemDetailLoadError ]]</span>
         <span ng-if="rateError">{% trans "Please,Sign In or Sign Up" %}</span>
     </div>
