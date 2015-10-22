@@ -41,7 +41,7 @@ class ItemList(generics.GenericAPIView):
         try:
             request.GET["category"]
         except MultiValueDictKeyError:
-            queryset = SearchQuerySet().models(Item).facet('categories').order_by('-id')
+            queryset = SearchQuerySet().models(Item).order_by('-id')
         else:
             queryset = SearchQuerySet().models(Item).filter(
                 categories__in=[request.GET["category"]])

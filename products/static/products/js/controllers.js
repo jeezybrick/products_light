@@ -46,7 +46,6 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
         $scope.itemLoadError = true;
     });
 
-    console.log($scope.items);
 
     /**
      * Show item detail
