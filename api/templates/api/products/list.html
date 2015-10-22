@@ -8,7 +8,7 @@
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center">
                     <span ng-if="itemInCartSuccess">{% trans "Item add to cart!" %}</span>
                     <span ng-if="!itemLoad">{% trans "Loading..." %}</span>
-                    <span ng-if="itemInCartError">{% trans "Please Log In or register!" %}</span>
+                    <span ng-if="itemInCartError">[[ itemInCartError ]]</span>
                 </div>
             </div>
 
