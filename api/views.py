@@ -13,7 +13,7 @@ from products.service import RateService
 from cart.service import CartService
 from api import serializers
 from api.utils import addItemIdToSession, removeItemIdFromSession
-from api.permissions import IsAuthorOrReadOnly, ShopIsAuthorOrReadOnly
+from api.permissions import IsAuthorOrReadOnly, ShopIsAuthorOrReadOnly, IsAuthorOfActionOrReadOnly
 from categories.cache import CategoryCache
 from my_auth.cache import ShopDetailCache
 from haystack.query import SearchQuerySet
@@ -224,7 +224,7 @@ class CartDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
 class ActionList(generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = serializers.ActionSerializer
-    permission_classes = (ShopIsAuthorOrReadOnly, permissions.IsAuthenticated)
+    permission_classes = (permissions.IsAuthenticated, )
 
     def get(self, request):
 
@@ -256,7 +256,7 @@ class ActionList(generics.GenericAPIView):
 class ActionDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
                  generics.DestroyAPIView):
 
-    permission_classes = (ShopIsAuthorOrReadOnly, permissions.IsAuthenticated)
+    permission_classes = (IsAuthorOfActionOrReadOnly, permissions.IsAuthenticated)
     serializer_class = serializers.ActionSerializer
 
     def get_object(self):

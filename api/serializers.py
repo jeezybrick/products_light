@@ -67,6 +67,8 @@ class RateSerializer(serializers.ModelSerializer):
 
 class ActionSerializer(serializers.ModelSerializer):
 
+    shop = serializers.CharField(read_only=True)
+
     max_price = 1000000
     min_price = 0
 
@@ -80,7 +82,7 @@ class ActionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Action
-        fields = ('item', 'description', 'new_price',
+        fields = ('item', 'shop', 'description', 'new_price',
                   'period_from', 'period_to', )
 
 

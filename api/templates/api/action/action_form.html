@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-hide="isPermissionDenied()">
 
     <!-- Error message -->
     <h4 class="error-comment-message" ng-repeat="(errorName,errorMessage) in errorAddAction.data">
@@ -95,4 +95,8 @@
         </div>
     </form>
 
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-if="isPermissionDenied()">
+    <h2>{% trans "You try to edit another's shop action!" %}</h2>
 </div>

@@ -430,9 +430,10 @@ angular
     .module('myApp')
     .controller('ActionCtrl', ActionCtrl);
 
-function ActionCtrl($scope, $routeParams, $location, Action) {
+function ActionCtrl($scope, $routeParams, $location, Action, AuthUser) {
 
     $scope.itemId = $routeParams.itemId;
+    $scope.AuthUserUsername = AuthUser.username; // Auth user id
 
     /**
      * Get action for this item
@@ -444,14 +445,28 @@ function ActionCtrl($scope, $routeParams, $location, Action) {
         $scope.action.period_from = new Date($scope.action.period_from);
         $scope.action.period_to = new Date($scope.action.period_to);
 
+
+
     }, function (error) {
 
         $scope.actionError = error;
 
-        $scope.doesActionNotExists =function(){
+        /**
+         *
+         * Check if action for current item exists
+         */
+        $scope.doesActionNotExists = function () {
 
-        return angular.equals($scope.actionError.status, 404);
+            return angular.equals($scope.actionError.status, 404);
 
+        };
+
+        /**
+         * Check is permission denied
+         */
+        $scope.isPermissionDenied = function () {
+
+            return angular.equals($scope.actionError.status, 403);
         };
     });
 
@@ -476,6 +491,22 @@ function ActionCtrl($scope, $routeParams, $location, Action) {
         }, function (error) {
 
             $scope.errorAddAction = error;
+        });
+
+    };
+
+    $scope.deleteAction = function () {
+
+        bootbox.confirm("Are you sure you want to delete this action?", function (answer) {
+
+            if (answer == true)
+
+                Action.delete({item_id: $routeParams.itemId}, function () {
+
+                    $location.path('products/'+ $scope.itemId);
+
+                });
+
         });
 
     };
@@ -537,10 +568,13 @@ function CommentsController($scope, $routeParams, Item, AuthUser, Comment, $loca
         $scope.commentObject = new Comment($scope.comment);
 
         $scope.commentObject.$save(function (data) {
+
             $scope.hideCommentForm = true;
             $scope.appendComment = data;
             $scope.errorComment = false;
+
         }, function (error) {
+
             $scope.errorComment = error;
         });
 
