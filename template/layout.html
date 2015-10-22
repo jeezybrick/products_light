@@ -2,7 +2,7 @@
 {% load i18n %}
 
 <!DOCTYPE html>
-<html lang="">
+<html lang="" ng-app="myApp">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,11 +30,11 @@
 </head>
 
 <body>
-<div class="container">
+<div class="container" ng-controller="HeaderController">
     <!-- Navbar -->
    {% include 'products/partials/nav.html' %}
 </div>
-<div class="container main-content" ng-app="myApp">
+<div class="container main-content">
     {% block content %}
         {# Контент #}
     {% endblock %}

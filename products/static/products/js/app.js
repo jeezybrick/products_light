@@ -19,6 +19,10 @@ angular
         $interpolateProvider.startSymbol('[[').endSymbol(']]');
 
         $routeProvider.
+            when('/', {
+                templateUrl: '/products_ang/list/',
+                controller: 'itemCtrl'
+            }).
             when('/products', {
                 templateUrl: '/products_ang/list/',
                 controller: 'itemCtrl'

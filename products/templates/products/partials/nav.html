@@ -43,8 +43,9 @@
                     <a href="{% url 'shop_list' %}">{% trans "Shops" %}</a>
                 </li>
 
-                <li class="{% ifactive "products_list_ang" %} active {% endifactive %}">
-                    <a href="{% url 'products_index_ang' %}">{% trans "Items-Angular" %}</a>
+                <li class="{% ifactive "products_index_ang" %} active {% endifactive %}"
+                        ng-class="{ active: isActive('/')}">
+                    <a href="{% url 'products_index_ang' %}#/">{% trans "Items-Angular" %}</a>
                 </li>
 
                 <li class="{% ifactive "categories_list_ang" %} active {% endifactive %}">

@@ -4,6 +4,17 @@
 
 angular
     .module('myApp')
+    .controller('HeaderController', HeaderController);
+
+function HeaderController($scope, $location)
+{
+    $scope.isActive = function (viewLocation) {
+        return viewLocation === $location.path();
+    };
+}
+
+angular
+    .module('myApp')
     .controller('itemCtrl', itemCtrl);
 
 function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
