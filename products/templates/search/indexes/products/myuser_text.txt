@@ -1,3 +1,0 @@
-{{ object.username }}
-{{ object.email }}
-{{ object.items }}

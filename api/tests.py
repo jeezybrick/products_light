@@ -11,12 +11,12 @@ class SimpleTest(TestCase):
     def setUp(self):
         # User objects
         self.user1 = MyUser.objects.create_user('temporary', 'temporary@gmail.com',
-                                                       'temporary', is_shop=False)
+                                                'temporary', is_shop=False)
         self.user2 = MyUser.objects.create_user('temporary2', 'temporary_second@gmail.com',
-                                                       'temporary', is_shop=False)
+                                                'temporary', is_shop=False)
         # Shop-user
         self.user_shop = MyUser.objects.create_user('temporary3', 'temporary_shop@gmail.com',
-                                                           'temporary', is_shop=True)
+                                                    'temporary', is_shop=True)
         # Create Item object
         self.item = models.Item(name='Phone 8080', price='1234', image_url='http://127.0.0.1:8000/products_ang/',
                                 description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum'
@@ -34,9 +34,7 @@ class SimpleTest(TestCase):
         self.item.save()
         # non exists item id
         self.fake_id = 9999
-        # add action dict
-        self.action_values = {'item': str(self.item.id), 'description': 'test desc',
-                              'new_price': 1224, 'period_from': "2015-10-05", 'period_to': "2015-10-12"}
+
         self.client = Client()
 
     def tearDown(self):
@@ -122,28 +120,54 @@ class SimpleTest(TestCase):
         test add action with permission to add and only shop-user
         and edit only by owner
     """
-    '''
+
     def test_add_action(self):
+        url = reverse('action_list_api')
+        post = {'item': str(self.item.id), 'description': 'test desc',
+                'new_price': 1224, 'period_from': "2015-10-05", 'period_to': "2015-10-12"}
+
         # get and post by anonymous user
-        response = self.client.get(reverse('action_list_api'))
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 403)
 
-        response = self.client.post(reverse('action_list_api'), self.action_values)
+        response = self.client.post(url, post)
         self.assertEqual(response.status_code, 403)
 
         # get and post by auth user and owner
         self.client.login(username='temporary3', password='temporary')
-        response = self.client.get(reverse('action_list_api'))
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(reverse('action_list_api'), self.action_values)
+        response = self.client.post(url, post)
         self.assertEqual(response.status_code, 201)
 
         # post by auth user and NO owner of item
         self.client.login(username='temporary', password='temporary')
-        response = self.client.post(reverse('action_list_api'), self.action_values)
+        response = self.client.post(url, post)
         self.assertEqual(response.status_code, 403)
-    '''
+
+    """ Delete action """
+    def test_delete_action(self):
+        url_list = reverse('action_list_api')
+        url_detail = reverse('action_detail_api', args=(self.item.id,))
+        post = {'item': str(self.item.id), 'description': 'test desc',
+                'new_price': 1224, 'period_from': "2015-10-05", 'period_to': "2015-10-12"}
+
+        # create action by auth user
+        self.client.login(username='temporary3', password='temporary')
+        response = self.client.post(url_list, post)
+        self.assertEqual(response.status_code, 201)
+
+        # delete action by no owner
+        self.client.login(username='temporary', password='temporary')
+        response = self.client.delete(url_detail)
+        self.assertEqual(response.status_code, 404)
+
+        # delete action by owner
+        self.client.login(username='temporary3', password='temporary')
+        response = self.client.delete(url_detail)
+        self.assertEqual(response.status_code, 204)
+
     """ Add category(no post method) """
 
     def test_add_category(self):
