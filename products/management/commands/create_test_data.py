@@ -17,8 +17,14 @@ def random_int(fromm, to):
 
 
 def random_image_url():
-    choice = ['', 'http://i.imgur.com/55ypmZX.jpg']
+    image_url = 'http://i.imgur.com/55ypmZX.jpg'
+
+    choice = ['', image_url]
     return random.choice(choice)
+
+
+def random_item_for_action():
+    return random.sample(range(1, count_of_items), count_of_actions)[0]
 
 # count of objects
 count_of_users = 10
@@ -26,6 +32,7 @@ count_of_parent_categories = 10
 count_of_sub_categories = 50
 count_of_items = 100
 count_of_comments = 50
+count_of_actions = int(count_of_items/2)
 
 
 class Command(BaseCommand):
@@ -97,6 +104,22 @@ class Command(BaseCommand):
     comments = CommentFactory.create_batch(count_of_comments)
     print('Wait.Comments created...')
     [comment.save() for comment in comments]
+
+    """Create actions"""
+    class ActionFactory(factory.Factory):
+        class Meta:
+            model = models.Action
+
+        description = factory.LazyAttribute(lambda t: random_string(length=100))
+        new_price = factory.LazyAttribute(lambda t: random_int(1, 10000))
+        item_id = factory.LazyAttribute(lambda t: random_item_for_action())
+        shop_id = factory.LazyAttribute(lambda t: random_int(1, count_of_users))
+        period_from = '2015-10-22'
+        period_to = '2015-10-30'
+
+    actions = ActionFactory.create_batch(count_of_actions)
+    print('Wait.Actions created...')
+    [action.save() for action in actions]
 
     def handle(self, *args, **options):
         pass
