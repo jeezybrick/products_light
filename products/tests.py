@@ -43,35 +43,46 @@ class SimpleTest(TestCase):
         self.item.delete()
 
     def test_home(self):
-        response = self.client.get(reverse('home'))
+        url = reverse('home')
+
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_login_get(self):
-        response = self.client.get(reverse('login'))
+        url = reverse('login')
+
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_login_post(self):
-        response = self.client.post(
-            reverse('login'), {'username': 'john', 'password': 'smith'})
+        url = reverse('login')
+        post = {'username': 'john', 'password': 'smith'}
+
+        response = self.client.post(url, post)
         self.assertEqual(response.status_code, 200)
 
     def test_register_get(self):
-        response = self.client.get(reverse('register'))
+        url = reverse('register')
+
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_register_post(self):
-        response = self.client.post(
-            reverse('register'), {'username': 'john', 'password': 'smith'})
+        url = reverse('register')
+        post = {'username': 'john', 'password': 'smith'}
+
+        response = self.client.post(url, post)
         self.assertEqual(response.status_code, 200)
 
     """ Detail of item """
     def test_item_detail(self):
-        response = self.client.get(
-            reverse('products_show', args=(self.item.id, )))
+        url = reverse('products_show', args=(self.item.id, ))
+        url_with_fake_id = reverse('products_show', args=(self.fake_item_id, ))
+
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(
-            reverse('products_show', args=(self.fake_item_id, )))
+        response = self.client.get(url_with_fake_id)
         self.assertEqual(response.status_code, 404)
 
     """
@@ -79,22 +90,22 @@ class SimpleTest(TestCase):
     Item can add only shop-users
     """
     def test_item_add(self):
+        url = reverse('products_add')
+        post = {'username': 'john', 'password': 'smith'}
 
-        response = self.client.get(reverse('products_add'))
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
 
         self.client.login(username='temporary', password='temporary')
-        response = self.client.get(reverse('products_add'))
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 403)
 
-        response = self.client.post(reverse('products_add'), {
-                                    'username': 'john', 'password': 'smith'})
+        response = self.client.post(url, post)
         self.assertEqual(response.status_code, 403)
 
         self.client.login(username='temporary3', password='temporary')
-        response = self.client.get(reverse('products_add'))
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(reverse('products_add'), {
-                                    'username': 'john', 'password': 'smith'})
+        response = self.client.post(url, post)
         self.assertEqual(response.status_code, 200)
