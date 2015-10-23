@@ -17,7 +17,7 @@ angular
     .module('myApp')
     .controller('itemCtrl', itemCtrl);
 
-function itemCtrl($scope, $http, $timeout, Item, Category, Cart, Flash) {
+function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
 
     // sort init
     $scope.sortField = '-pk';
@@ -39,6 +39,9 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart, Flash) {
     $scope.minQuantityOfItem = 10;
     $scope.zeroQuantityOfItem = 0;
 
+    //messages
+    $scope.addItemToCartMessageSuccess = 'Item added to cart';
+    $scope.deleteItemFromCartMessageSuccess = 'Item deleted from cart';
 
     /**
      * Get list of items and list of categories
@@ -144,12 +147,7 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart, Flash) {
 
             $scope.items = Item.query();
             $scope.itemInCartSuccess = true;
-
-            $scope.time = $timeout(function () {
-
-                $scope.itemInCartSuccess = false;
-
-            }, 2000);
+            Flash.create('success', $scope.addItemToCartMessageSuccess, 'flash-message-item-list');
 
 
         }, function (error) {
@@ -170,6 +168,7 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart, Flash) {
         Cart.delete({id: itemId}, function () {
 
             $scope.items = Item.query();
+            Flash.create('info', $scope.deleteItemFromCartMessageSuccess, 'flash-message-item-list');
 
         });
     };
@@ -185,7 +184,7 @@ angular
     .module('myApp')
     .controller('ItemDetailCtrl', ItemDetailCtrl);
 
-function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, AuthUser, Flash) {
+function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, Flash) {
 
     // Init
     $scope.id = $routeParams.itemId; // item id
@@ -204,7 +203,7 @@ function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, A
     $scope.max = 10;
     $scope.isReadonly = false;
     $scope.itemDetailLoadError = false;
-    $scope.successMessageEditItem = 'Item edit successfuly!<strong>Click</strong> to item page.';
+    $scope.successMessageEditItem = 'Item edit successfuly!<strong> Click</strong> to item page.';
 
     /**
      * Get item detail
