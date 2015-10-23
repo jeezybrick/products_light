@@ -431,3 +431,15 @@
 .modal-backdrop.am-fade.ng-leave.ng-leave-active {
     opacity: 0;
 }
+
+.item-detail-categories-list li{
+    padding: 10px 20px;
+    display: inline-block;
+    background: rgb(224,224,224);
+    color: rgb(66,66,66);
+    border-radius: 16px;
+    margin-right: 10px;
+}
+.item-detail-categories-list > ul{
+    padding: 0;
+}

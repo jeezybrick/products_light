@@ -17,7 +17,7 @@ angular
     .module('myApp')
     .controller('itemCtrl', itemCtrl);
 
-function itemCtrl($scope, $http, Item, Category, Cart, Flash, $aside) {
+function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
 
     // sort init
     $scope.sortField = '-pk';
@@ -272,7 +272,7 @@ function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, F
              $scope.itemDetail = response;
 
         }, function (error) {
-            $scope.errorEditItem = error;
+            $scope.errorEditItem = error.data.detail;
 
             Flash.create('danger', $scope.errorEditItem, 'flash-message-item-list');
         });

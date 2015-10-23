@@ -9,13 +9,29 @@
     <meta name="description" content="">
     <meta name="author" content="Stacenko Andrey">
     <title>{% block title %}{% endblock %} &ndash; Items</title>
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <!-- Font awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <!-- Angular motion for animations -->
+    <link rel="stylesheet" href="//rawgithub.com/mgcrea/angular-motion/master/dist/angular-motion.min.css">
+
+    <!-- Custom css -->
     <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'products/css/media.css' %}">
+
+    <!-- animate css -->
     <link rel="stylesheet" href="{% static 'products/css/animate.css' %}">
+
+    <!-- angular flash for flash messages -->
     <link rel="stylesheet" href="{% static 'products/css/angular-flash.css' %}">
+
+    <!-- Bootstrap additions for sidebars etc. -->
+    <link rel="stylesheet" href="{% static 'products/css/bootstrap-additions.min.css' %}">
 
     <style>body {
     }
@@ -32,11 +48,12 @@
 </head>
 
 <body>
-<div class="container" ng-controller="HeaderController">
+<div class="container-fluid" ng-controller="HeaderController">
+
     <!-- Navbar -->
    {% include 'products/partials/nav.html' %}
 </div>
-<div class="container main-content">
+<div class="container-fluid main-content">
     {% block content %}
         {# Контент #}
     {% endblock %}
@@ -68,8 +85,11 @@
 <script src="{% static 'products/js/app.js' %}"></script>
 <script src="{% static 'products/js/services.js' %}"></script>
 <script src="{% static 'products/js/controllers.js' %}"></script>
-<script src="{% static 'products/js/ui-bootstrap.min.js' %}"></script>
 <script src="{% static 'products/js/common.js' %}"></script>
+
+<!-- ui bootstrap -->
+<script src="{% static 'products/js/ui-bootstrap.min.js' %}"></script>
+
 
 
 <script>
