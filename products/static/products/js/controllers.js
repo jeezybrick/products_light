@@ -17,7 +17,7 @@ angular
     .module('myApp')
     .controller('itemCtrl', itemCtrl);
 
-function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
+function itemCtrl($scope, $http, Item, Category, Cart, Flash, $aside) {
 
     // sort init
     $scope.sortField = '-pk';
@@ -176,6 +176,10 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
     $scope.isQuantityOfItemIsZero = function(item){
 
         return angular.equals($scope.zeroQuantityOfItem, item.quantity);
+    };
+
+    $scope.aside = {
+        "title": "Categories",
     };
 
 }

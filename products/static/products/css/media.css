@@ -6,9 +6,6 @@
         letter-spacing: 0.01em;
     }
 
-    .main-list-block {
-        border-left: dotted 2px darkgray;
-    }
 }
 
 /* Landscape tablets and medium desktops */
@@ -16,10 +13,6 @@
 
     .main-greet {
         font-size: 40px;
-    }
-
-    .main-list-block {
-        border-left: dotted 2px darkgray;
     }
 
 }

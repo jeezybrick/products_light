@@ -44,41 +44,16 @@
         <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="itemLoad">
             <div class="row">
 
-                <!-- categories accordion block -->
-                <div class="category-filter col-lg-3 col-md-4 col-sm-12 col-xs-12 text-center"
-                     ng-if="items.results.length"
-                     ng-hide="showDetailOfItem">
-
-                    <!-- Accordion for sort by category -->
-                    <accordion close-others="oneAtATime">
-                        <accordion-group heading="Category filter" is-open="false"
-                                         is-disabled="status.isFirstDisabled" popover="Click to sort by category"
-                                         popover-trigger="mouseenter">
-                            <ul class="category-filter-list text-left" ng-if="categories.length">
-
-                                <li id="parent_category" class="all-categories-list">
-                                    <a href="javascript:;" ng-click="showAllItems()">{% trans "All categories" %}</a>
-                                </li>
-
-                                <li ng-repeat="category in categories track by $index | limitTo:5">
-                                    <a href="javascript:;" ng-click="sortByCategory(category.name)">[[ category.name]]
-                                        <span class="badge">[[ category.count ]]</span>
-                                    </a>
-
-                                    <ul>
-                                        <li ng-repeat="sub in category.category_set track by $index| limitTo:5">
-                                            <a href="javascript:;" ng-click="sortByCategory(sub)">[[ sub ]]</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <h4 ng-if="!categories.length">{% trans "Categories not added yet:(" %}</h4>
-                        </accordion-group>
-                    </accordion>
+                <!-- Button to trigger a default aside with a scope as an object {title:'', content:'', etc.} -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <button type="button" class="btn btn-md btn-primary" data-placement="left"
+                            data-animation="am-slide-left"
+                            bs-aside="aside" data-template="/static/products/partials/category-list.html">Click to view categories
+                    </button>
                 </div>
 
                 <!-- Item list block -->
-                <div class="main-list-block col-lg-9 col-md-8 col-sm-12 col-xs-12" ng-if="items.results.length">
+                <div class="main-list-block col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="items.results.length">
 
                     <!-- Sort by price -->
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
@@ -102,7 +77,7 @@
                     <!-- ng-repeat -->
                     <div class="main-list-wrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="row">
-                            <div class="main-list col-lg-4 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
+                            <div class="main-list col-lg-3 col-md-4 col-sm-4 col-xs-12" ng-hide="showDetailOfItem"
                                  ng-repeat="item in items.results | filter:search | orderBy:sortField:reverse"
                                  ng-class="{'zero-quantity-item' : isQuantityOfItemIsZero(item)}">
 
