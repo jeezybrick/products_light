@@ -54,7 +54,7 @@ class Action(models.Model):
     item = models.OneToOneField(Item)
     shop = models.ForeignKey(settings.AUTH_USER_MODEL)
     description = models.CharField(max_length=1000)
-    new_price = models.PositiveIntegerField(blank=True)
+    new_price = models.PositiveIntegerField()
     period_from = models.DateField()
     period_to = models.DateField()
 

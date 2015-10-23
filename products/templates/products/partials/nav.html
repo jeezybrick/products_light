@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load activelink %}
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" bs-navbar>
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed pull-left" data-toggle="collapse"
@@ -43,8 +43,7 @@
                     <a href="{% url 'shop_list' %}">{% trans "Shops" %}</a>
                 </li>
 
-                <li class="{% ifactive "products_index_ang" %} active {% endifactive %}"
-                        ng-class="{ active: isActive('/')}">
+                <li data-match-route="/">
                     <a href="{% url 'products_index_ang' %}#/">{% trans "Items-Angular" %}</a>
                 </li>
 

@@ -17,7 +17,7 @@ angular
     .module('myApp')
     .controller('itemCtrl', itemCtrl);
 
-function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
+function itemCtrl($scope, $http, Item, Category, Cart, Flash, $aside) {
 
     // sort init
     $scope.sortField = '-pk';

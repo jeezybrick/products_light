@@ -9,7 +9,8 @@ angular
         'ngAnimate',
         'ngResource',
         'myApp.services',
-        'flash'
+        'flash',
+        'mgcrea.ngStrap'
     ])
     .config(function ($httpProvider, $resourceProvider, $interpolateProvider, $routeProvider) {
 
