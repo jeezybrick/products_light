@@ -44,7 +44,7 @@ angular
                 controller: 'ActionCtrl'
             }).
             otherwise({
-                redirectTo: '/products'
+                redirectTo: '/'
             });
 
     });

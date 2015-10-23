@@ -56,6 +56,11 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
 
+    def should_update(self, instance, **kwargs):
+        if not instance.price:
+            self.remove_object(instance, **kwargs)
+        return instance.price
+
 
 class ShopIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)

@@ -6,7 +6,7 @@
 $(document).ready(function () {
 
     /* Slide up success message in 2 sec */
-    $('.messenger').delay(2000).slideUp();
+    $('.messenger').delay(2200).slideUp();
 
 
 });

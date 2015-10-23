@@ -319,7 +319,7 @@ function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, A
 
             $scope.editItemSuccess = false;
 
-        }, 4000);
+        }, 3500);
 
     };
 
