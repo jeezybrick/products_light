@@ -392,3 +392,24 @@
 .navbar-fixed-bottom {
     z-index: 999999999999;
 }
+
+.flash-message-edit-item{
+    margin: 50px 0 0 0;
+    position: fixed;
+    top: 0;
+    padding: 0;
+    background-color: #555555;
+    color: #fff;
+}
+.flash-message-edit-item > a {
+    color: skyblue;
+    font-weight: 700;
+}
+
+.flash-message-item-list{
+    margin: 50px 0 0 0;
+    position: fixed;
+    top: 0;
+    left: 40%;
+    padding: 0;
+}

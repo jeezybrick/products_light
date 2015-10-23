@@ -17,7 +17,7 @@ angular
     .module('myApp')
     .controller('itemCtrl', itemCtrl);
 
-function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
+function itemCtrl($scope, $http, $timeout, Item, Category, Cart, Flash) {
 
     // sort init
     $scope.sortField = '-pk';
@@ -34,8 +34,11 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
     $scope.showDetailOfItem = false;
     $scope.isCollapsed = true;
     $scope.itemLoad = false;
+
+    //quantity of item
     $scope.minQuantityOfItem = 10;
     $scope.zeroQuantityOfItem = 0;
+
 
     /**
      * Get list of items and list of categories
@@ -150,14 +153,10 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
 
 
         }, function (error) {
+
             $scope.itemInCartError = error.data.detail;
-            $timeout.cancel($scope.time);
+            Flash.create('warning', $scope.itemInCartError, 'flash-message-item-list');
 
-            $scope.time = $timeout(function () {
-
-                $scope.itemInCartError = false;
-
-            }, 3000);
         });
 
     };
@@ -186,7 +185,7 @@ angular
     .module('myApp')
     .controller('ItemDetailCtrl', ItemDetailCtrl);
 
-function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, AuthUser) {
+function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, AuthUser, Flash) {
 
     // Init
     $scope.id = $routeParams.itemId; // item id
@@ -204,8 +203,8 @@ function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, A
     //rating
     $scope.max = 10;
     $scope.isReadonly = false;
-
     $scope.itemDetailLoadError = false;
+    $scope.successMessageEditItem = 'Item edit successfuly!<strong>Click</strong> to item page.';
 
     /**
      * Get item detail
@@ -257,15 +256,9 @@ function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, A
             $scope.dynamic = 100;
 
         }, function (error) {
-            $scope.rateError = error;
+            $scope.rateError = error.data.detail;
 
-            $timeout.cancel($scope.time);
-
-            $scope.time = $timeout(function () {
-
-                $scope.rateError = false;
-
-            }, 3000);
+            Flash.create('warning', $scope.rateError, 'flash-message-item-list');
         });
 
     };
@@ -281,6 +274,8 @@ function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, A
 
         }, function (error) {
             $scope.errorEditItem = error;
+
+            Flash.create('danger', $scope.errorEditItem, 'flash-message-item-list');
         });
 
     };
@@ -312,14 +307,9 @@ function ItemDetailCtrl($scope, $routeParams, $location, $timeout, Item, Rate, A
      */
     $scope.successAction = function () {
 
+        Flash.create('flash-message-edit-item', $scope.successMessageEditItem, 'flash-message-edit-item');
+
         $scope.editItemSuccess = true;
-        $timeout.cancel($scope.time);
-
-        $scope.time = $timeout(function () {
-
-            $scope.editItemSuccess = false;
-
-        }, 3500);
 
     };
 
@@ -338,7 +328,7 @@ angular
     .module('myApp')
     .controller('CategoryListCtrl', CategoryListCtrl);
 
-function CategoryListCtrl($scope, Category) {
+function CategoryListCtrl($scope, Category, Flash) {
 
 
     /**
@@ -350,6 +340,7 @@ function CategoryListCtrl($scope, Category) {
 
     }, function (error) {
         $scope.categoryLoadError = error.data.detail;
+        Flash.create('warning', $scope.categoryLoadError, 'flash-message-item-list');
     });
 
 }
@@ -464,10 +455,13 @@ angular
     .module('myApp')
     .controller('ActionCtrl', ActionCtrl);
 
-function ActionCtrl($scope, $routeParams, $location, Action, AuthUser) {
+function ActionCtrl($scope, $routeParams, $location, Action, AuthUser, Flash) {
 
     $scope.itemId = $routeParams.itemId;
     $scope.AuthUserUsername = AuthUser.username; // Auth user id
+
+    // messages
+    $scope.addActionSuccessMesage = 'Action modify!';
 
     /**
      * Get action for this item
@@ -520,6 +514,7 @@ function ActionCtrl($scope, $routeParams, $location, Action, AuthUser) {
 
         $scope.actionObject.$save(function () {
 
+            Flash.create('success', $scope.addActionSuccessMesage, 'flash-message-item-list');
             $location.path('products/'+ $scope.itemId);
 
         }, function (error) {

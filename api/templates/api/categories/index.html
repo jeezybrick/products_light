@@ -9,12 +9,8 @@
 
     <div ng-controller="CategoryListCtrl as category">
 
-        <!-- Error messages -->
-        <div class="item-in-cart row" ng-if="categoryLoadError">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center">
-                <span>Error: [[categoryLoadError ]]</span>
-            </div>
-        </div>
+        <!-- Flash messages -->
+        <div flash-message="4000" ></div>
 
         <!-- header -->
         <div class="row">

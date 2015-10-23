@@ -3,15 +3,6 @@
 
 <div ng-cloak>
 
-        <!-- Error messages -->
-            <div class="item-in-cart row" ng-if="!itemLoad || itemInCartSuccess || itemInCartError">
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center">
-                    <span ng-if="itemInCartSuccess">{% trans "Item add to cart!" %}</span>
-                    <span ng-if="!itemLoad">{% trans "Loading..." %}</span>
-                    <span ng-if="itemInCartError">[[ itemInCartError ]]</span>
-                </div>
-            </div>
-
         <!-- header -->
         <div class="row" ng-hide="showDetailOfItem">
             <div class="item-list-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -268,6 +259,10 @@
                         <a href="javascript:;" ng-click="showAllItems()">{% trans "Try show all items." %}</a>
                     </h2>
                 </div>
+
+                <!-- Flash messages -->
+                <div flash-message="4000" ></div>
+
             </div>
         </div>
     </div>

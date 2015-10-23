@@ -8,7 +8,8 @@ angular
         'ui.bootstrap',
         'ngAnimate',
         'ngResource',
-        'myApp.services'
+        'myApp.services',
+        'flash'
     ])
     .config(function ($httpProvider, $resourceProvider, $interpolateProvider, $routeProvider) {
 
