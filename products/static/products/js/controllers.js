@@ -17,7 +17,7 @@ angular
     .module('myApp')
     .controller('itemCtrl', itemCtrl);
 
-function itemCtrl($scope, $http, Item, Category, Cart, Flash, $aside) {
+function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
 
     // sort init
     $scope.sortField = '-pk';
@@ -188,7 +188,7 @@ angular
     .module('myApp')
     .controller('ItemDetailCtrl', ItemDetailCtrl);
 
-function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, Flash) {
+function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, Comment, Flash, $anchorScroll) {
 
     // Init
     $scope.id = $routeParams.itemId; // item id
@@ -208,6 +208,15 @@ function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, F
     $scope.isReadonly = false;
     $scope.itemDetailLoadError = false;
     $scope.successMessageEditItem = 'Item edit successfuly!<strong> Click</strong> to item page.';
+
+
+    //add pre-comment model
+    $scope.comment = {
+        username:'Ivan',
+        message:'Hello world!',
+        item: $routeParams.itemId
+    };
+
 
     /**
      * Get item detail
@@ -324,6 +333,37 @@ function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, F
         return $scope.AuthUserUsername === $scope.itemDetail.user;
 
     };
+
+
+    /**
+     * Add comment
+     */
+    $scope.addComment = function () {
+
+        $scope.commentObject = new Comment($scope.comment);
+
+        $scope.commentObject.$save(function (data) {
+
+            $scope.hideCommentForm = true;
+            $scope.appendComment = data;
+            $scope.errorComment = false;
+
+        }, function (error) {
+
+            $scope.errorComment = error;
+        });
+
+    };
+
+    /**
+     * Scroll to add comments form
+     */
+    $scope.scrollTo = function(id) {
+      $location.hash(id);
+      $anchorScroll();
+   };
+
+
 
 }
 
