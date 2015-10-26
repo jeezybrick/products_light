@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     # django admin-bootstrap
     'django_admin_bootstrapped',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,6 +60,8 @@ INSTALLED_APPS = (
     'elasticsearch',
     'activelink',
     'crispy_forms',
+    'social.apps.django_app.default',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -154,3 +157,29 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Default auth model
 AUTH_USER_MODEL = 'my_auth.MyUser'
+
+SOCIAL_AUTH_USER_MODEL = 'my_auth.OAuthUser'
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.facebook.FacebookOAuth2',
+    'social.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_GITHUB_KEY = '2abee56deea44960508b'
+SOCIAL_AUTH_GITHUB_SECRET = '4be14a5e6acef884cae00b76defa6cea86854a4c'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1627150820892036'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'e2b17ae2c8a8eb78c70c05d16136cedd'
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
+)
+
+SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'email']
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+LOGIN_URL = '/'
+
