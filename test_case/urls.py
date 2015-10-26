@@ -30,4 +30,9 @@ urlpatterns = [
     url(r'^', include('cart.urls')),
     url(r'^', include('my_auth.urls')),
     url(r'^', include('api.urls')),
+
+    # Social
+    url('', include('social.apps.django_app.urls', namespace='social'))
+
+
 ]
