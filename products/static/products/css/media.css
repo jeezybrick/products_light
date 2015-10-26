@@ -3,11 +3,9 @@
 
     .main-greet {
         font-size: 46px;
+        letter-spacing: 0.01em;
     }
 
-    .main-list-block {
-        border-left: dotted 2px darkgray;
-    }
 }
 
 /* Landscape tablets and medium desktops */
@@ -15,10 +13,6 @@
 
     .main-greet {
         font-size: 40px;
-    }
-
-    .main-list-block {
-        border-left: dotted 2px darkgray;
     }
 
 }
@@ -35,6 +29,10 @@
 /* Landscape phones and portrait tablets */
 @media (max-width: 767px) {
 
+    .main-greet {
+        letter-spacing: 0.05em;
+    }
+
 }
 
 /* Portrait phones and smaller */
@@ -42,6 +40,10 @@
 
     #editItemSuccessMessage {
         margin: 55px 0 0 0;
+    }
+
+    .main-greet {
+        letter-spacing: 0.02em;
     }
 
 }

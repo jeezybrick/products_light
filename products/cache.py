@@ -1,7 +1,7 @@
 
 from django.core.exceptions import ImproperlyConfigured
 from django.shortcuts import get_object_or_404
-from products.models import Item, Category, Rate, Comment, MyUser
+from products.models import Item, Rate, Comment
 from cacheback.base import Job
 
 
@@ -33,8 +33,6 @@ class ProductCache(BaseModelJob):
 
 class ProductDetailCache(BaseModelJob):
 
-    lifetime = 1
-
     def fetch(self, **kwargs):
         if not self.model:
             raise ImproperlyConfigured(
@@ -49,31 +47,9 @@ class ProductDetailCache(BaseModelJob):
     model = Item
 
 
-class CategoryCache(BaseModelJob):
-    model = Category
-
-
 class CommentCache(BaseModelJob):
     model = Comment
 
 
 class RateCache(BaseModelJob):
     model = Rate
-
-
-class ShopDetailCache(BaseModelJob):
-
-    lifetime = 1
-
-    def fetch(self, **kwargs):
-        if not self.model:
-            raise ImproperlyConfigured(
-                "%(cls)s is missing a model. Define %(cls)s.model %(cls)s.fetch()." % {
-                    'cls': self.__class__.__name__
-                }
-            )
-
-        obj = get_object_or_404(self.model, **kwargs)
-        return obj
-
-    model = MyUser

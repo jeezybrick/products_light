@@ -1,36 +1,38 @@
+{% load i18n %}
+
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Order</h4>
+                <h4 class="modal-title" id="myModalLabel">{% trans "Order" %}</h4>
             </div>
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label for="name" class="control-label">Your name: *</label>
+                        <label for="name" class="control-label">{% trans "Your name" %}: *</label>
                         <input type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="city-text" class="control-label">City: *</label>
+                        <label for="city-text" class="control-label">{% trans "City" %}: *</label>
                         <input type="text" class="form-control">
                     </div>
 
                     <div class="form-group">
-                        <label for="phone-text" class="control-label">Phone: *</label>
+                        <label for="phone-text" class="control-label">{% trans "Phone" %}: *</label>
                         <input type="text" class="form-control">
                     </div>
 
                     <div class="form-group">
-                        <label for="notes-text" class="control-label">Special notes(optional):</label>
+                        <label for="notes-text" class="control-label">{% trans "Special notes(optional)" %}:</label>
                         <textarea class="form-control"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="makeOrder()">Make order</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="cart.makeOrder()">{% trans "Make order" %}</button>
             </div>
         </div>
     </div>

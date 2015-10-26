@@ -1,11 +1,14 @@
 
 from django.db.models import Avg
 from haystack import indexes
-from products.models import Item, Comment, Rate, MyUser
+from products.models import Item, Comment, Rate
+from my_auth.models import MyUser
+from products.utils import get_min_quantity
 
 
 class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
+    id = indexes.CharField(model_attr='id')
     author = indexes.CharField(model_attr='user')
     name = indexes.CharField(model_attr='name')
     price = indexes.IntegerField(model_attr='price')
@@ -37,8 +40,8 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
     def prepare_quantity_message(self, obj):
         if obj.quantity is not None:
             if obj.quantity == 0:
-                return 'The item is out of stock :('
-            if obj.quantity < 10:
+                return 'The item is out of stock :('  # No i18n support
+            if obj.quantity < get_min_quantity():
                 return 'This item end soon! Hurry up!'
         return None
 
@@ -47,10 +50,16 @@ class ItemIndex(indexes.SearchIndex, indexes.Indexable):
             obj.action.new_price
         except:
             return None
+
         return obj.action.new_price
 
     def index_queryset(self, using=None):
         return self.get_model().objects.all()
+
+    def should_update(self, instance, **kwargs):
+        if not instance.price:
+            self.remove_object(instance, **kwargs)
+        return instance.price
 
 
 class ShopIndex(indexes.SearchIndex, indexes.Indexable):

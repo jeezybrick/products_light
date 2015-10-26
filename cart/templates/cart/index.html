@@ -1,0 +1,106 @@
+{% extends 'layout.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% block title %}
+    {% trans "Cart" %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
+                    <h1 id="test">{% trans "Cart" %}</h1>
+                </div>
+                <div class="button-add-something col-lg-6 col-md-3 col-sm-3 col-xs-12">
+                    <a href="{% url 'products_index_ang' %}"
+                       class="btn btn-warning pull-right">{% trans "Add item to cart" %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ol class="breadcrumb">
+        <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+        <li class="active">{% trans "Cart" %}</li>
+    </ol>
+    <hr>
+
+    <div class="row" ng-controller="CartCtrl as cart">
+        {%  if cart %}
+            <div class="cart-choose-button col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="javascript:void(0);" ng-click="cart.toggleAll()">
+                        <i ng-class="{'fa fa-square' : !allItemActive, 'fa fa-check-square-o' : allItemActive}"></i> {% trans "Choose" %}
+                    </a>
+                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+                        <span class="fa fa-caret-down"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:void(0);" ng-click="cart.chooseAll()"> {% trans "All" %}</a></li>
+                        <li class="disabled"><a href="javascript:void(0);"> {% trans "First" %}</a></li>
+                        <li class="divider"></li>
+                        <li><a href="javascript:void(0);" ng-click="cart.chooseNothing()">
+                            <i class="i"></i> {% trans "Nothing" %}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="cart-choose-button col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">
+                        <i class="fa fa-plus"></i> {% trans "Buy choosed" %}
+                    </button>
+            </div>
+        {% endif %}
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            {% for cart in cart %}
+                <div id="item_{{ cart.item.id }}" ng-class="{'panel-primary-active' : allItemActive}"
+                     class="cart-panel panel panel-primary">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                            <img class="img-responsive img-rounded" src="{{ cart.item.image_url }}" alt="Item image">
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+
+                            <div class="panel-body">
+                                {{ cart.item.name }}
+                                <a href="javascript:void(0);" class="trash-icon pull-right"
+                                   ng-click="cart.deleteItemInCart({{ cart.item.id }})">
+                                    <i class="fa fa-trash-o fa-3x"></i>
+                                </a>
+                                <a href="javascript:void(0);" class="hand-icon pull-right"
+                                   ng-click="cart.chooseItem({{ cart.item.id }})">
+                                    <i class="fa fa-hand-pointer-o fa-3x"></i>
+                                </a>
+                            </div>
+                            <div class="panel-footer">
+                                <pre>{{ cart.item.description }}</pre>
+                                <button class="btn btn-success" type="button" data-toggle="modal"
+                                        data-target="#myModal">
+                                    <i class="fa fa-plus"></i> {% trans "Buy this item" %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            {% empty %}
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {% trans "You have not added items in cart" %}
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- Modal for buy item -->
+        {% include 'products/modals/buy_item.html' %}
+
+    </div>
+
+
+{% endblock %}

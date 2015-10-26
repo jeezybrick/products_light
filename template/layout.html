@@ -1,0 +1,121 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Stacenko Andrey">
+    <title>{% block title %}{% endblock %} &ndash; Items</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <!-- Angular motion for animations -->
+    <link rel="stylesheet" href="//rawgithub.com/mgcrea/angular-motion/master/dist/angular-motion.min.css">
+
+    <!-- Angular material -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/0.11.4/angular-material.min.css">
+
+    <!-- Custom css -->
+    <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'products/css/media.css' %}">
+
+    <!-- animate css -->
+    <link rel="stylesheet" href="{% static 'products/css/animate.css' %}">
+
+    <!-- angular flash for flash messages -->
+    <link rel="stylesheet" href="{% static 'products/css/angular-flash.css' %}">
+
+    <!-- Bootstrap additions for sidebars etc. -->
+    <link rel="stylesheet" href="{% static 'products/css/bootstrap-additions.min.css' %}">
+
+    <style>body {
+    }
+
+    .starter-template {
+        padding: 40px 15px;
+        text-align: center;
+    }</style>
+
+    <!--[if IE]>
+        <script src="https://cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div ng-controller="HeaderController">
+
+    <!-- Navbar -->
+   {% include 'products/partials/nav.html' %}
+</div>
+<div class="container-fluid main-content">
+    {% block content %}
+        {# Контент #}
+    {% endblock %}
+</div>
+<!-- footer -->
+{% include 'products/partials/footer.html' %}
+
+
+<!-- Jquery and bootstrap -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<!-- Angular -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular-resource.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular-route.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-animate.js"></script>
+<script src="{% static 'products/js/angular-flash.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.3/angular-strap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-strap/2.3.3/angular-strap.tpl.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.6/angular-aria.min.js"></script>
+
+<!-- Angular Material Javascript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/0.11.4/angular-material.min.js"></script>
+
+<!-- Bootbox for modals -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
+<!-- Moment.js -->
+<script src="{% static 'products/js/moment.js' %}"></script>
+
+<!-- Custom js -->
+<script src="{% static 'products/js/app.js' %}"></script>
+<script src="{% static 'products/js/services.js' %}"></script>
+<script src="{% static 'products/js/controllers.js' %}"></script>
+<script src="{% static 'products/js/common.js' %}"></script>
+
+<!-- ui bootstrap -->
+<script src="{% static 'products/js/ui-bootstrap.min.js' %}"></script>
+
+<script>
+  // This allows you to access the current user id in your angular controllers.
+  angular
+      .module('myApp.services')
+      .factory('AuthUser', function() {
+        return {
+          id: "{{ user.id|default:''}}",
+          username: "{{ user.username|default:''}}"
+        }
+      });
+</script>
+
+<!-- Add color and pulse class if current user have items in cart -->
+{% if request.session.in_cart %}
+    <script>
+        $('#cart-on-nav').find('> a').css('color', '#7DDE7D').addClass('animated infinite pulse');
+        $('#cart-on-nav-xs').find('> a').css('color', '#7DDE7D').addClass('animated infinite pulse');
+    </script>
+{% endif %}
+
+</body>
+</html>

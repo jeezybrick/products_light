@@ -1,22 +1,22 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import View, ListView
+from django.views.generic import View
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
-from django.template.response import TemplateResponse
-from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.core.urlresolvers import reverse
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
 from products import cache
-from products.service import CartService, RateService
-from .models import Rate, Category, Item, MyUser
+from products.service import RateService
+from .models import Rate, Item
 from products import forms
 from products import models
 from products import utils
+from products.validators import if_user_not_a_shop
+from my_auth.models import MyUser
+from my_auth.cache import ShopDetailCache
 from haystack.query import SearchQuerySet
 
 
@@ -28,32 +28,6 @@ class LoginRequiredMixin(object):
         return login_required(view, login_url='/auth/login/')
 
 
-# For login
-class LoginView(View):
-    form_class = forms.MyLoginForm
-    template_name = 'products/auth/login.html'
-    success_url = '/'
-
-    def get(self, request):
-        form = self.form_class(request)
-        context = {
-            'form': form,
-            'title': _('Sign In'),
-        }
-        return TemplateResponse(request, self.template_name, context)
-
-    def post(self, request):
-        form = self.form_class(request, data=request.POST)
-        context = {
-            'form': form,
-            'title': _('Sign In'),
-        }
-        if form.is_valid():
-            auth_login(request, form.get_user())
-            return HttpResponseRedirect(self.success_url)
-        return TemplateResponse(request, self.template_name, context)
-
-
 # For list of items
 class ItemListView(View):
     template_name = 'products/products/index.html'
@@ -62,25 +36,25 @@ class ItemListView(View):
         # Sort by category
         category = request.GET.get('category', False)
         if not category:
-            products = SearchQuerySet().models(Item).all().order_by('-id')
+            products_list = SearchQuerySet().models(Item).all().order_by('-id')
         else:
-            products = SearchQuerySet().models(Item).filter(
+            products_list = SearchQuerySet().models(Item).filter(
                 categories__name=category).order_by('-id')
         # Facet
         facets = SearchQuerySet().models(Item).facet('categories').facet_counts()
         # Pagination
-        paginator = Paginator(products, 6)
+        paginator = Paginator(products_list, 6)
         page = request.GET.get('page')
 
         try:
-            products = paginator.page(page)
+            products_list = paginator.page(page)
         except PageNotAnInteger:
-            products = paginator.page(1)
+            products_list = paginator.page(1)
         except EmptyPage:
-            products = paginator.page(paginator.num_pages)
+            products_list = paginator.page(paginator.num_pages)
 
-        return render(request, self.template_name, {'products': products,
-                                                    'facets': facets})
+        return render(request, self.template_name, {'products_list': products_list,
+                                                    'facets': facets, })
 
 
 # Item detail
@@ -93,15 +67,16 @@ class ItemDetailView(View):
         item = cache.ProductDetailCache().get(id=kwargs["pk"])
         user_rate = RateService().get_rate(request.user, item.id)
 
-        message = utils.message_of_quantity_items(item)
+        # quantity-count message
+        message_of_quantity_count = utils.message_of_quantity_items(item)
         item = utils.price_with_percent(item)
 
         context = {
             'comment_form': forms.AddComment,
             'rating_form': forms.AddRate(instance=user_rate),
-            'average_rating': RateService().get_avarage_rate(item.id),
+            'average_rating': models.Rate.objects.average(item_id=item.id),
             'item': item,
-            'message': message,
+            'message': message_of_quantity_count,
         }
         return render(request, self.template_name, context)
 
@@ -110,78 +85,64 @@ class ItemDetailView(View):
 class ItemAddView(LoginRequiredMixin, CreateView):
     model = Item
     template_name = 'products/products/modify.html'
-    success_url = '/products_ang/'
     form_class = forms.ModifyItem
+    success_msg = _('Item added!')
 
     def get_context_data(self, **kwargs):
         context = super(ItemAddView, self).get_context_data(**kwargs)
         context['foo'] = _('Add')
-        self.if_user_not_a_shop()
+        if_user_not_a_shop(self)  # Check if auth user is shop
         return context
 
     def form_valid(self, form):
         first = form.save(commit=False)
         first.user = self.request.user
         first.save()
-        messages.success(self.request, _('Item add!'))
+        messages.success(self.request, self.success_msg)
         return super(ItemAddView, self).form_valid(form)
 
-    def if_user_not_a_shop(self):
-        if not self.request.user.is_shop:
-            raise PermissionDenied
+    def get_success_url(self):
+        return reverse("products_index_ang")
 
 
-# Category list
-class CategoryListView(ListView):
-    template_name = 'products/categories/index.html'
-    context_object_name = 'categories'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return cache.CategoryCache().get(parent_category_id__isnull=True)
-
-
-# For add new category
-class CategoryAddView(CreateView):
-    model = Category
-    template_name = 'products/categories/modify.html'
-    success_url = '/categories_ang/'
-    form_class = forms.AddCategory
+# class for edit item
+class ItemEditView(LoginRequiredMixin, UpdateView):
+    model = Item
+    template_name = 'products/products/modify.html'
+    form_class = forms.ModifyItem
+    success_msg = _('Item edited!')
 
     def get_context_data(self, **kwargs):
-        context = super(CategoryAddView, self).get_context_data(**kwargs)
-        context['foo'] = _('Add')
+        context = super(ItemEditView, self).get_context_data(**kwargs)
+        context['foo'] = _('Edit')
+        if_user_not_a_shop(self)  # Check if auth user is shop
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, _('Category add!'))
-        return super(CategoryAddView, self).form_valid(form)
+        messages.success(self.request, self.success_msg)
+        return super(ItemEditView, self).form_valid(form)
 
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(form=form))
+    def get_success_url(self):
+        return reverse("products_list")
 
 
-# Registration view
-class RegisterView(View):
-    form_class = forms.MyRegForm
-    template_name = 'products/auth/register.html'
+# Delete item view
+class ItemDeleteView(DeleteView):
+    model = Item
+    success_msg = _('Item delete!')
 
-    def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+    def form_valid(self):
+        messages.success(self.request, self.success_msg)
 
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('register_success'))
-        return render(request, self.template_name, {'form': form})
+    def get_success_url(self):
+        return reverse("products_list")
 
 
 # For adding new comments to detail
 class AddCommentView(View):
     form_class = forms.AddComment
     template_name = 'products/products/show.html'
+    success_msg = _('Your comment added!')
 
     def post(self, request, **kwargs):
         form = self.form_class(request.POST)
@@ -189,7 +150,7 @@ class AddCommentView(View):
             first = form.save(commit=False)
             first.item = get_object_or_404(models.Item, id=kwargs["pk"])
             first.save()
-            messages.success(self.request, _('Your comment add!'))
+            messages.success(self.request, self.success_msg)
             return HttpResponseRedirect(reverse('products_show', args=(kwargs["pk"],)))
         return render(request, self.template_name, {'form': form})
 
@@ -198,6 +159,7 @@ class AddCommentView(View):
 class AddRateView(LoginRequiredMixin, View):
     form_class = forms.AddRate
     template_name = 'products/products/show.html'
+    success_msg = _('Thanks for your rating!')
 
     def post(self, request, **kwargs):
         item = get_object_or_404(Item, id=kwargs["pk"])
@@ -211,41 +173,9 @@ class AddRateView(LoginRequiredMixin, View):
             first.item = get_object_or_404(models.Item, id=kwargs["pk"])
             first.user = request.user
             first.save()
-            messages.success(self.request, _('Thanks for rate!'))
+            messages.success(self.request, self.success_msg)
             return HttpResponseRedirect(reverse('products_show', args=(kwargs["pk"],)))
         return render(request, self.template_name, {'form': form})
-
-
-# logout function
-def get_logout(request):
-    auth_logout(request)
-    return HttpResponseRedirect('/')
-
-
-# class for edit item
-class ItemEditView(LoginRequiredMixin, UpdateView):
-    model = Item
-    template_name = 'products/products/modify.html'
-    success_url = '/products/'
-    form_class = forms.ModifyItem
-
-    def get_context_data(self, **kwargs):
-        context = super(ItemEditView, self).get_context_data(**kwargs)
-        context['foo'] = _('Edit')
-        return context
-
-    def form_valid(self, form):
-        messages.success(self.request, _('Item edit!'))
-        return super(ItemEditView, self).form_valid(form)
-
-
-# Delete item view
-class ItemDeleteView(DeleteView):
-    model = Item
-    success_url = '/products/'
-
-    def form_valid(self):
-        messages.success(self.request, _('Item delete!'))
 
 
 # List of shops
@@ -255,6 +185,7 @@ class ShopListView(View):
     def get(self, request):
 
         shops = SearchQuerySet().models(MyUser).filter(is_shop=True).order_by('-id')
+
         # Pagination
         paginator = Paginator(shops, 6)
         page = request.GET.get('page')
@@ -274,34 +205,11 @@ class ShopDetailView(View):
     template_name = 'products/shops/show.html'
 
     def get(self, request, **kwargs):
-        shop = cache.ShopDetailCache().get(id=kwargs["pk"])
+        shop = ShopDetailCache().get(id=kwargs["pk"])
         context = {
             'shop': shop,
         }
         return render(request, self.template_name, context)
-
-
-# List of items in cart for
-class CartView(LoginRequiredMixin, View):
-    template_name = 'products/cart/index.html'
-    form_class = forms.AddItemToCart
-
-    def get(self, request):
-        cart = CartService().get_cart(request.user)
-        context = {
-            'cart': cart,
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            first = form.save(commit=False)
-            first.user = request.user
-            first.save()
-            messages.success(self.request, _('Item add to cart!'))
-            return HttpResponseRedirect(reverse('products_list'))
-        return render(request, self.template_name, {'form': form})
 
 
 """ View for add/edit action for item """
@@ -310,8 +218,8 @@ class CartView(LoginRequiredMixin, View):
 class ItemActionView(CreateView):
     model = models.Action
     template_name = 'products/actions/modify.html'
-    success_url = '/'
     form_class = forms.ModifyAction
+    success_msg = _('Action add!')
 
     def get_context_data(self, **kwargs):
         context = super(ItemActionView, self).get_context_data(**kwargs)
@@ -319,5 +227,8 @@ class ItemActionView(CreateView):
         return context
 
     def form_valid(self, form):
-        messages.success(self.request, _('Action add!'))
+        messages.success(self.request, self.success_msg)
         return super(ItemActionView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse("products_list_ang")

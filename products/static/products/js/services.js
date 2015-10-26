@@ -8,7 +8,7 @@ angular.module('myApp.services', ['ngResource'])
         return $resource('/api/items/:id/', {id: '@id'}, {
             'update': {method: 'PUT'},
             'query': {method: 'GET', isArray: false},
-            'get': {method: 'GET', cache: true}
+            'get': {method: 'GET', cache: false}
         });
     })
     .factory('User', function ($resource) {
@@ -36,9 +36,9 @@ angular.module('myApp.services', ['ngResource'])
             }
         )
     }).factory('Action', function ($resource) {
-        return $resource('/api/action/:id/', {id: '@id'}, {
+        return $resource('/api/action/:item_id/', {item_id: '@item_id'}, {
             'update': {method: 'PUT'},
-            'get': {method: 'GET', cache: true},
+            'get': {method: 'GET'},
             'query': {method: 'GET', isArray: false}
         });
     });

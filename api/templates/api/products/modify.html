@@ -1,6 +1,7 @@
 {% load i18n %}
 
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="isAuthUserIsOwner()">
+
     <!-- Error message -->
     <h4 class="error-comment-message" ng-repeat="(errorName,errorMessage) in errorEditItem.data">
         [[ errorName ]]:
@@ -11,6 +12,18 @@
         </ul>
     </h4>
 
+    <h1 class="item-detail-name">{% trans "Editing:" %} [[ itemDetail.name ]]</h1>
+
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+        <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+        <li><a href="{% url 'products_index_ang' %}#/products">{% trans "List of items" %}</a></li>
+        <li><a ng-href="#/products/[[ itemDetail.id ]]">{% trans "Detail of item" %}</a></li>
+        <li class="active">{% trans "Edit" %}</li>
+    </ol>
+    <hr>
+
+    <!-- form for edit or delete item only by owner -->
     <form name="edit_item_form" class="form-horizontal edit_item_form" role="form" method="POST" ng-submit="editItem()">
 
         <div class="form-group"><label class="col-md-2 control-label" for="id_name">{% trans "Name of item" %}</label>
@@ -19,7 +32,7 @@
                                          placeholder="name of item" required="required" title="" type="text"
                                          ng-model="itemDetail.name"></div>
             <div class="col-lg-11 col-md-10 col-sm-12 col-xs-12 text-center" ng-show="edit_item_form.name.$error.required">
-                <span class="help-block-error"><strong>This field is required.</strong></span>
+                <span class="help-block-error"><strong>{% trans "This field is required." %}</strong></span>
             </div>
         </div>
 
@@ -29,7 +42,7 @@
                                          placeholder="price" required="required" title="" type="number"
                                          ng-model="itemDetail.price"></div>
             <div class="col-lg-11 col-md-10 col-sm-12 col-xs-12 text-center" ng-show="edit_item_form.price.$error.required">
-                <span class="help-block-error"><strong>This field is required.</strong></span>
+                <span class="help-block-error"><strong>{% trans "This field is required." %}</strong></span>
             </div>
         </div>
 
@@ -53,8 +66,9 @@
                                             placeholder="description" required="required" rows="10"
                                             title="" ng-model="itemDetail.description"></textarea></div>
             <div class="col-lg-11 col-md-10 col-sm-12 col-xs-12 text-center" ng-show="edit_item_form.description.$error.required">
-                <span class="help-block-error"><strong>This field is required.</strong></span>
+                <span class="help-block-error"><strong>{% trans "This field is required." %}</strong></span>
             </div>
+
         </div>
 
         <div class="form-group"><label class="col-md-2 control-label" for="id_description">{% trans "Delete item" %}</label>
@@ -65,19 +79,17 @@
         </div>
         <div class="form-group">
             <div class="col-md-6 col-md-offset-2 text-center">
-                <input type="submit" class="btn btn-primary" name="submit" value="Edit item">
+                <button id="testButton" type="submit" class="btn btn-primary" name="submit">{% trans "Edit item" %}</button>
             </div>
         </div>
     </form>
-    <div id="editItemSuccessMessage" class="edit-item-success col-lg-6 col-md-6 col-sm-12 col-xs-12 text-center"
-         ng-if="editItemSuccess">
-        <p class="bg-primary">Item edit successfully!
-            <a ng-href="#/[[ itemDetail.id ]]">{% trans "Click" %}</a> {% trans "to item page." %}
-        </p>
-    </div>
+
+    <!-- Flash error messages -->
+   <div flash-message="4000"></div>
 
 </div>
 
+<!-- non-author permission message -->
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-if="!isAuthUserIsOwner()">
     <h1>{% trans "You don't have permission to edit this item!" %}</h1>
 </div>

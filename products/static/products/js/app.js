@@ -8,9 +8,12 @@ angular
         'ui.bootstrap',
         'ngAnimate',
         'ngResource',
-        'myApp.services'
+        'myApp.services',
+        'flash',
+        'mgcrea.ngStrap',
+        'ngMaterial'
     ])
-    .config(function ($httpProvider, $resourceProvider, $interpolateProvider, $routeProvider) {
+    .config(function ($httpProvider, $resourceProvider, $interpolateProvider, $routeProvider, $compileProvider) {
 
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
@@ -18,22 +21,31 @@ angular
         $resourceProvider.defaults.stripTrailingSlashes = false;
         $interpolateProvider.startSymbol('[[').endSymbol(']]');
 
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
+
         $routeProvider.
-            when('/products_ang/', {
-                templateUrl: '/products_ang/',
+            when('/', {
+                templateUrl: '/products_ang/list/',
                 controller: 'itemCtrl'
             }).
-            when('/:itemId', {
+            when('/products', {
+                templateUrl: '/products_ang/list/',
+                controller: 'itemCtrl'
+            }).
+            when('/products/:itemId', {
                 templateUrl: '/products_ang/show/',
                 controller: 'ItemDetailCtrl'
             }).
-            when('/:itemId/edit', {
+            when('/products/:itemId/edit', {
                 templateUrl: '/products_ang/edit/',
                 controller: 'ItemDetailCtrl'
             }).
-            when('/:itemId/action/add', {
+            when('/products/:itemId/action/add', {
                 templateUrl: '/products_ang/action/add/',
-                controller: 'actionCtrl'
+                controller: 'ActionCtrl'
+            }).
+            otherwise({
+                redirectTo: '/'
             });
 
     });

@@ -1,0 +1,246 @@
+{% load i18n %}
+{% load staticfiles %}
+
+<div ng-cloak>
+
+        <!-- header -->
+        <div class="row" ng-hide="showDetailOfItem">
+            <div class="item-list-header col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
+                        <h1 id="test">{% trans "List of items" %}</h1>
+                    </div>
+
+                    <!-- Check if user is shop -->
+                    {% if user.is_shop %}
+                        <div class="button-add-something col-lg-6 col-md-3 col-sm-3 col-xs-12">
+                            <a href="{% url 'products_add' %}"
+                               class="btn btn-warning pull-right" ng-hide="showDetailOfItem">
+                                <i class="fa fa-plus fa-lg"></i> {% trans "Add item" %}</a>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+        <!-- breadcrumb -->
+        <ol class="breadcrumb" ng-hide="showDetailOfItem">
+            <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+            <li>{% trans "List of items" %}</li>
+        </ol>
+        <hr>
+
+        <!-- Preloader ng-cloak-->
+        <div class="splash" ng-cloak>
+            <p>{% trans "Loading..."%}</p>
+        </div>
+
+        <!-- Preloader ng-if items load  -->
+        <div layout="row" layout-sm="column" layout-align="space-around" ng-if="!itemLoad">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+
+        <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="itemLoad">
+            <div class="row">
+
+                <!-- Button to trigger a category list form navside -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <md-button class="md-primary" data-placement="left"
+                            data-animation="am-slide-left"
+                            bs-aside="aside" data-template="/static/products/partials/category-list.html">
+                        <md-icon md-svg-src="{% static 'products/images/menu.svg' %}"></md-icon>
+                        {% trans "Click to view categories" %}
+                    </md-button>
+                </div>
+
+                <!-- Item list block -->
+                <div class="main-list-block col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="items.results.length">
+
+                    <!-- Sort by price -->
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
+                         ng-if="items.results.length">
+                        <h4>
+                            {% trans "Sort by:" %} <a href="javascript:;" ng-click="changeSortState('price')">{% trans "price" %}</a>
+                        <span ng-class="{'glyphicon glyphicon-triangle-top' : !reverse,'glyphicon glyphicon-triangle-bottom':reverse}"
+                              aria-hidden="true"></span>
+
+                        </h4>
+                    </div>
+
+                    <!-- Angular filter -->
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
+                         ng-if="items.results.length">
+                        <h4>
+                            {% trans "Category filter (angular filter):" %}
+                            <input class="form-control" ng-model="search.categories" type="text" placeholder="Input category...">
+                        </h4>
+                    </div>
+
+                    <!-- ng-repeat -->
+                    <div class="main-list-wrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="row">
+                            <div class="main-list col-lg-3 col-md-4 col-sm-4 col-xs-12" ng-hide="showDetailOfItem"
+                                 ng-repeat="item in items.results | filter:search | orderBy:sortField:reverse"
+                                 ng-class="{'zero-quantity-item' : isQuantityOfItemIsZero(item)}">
+
+                                <div class="notes">
+                                    <div class="row">
+
+                                        <!-- ID block -->
+                                        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-6">
+                                            <h3 class="detail-item-attr">
+                                                <small>
+                                                    {% trans "ID:" %}[[ item.pk ]]
+                                                </small>
+                                            </h3>
+                                        </div>
+
+                                        <!-- Image block -->
+                                        <div class="item-image col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                                            <a ng-href="#/products/[[ item.pk ]]" ng-click="showItem()">
+                                                <img ng-src="[[ item.image_url ]]"
+                                                     class="img-rounded" width="220" height="180" alt="item-image" ng-if="item.image_url.length">
+                                                <img src="{% static "products/images/no-image.png" %}"
+                                                     class="img-rounded" width="190" height="150" alt="item-image" ng-if="!item.image_url.length">
+
+                                            </a>
+                                        </div>
+
+                                        <!-- block for  quantity messages-->
+                                        <div class="main-list-top col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                             ng-if="item.quantity || isQuantityOfItemIsZero(item)">
+
+                                            <div class="alert alert-danger" role="alert" ng-show="isQuantityOfItemIsZero(item)">
+                                                {% trans "The item is out of stock :(" %}
+                                            </div>
+
+                                            <div class="alert alert-warning animated infinite pulse" role="alert"
+                                                 ng-show="item.quantity < minQuantityOfItem && item.quantity != 0">
+                                                {% trans "This item end soon! Hurry up!" %}
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="id-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <a ng-href="#/products/[[ item.pk ]]" ng-click="showItem()">[[ item.name]]</a>
+                                            </div>
+
+                                            <!-- Price and comments count block-->
+                                            <div class="id-block col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="row">
+                                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 text-left">
+                                                        <h4>
+                                                        <span ng-class="{'oldprice' : item.action}">
+                                                            [[ item.price | currency:"₴" ]]
+                                                        </span>
+                                                            </h4>
+                                                        <h4>
+                                                        <span class="newprice animated infinite pulse" ng-if="item.action">
+                                                            [[ item.action | currency:"₴" ]]
+                                                        </span>
+                                                        </h4>
+                                                    </div>
+                                                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 text-right">
+                                                        <small>{% trans "Comments " %}<span class="badge"> [[ item.comments.length ]]</span></small>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                                <!-- Add to cart block -->
+                                             <div class="add-cart-button col-lg-7 col-md-7 col-sm-7 col-xs-8">
+                                                <button ng-if="!item.is_item_in_cart" class="btn btn-success" type="button"
+                                                        ng-click="addItemToCart(item.pk)"
+                                                        ng-class="{'disabled' : item.quantity == 0}">
+                                                    <i class="fa fa-shopping-cart fa-lg"></i> {% trans "Add to cart" %}
+                                                </button>
+
+                                                <!-- block for add/delete item to/form cart -->
+                                                <div class="open-cart text-center" ng-if="item.is_item_in_cart">
+                                                    <div class="row">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
+                                                            <a href="javascript:void(0);" ng-click="deleteItemInCart(item.pk)"
+                                                               tooltip-placement="top" tooltip="Delete item from the cart"
+                                                               tooltip-popup-delay='600'>
+                                                                <i ng-class="{'fa fa-times fa-2x':hovering, 'fa fa-check fa-2x':!hovering}"
+                                                                   ng-mouseenter="hovering=true"
+                                                                   ng-mouseleave="hovering=false"></i>
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                                                            <a href="{% url 'cart_list' %}">{% trans "Item in the cart!" %}</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Rating block -->
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <rating ng-model="item.rate" max="maxx" readonly="true"
+                                                    on-hover="hoveringOver(value)"
+                                                    on-leave="overStar = null" titles="['one','two','three']">
+
+                                            </rating>
+                                        </div>
+
+                                        <!-- Categories block -->
+                                        <div ng-show="item.categories.length"
+                                             class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <h4 class="word-break">{% trans "Categories:" %} </h4>
+                                        </div>
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            <ul>
+                                                <li ng-repeat="category in item.categories">
+                                                    [[ category ]]
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- pagination -->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-hide="showDetailOfItem"
+                         ng-if="items.previous || items.next">
+                        <nav>
+                            <ul class="pager">
+
+                                <!-- disabled if item list has no previous page -->
+                                <li>
+                                    <button ng-click="pagination(items.previous)"
+                                            ng-class="{disabled:isItemsNotPrevious(items)}">{% trans "Previous" %}
+                                    </button>
+                                </li>
+
+                                <!-- disabled if item list has no next page -->
+                                <li>
+                                    <button ng-click="pagination(items.next)"
+                                            ng-class="{disabled:IsItemsNotNext(items)}">{% trans "Next" %}
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- message if no items in row -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h2 ng-hide="items.results.length">{% trans "No items:(" %}
+                        <a href="javascript:;" ng-click="showAllItems()">{% trans "Try show all items." %}</a>
+                    </h2>
+                </div>
+
+                <!-- Flash messages -->
+                <div flash-message="4000" ></div>
+
+            </div>
+        </div>
+    </div>

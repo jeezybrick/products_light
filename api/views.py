@@ -1,25 +1,34 @@
 
 from django.http import Http404
 from django.utils.datastructures import MultiValueDictKeyError
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import generics, status, permissions
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
-from products.models import Item, MyUser
+from rest_framework.response import Response
+from my_auth.models import MyUser
+from products.models import Item, Action
 from products import cache
-from products.service import CartService, RateService
+from products.service import RateService
+from cart.service import CartService
 from api import serializers
 from api.utils import addItemIdToSession, removeItemIdFromSession
-from rest_framework.response import Response
+from api.permissions import IsAuthorOrReadOnly, ShopIsAuthorOrReadOnly, IsAuthorOfActionOrReadOnly, IsItemOutOfStock
+from categories.cache import CategoryCache
+from my_auth.cache import ShopDetailCache
 from haystack.query import SearchQuerySet
-from api.permissions import IsAuthorOrReadOnly, ShopIsAuthorOrReadOnly
 
 
-# Pagination class
+# Standard Pagination class
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 9
     page_size_query_param = 'page_size'
     max_page_size = 1
+
+
+# Comments pagination
+class CommentsSetPagination(StandardResultsSetPagination):
+    page_size = 4
 
 
 # Item list
@@ -57,6 +66,7 @@ class ItemDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
         obj = cache.ProductDetailCache().get(id=filter_kwargs['pk'])
+        #obj = Item.objects.get(id=filter_kwargs['pk'])
         self.check_object_permissions(self.request, obj)
 
         return obj
@@ -66,16 +76,25 @@ class ItemDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
 class CategoryList(APIView):
 
     def get(self, request):
-        categories = cache.CategoryCache().get(parent_category_id__isnull=True)
+        categories = CategoryCache().get(parent_category_id__isnull=True)
         serializer = serializers.CategorySerializer(categories, many=True)
         return Response(serializer.data)
 
 
 # Comments list
-class CommentList(APIView):
+class CommentList(generics.GenericAPIView):
+
+    pagination_class = CommentsSetPagination
+    serializer_class = serializers.CommentSerializer
 
     def get(self, request):
         comments = cache.CommentCache().get()
+
+        page = self.paginate_queryset(comments)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = serializers.CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
@@ -135,7 +154,7 @@ class ShopDetail(generics.RetrieveAPIView):
 
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
-        obj = cache.ShopDetailCache().get(id=filter_kwargs['pk'])
+        obj = ShopDetailCache().get(id=filter_kwargs['pk'])
         self.check_object_permissions(self.request, obj)
 
         return obj
@@ -147,7 +166,7 @@ class ShopDetail(generics.RetrieveAPIView):
 class CartList(generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = serializers.CartSerializer
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (permissions.IsAuthenticated, IsItemOutOfStock)
 
     def get(self, request):
 
@@ -206,7 +225,7 @@ class CartDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
 class ActionList(generics.GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = serializers.ActionSerializer
-    permission_classes = (ShopIsAuthorOrReadOnly, permissions.IsAuthenticated)
+    permission_classes = (ShopIsAuthorOrReadOnly, permissions.IsAuthenticated, )
 
     def get(self, request):
 
@@ -232,3 +251,22 @@ class ActionList(generics.GenericAPIView):
             serializer.save(shop=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# Detail of cart. ID is item_id
+class ActionDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
+                 generics.DestroyAPIView):
+
+    permission_classes = (IsAuthorOfActionOrReadOnly, permissions.IsAuthenticated)
+    serializer_class = serializers.ActionSerializer
+
+    def get_object(self):
+
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        obj = Action.objects.filter(shop=self.request.user, item_id=filter_kwargs['pk']).first()
+        if obj is None:
+            raise Http404
+        self.check_object_permissions(self.request, obj)
+
+        return obj

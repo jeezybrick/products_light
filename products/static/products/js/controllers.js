@@ -4,18 +4,44 @@
 
 angular
     .module('myApp')
+    .controller('HeaderController', HeaderController);
+
+function HeaderController($scope, $location)
+{
+    $scope.isActive = function (viewLocation) {
+        return viewLocation === $location.path();
+    };
+}
+
+angular
+    .module('myApp')
     .controller('itemCtrl', itemCtrl);
 
-function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
+function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
 
-    // sort
-    $scope.sortField = 'pk';
+    // sort init
+    $scope.sortField = '-pk';
     $scope.reverse = true;
     $scope.showTriangle = false;
+
+    //rating
+    $scope.maxx = 10;
+    $scope.isReadonly = false;
+
+    //filter init
+    $scope.search = { categories:undefined };
 
     $scope.showDetailOfItem = false;
     $scope.isCollapsed = true;
     $scope.itemLoad = false;
+
+    //quantity of item
+    $scope.minQuantityOfItem = 10;
+    $scope.zeroQuantityOfItem = 0;
+
+    //messages
+    $scope.addItemToCartMessageSuccess = 'Item added to cart';
+    $scope.deleteItemFromCartMessageSuccess = 'Item deleted from cart';
 
     /**
      * Get list of items and list of categories
@@ -36,6 +62,7 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
     }, function () {
         $scope.itemLoadError = true;
     });
+
 
     /**
      * Show item detail
@@ -83,7 +110,6 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
     /**
      * For sorting by price
      */
-
     $scope.changeSortState = function (status) {
         $scope.sortField = status;
         $scope.reverse = !$scope.reverse;
@@ -121,16 +147,14 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
 
             $scope.items = Item.query();
             $scope.itemInCartSuccess = true;
-
-            $scope.time = $timeout(function () {
-
-                $scope.itemInCartSuccess = false;
-
-            }, 2000);
+            Flash.create('success', $scope.addItemToCartMessageSuccess, 'flash-message-item-list');
 
 
         }, function (error) {
+
             $scope.itemInCartError = error.data.detail;
+            Flash.create('warning', $scope.itemInCartError, 'flash-message-item-list');
+
         });
 
     };
@@ -144,33 +168,29 @@ function itemCtrl($scope, $http, $timeout, Item, Category, Cart) {
         Cart.delete({id: itemId}, function () {
 
             $scope.items = Item.query();
+            Flash.create('info', $scope.deleteItemFromCartMessageSuccess, 'flash-message-item-list');
 
         });
     };
 
+    $scope.isQuantityOfItemIsZero = function(item){
+
+        return angular.equals($scope.zeroQuantityOfItem, item.quantity);
+    };
+
+    $scope.aside = {
+        "title": "Categories"
+    };
+
 }
-
-
-/**
- * Filter for pagination comments
- */
-
-angular
-    .module('myApp')
-    .filter('startFrom', function () {
-        return function (data, start) {
-            if (angular.isDefined(data)) {
-                return data.slice(start)
-            }
-        }
-    });
 
 angular
     .module('myApp')
     .controller('ItemDetailCtrl', ItemDetailCtrl);
 
-function ItemDetailCtrl($scope, $routeParams, $http, $location, $window, $timeout, Item, Rate, Comment, AuthUser) {
+function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, Comment, Flash, $anchorScroll) {
 
+    // Init
     $scope.id = $routeParams.itemId; // item id
     $scope.AuthUserUsername = AuthUser.username; // Auth user username
     $scope.showDetailOfItem = true;
@@ -190,21 +210,49 @@ function ItemDetailCtrl($scope, $routeParams, $http, $location, $window, $timeou
     //rating
     $scope.max = 10;
     $scope.isReadonly = false;
-
     $scope.itemDetailLoadError = false;
+    $scope.successMessageEditItem = 'Item edit successfuly!<strong> Click</strong> to item page.';
+    $scope.successMessageAddComment = 'Thanks for comment!';
+
+
+    //add pre-comment model
+    $scope.comment = {
+        username:'Ivan',
+        message:'Hello world!',
+        item: $routeParams.itemId
+    };
+
 
     /**
      * Get item detail
      */
-    $scope.itemDetail = Item.get({id: $routeParams.itemId}, function () {
+    $scope.itemDetail = Item.get({id: $routeParams.itemId}, function (response) {
 
         $scope.itemDetailLoad = true;
-        $scope.rate = $scope.itemDetail.user_rate;
+        $scope.itemDetailComments = response.comments;
+
+
+        /**
+         * Add rate model
+         */
+        $scope.rate = {
+            value: $scope.itemDetail.rates,
+            item: $routeParams.itemId
+        };
 
     }, function (error) {
 
         $scope.itemDetailLoadError = error.data.detail;
     });
+
+
+    /**
+     * Add rate model
+     */
+     $scope.rate = {
+        value: $scope.itemDetail.user_rate,
+        item: $routeParams.itemId
+    };
 
     /**
      * For hovering rating stars
@@ -217,40 +265,19 @@ function ItemDetailCtrl($scope, $routeParams, $http, $location, $window, $timeou
     /**
      * Post selected rating of item by user
      */
-    $scope.addRate = function (rate) {
+    $scope.addRate = function () {
 
-        $scope.rate = rate;
-
-        $scope.rateObject = new Rate({
-            value: $scope.rate,
-            item: $routeParams.itemId
-        });
+        $scope.rateObject = new Rate($scope.rate);
 
         $scope.rateObject.$save(function () {
+
+            $scope.greet = true;
             $scope.dynamic = 100;
+
         }, function (error) {
-            //
-        });
+            $scope.rateError = error.data.detail;
 
-    };
-
-    /**
-     * Add comment
-     */
-    $scope.addComment = function () {
-
-        $scope.commentObject = new Comment({
-            username: $scope.username,
-            message: $scope.message,
-            item: $routeParams.itemId
-        });
-
-        $scope.commentObject.$save(function (data) {
-            $scope.hideCommentForm = true;
-            $scope.appendComment = data;
-            $scope.errorComment = false;
-        }, function (error) {
-            $scope.errorComment = error;
+            Flash.create('warning', $scope.rateError, 'flash-message-item-list');
         });
 
     };
@@ -260,10 +287,14 @@ function ItemDetailCtrl($scope, $routeParams, $http, $location, $window, $timeou
      */
     $scope.editItem = function () {
 
-        $scope.itemDetail.$update(function () {
+        $scope.itemDetail.$update(function (response) {
             $scope.successAction();
+             $scope.itemDetail = response;
+
         }, function (error) {
-            $scope.errorEditItem = error;
+            $scope.errorEditItem = error.data.detail;
+
+            Flash.create('danger', $scope.errorEditItem, 'flash-message-item-list');
         });
 
     };
@@ -273,13 +304,15 @@ function ItemDetailCtrl($scope, $routeParams, $http, $location, $window, $timeou
      */
     $scope.deleteItem = function () {
 
-        bootbox.confirm("Are you sure you want to delete this item?", function (answer) {
+        bootbox.confirm('Are you sure you want to delete this item?', function (answer) {
 
-            if (answer == true)
+            if (answer === true)
 
                 $scope.itemDetail.$delete(function () {
+
                     $scope.showDetailOfItem = false;
-                    $window.location.href = '/products_ang/';
+                    $location.path('/products');
+
                 }, function (error) {
                     $scope.errorDeleteItem = error;
                 });
@@ -293,14 +326,9 @@ function ItemDetailCtrl($scope, $routeParams, $http, $location, $window, $timeou
      */
     $scope.successAction = function () {
 
+        Flash.create('flash-message-edit-item', $scope.successMessageEditItem, 'flash-message-edit-item');
+
         $scope.editItemSuccess = true;
-        $timeout.cancel($scope.time);
-
-        $scope.time = $timeout(function () {
-
-            $scope.editItemSuccess = false;
-
-        }, 3000);
 
     };
 
@@ -313,22 +341,53 @@ function ItemDetailCtrl($scope, $routeParams, $http, $location, $window, $timeou
 
     };
 
-    /**
-     * Return true if comments exists and number of comments bigger then pagesize
-     */
-    $scope.isCommentsExistsAndCommentsLengthBiggerThenPagesize = function () {
 
-        return $scope.itemDetail.comments.length && $scope.itemDetail.comments.length > $scope.pageSize;
+    /**
+     * Add comment
+     */
+    $scope.addComment = function () {
+
+        $scope.commentObject = new Comment($scope.comment);
+
+        $scope.commentObject.$save(function (data) {
+
+            $scope.hideCommentForm = true;
+            $scope.appendComment = data;
+            $scope.errorComment = false;
+            Flash.create('success', $scope.successMessageAddComment, 'flash-message-edit-item');
+
+        }, function (error) {
+
+            $scope.errorComment = error;
+        });
 
     };
 
+    /**
+     * Scroll to add comments form
+     */
+    $scope.scrollTo = function (id) {
+        var old = $location.hash();
+        $location.hash(id);
+        $anchorScroll();
+        //reset to old to keep any additional routing logic from kicking in
+        $location.hash(old);
+    };
+
+     /**
+     * Return true if comments exists and number of comments bigger then pagesize
+     */
+    $scope.isCommentsLengthBiggerThenPagesize = function () {
+
+        return $scope.itemDetailComments.length > $scope.pageSize;
+    };
 }
 
 angular
     .module('myApp')
-    .controller('categoryListCtrl', categoryListCtrl);
+    .controller('CategoryListCtrl', CategoryListCtrl);
 
-function categoryListCtrl($scope, Category) {
+function CategoryListCtrl($scope, Category, Flash) {
 
 
     /**
@@ -339,7 +398,8 @@ function categoryListCtrl($scope, Category) {
         $scope.categoryLoad = true;
 
     }, function (error) {
-        $scope.categoryLoadError = true;
+        $scope.categoryLoadError = error.data.detail;
+        Flash.create('warning', $scope.categoryLoadError, 'flash-message-item-list');
     });
 
 }
@@ -350,7 +410,20 @@ angular
 
 function CartCtrl($scope, $timeout, Cart) {
 
-    $scope.addItemToCart = function (itemId) {
+    var vm = this;
+    vm.deleteItemInCart = deleteItemInCart;
+    vm.addItemToCart = addItemToCart;
+    vm.chooseItem = chooseItem;
+    vm.toggleAll = toggleAll;
+    vm.chooseAll = chooseAll;
+    vm.chooseNothing = chooseNothing;
+    vm.makeOrder = makeOrder;
+
+
+    /**
+     * Add item to cart
+     */
+    function addItemToCart(itemId) {
 
         $scope.cart = new Cart();
         $scope.cart.item = itemId;
@@ -359,17 +432,17 @@ function CartCtrl($scope, $timeout, Cart) {
             $scope.itemInTheCart = true;
         });
 
-    };
+    }
 
 
     /**
      * Delete item form cart and query Item object
      */
-    $scope.deleteItemInCart = function (itemId) {
+    function deleteItemInCart(itemId) {
 
-        bootbox.confirm("Are you sure you want to delete this item from the cart?", function (answer) {
+        bootbox.confirm('Are you sure you want to delete this item from the cart?', function (answer) {
 
-            if (answer == true)
+            if (answer === true)
 
                 Cart.delete({id: itemId}, function () {
 
@@ -386,64 +459,104 @@ function CartCtrl($scope, $timeout, Cart) {
 
         });
 
-    };
+    }
 
     /**
      * Choose specific item in the cart
      */
 
-    $scope.chooseItem = function (itemId) {
+    function chooseItem(itemId) {
 
         var myEl = angular.element(document.querySelector('#item_' + itemId));
         myEl.toggleClass('panel-primary-active');
 
-    };
+    }
 
     /**
      * Choose all items with button
      */
-    $scope.toggleAll = function () {
+    function toggleAll() {
 
         $scope.allItemActive = !$scope.allItemActive;
 
-    };
+    }
 
     /**
      * Choose all items with click 'All"
      */
-    $scope.chooseAll = function () {
+    function chooseAll() {
 
         $scope.allItemActive = true;
 
-    };
+    }
 
     /**
      * Unchoose all items
      */
-    $scope.chooseNothing = function () {
+    function chooseNothing() {
 
         $scope.allItemActive = false;
 
-    };
+    }
 
     /**
-     * Make order and show alert
+     * Show alert after making order
      */
-    $scope.makeOrder = function () {
+    function makeOrder() {
 
-        bootbox.alert("You make order! Soon we call you!");
+        bootbox.alert('You make order! Soon we call you!');
 
-    };
+    }
 
 }
 
 angular
     .module('myApp')
-    .controller('actionCtrl', actionCtrl);
+    .controller('ActionCtrl', ActionCtrl);
 
-function actionCtrl($scope, $routeParams, $location, Action) {
+function ActionCtrl($scope, $routeParams, $location, Action, AuthUser, Flash) {
 
     $scope.itemId = $routeParams.itemId;
+    $scope.AuthUserUsername = AuthUser.username; // Auth user id
+
+    // messages
+    $scope.addActionSuccessMesage = 'Action modify!';
+
+    /**
+     * Get action for this item
+     */
+
+    $scope.action = Action.get({item_id: $routeParams.itemId}, function (data) {
+
+        $scope.action = data;
+        $scope.action.period_from = new Date($scope.action.period_from);
+        $scope.action.period_to = new Date($scope.action.period_to);
+
+
+
+    }, function (error) {
+
+        $scope.actionError = error;
+
+        /**
+         *
+         * Check if action for current item exists
+         */
+        $scope.doesActionNotExists = function () {
+
+            return angular.equals($scope.actionError.status, 404);
+
+        };
+
+        /**
+         * Check is permission denied
+         */
+        $scope.isPermissionDenied = function () {
+
+            return angular.equals($scope.actionError.status, 403);
+        };
+    });
+
 
     /**
      * Add action
@@ -451,16 +564,17 @@ function actionCtrl($scope, $routeParams, $location, Action) {
     $scope.addAction = function () {
 
         $scope.actionObject = new Action({
-            description: $scope.description,
-            new_price: $scope.new_price,
+            description: $scope.action.description,
+            new_price: $scope.action.new_price,
             item: $scope.itemId,
-            period_from: $scope.period_from,
-            period_to: $scope.period_to
+            period_from: moment($scope.action.period_from).format('YYYY-MM-DD'),
+            period_to: moment($scope.action.period_to).format('YYYY-MM-DD')
         });
 
-        $scope.actionObject.$save(function (response) {
+        $scope.actionObject.$save(function () {
 
-            $location.path($scope.itemId);
+            Flash.create('success', $scope.addActionSuccessMesage, 'flash-message-item-list');
+            $location.path('products/'+ $scope.itemId);
 
         }, function (error) {
 
@@ -469,23 +583,39 @@ function actionCtrl($scope, $routeParams, $location, Action) {
 
     };
 
+    $scope.deleteAction = function () {
+
+        bootbox.confirm('Are you sure you want to delete this action?', function (answer) {
+
+            if (answer === true)
+
+                Action.delete({item_id: $routeParams.itemId}, function () {
+
+                    $location.path('products/'+ $scope.itemId);
+
+                });
+
+        });
+
+    };
+
+
+
 }
 
 angular
     .module('myApp')
-    .controller('loginCtrl', loginCtrl);
+    .controller('LoginCtrl', LoginCtrl);
 
-function loginCtrl($scope) {
+function LoginCtrl($scope) {
 
 //
-}
 
+}
 
 /**
  * Directive for formatting date from datepicker Angular UI( add action form )
  */
-
-
 angular
     .module('myApp')
     .directive('myDate', function (dateFilter, $parse) {
@@ -496,6 +626,19 @@ angular
                 ngModel.$parsers.push(function (viewValue) {
                     return dateFilter(viewValue, 'yyyy-MM-dd');
                 });
+            }
+        }
+    });
+
+/**
+ * Filter for pagination comments
+ */
+angular
+    .module('myApp')
+    .filter('startFrom', function () {
+        return function (data, start) {
+            if (angular.isDefined(data)) {
+                return data.slice(start)
             }
         }
     });

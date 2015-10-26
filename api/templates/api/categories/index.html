@@ -1,4 +1,4 @@
-{% extends 'products/layout.html' %}
+{% extends 'layout.html' %}
 {% load i18n %}
 {% load staticfiles %}
 {% block title %}
@@ -6,81 +6,100 @@
 {% endblock %}
 
 {% block content %}
-    <div ng-controller="categoryListCtrl">
-        <!-- If error -->
-        <div class="item-in-cart-message row" ng-if="categoryLoadError">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center">
-                <span>{% trans "Some error:( Try to reload page." %}</span>
-            </div>
-        </div>
 
+    <div ng-controller="CategoryListCtrl as category">
+
+        <!-- Flash messages -->
+        <div flash-message="4000" ></div>
+
+        <!-- header -->
         <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-if="!categoryLoad">
-                <h2>{% trans "Loading..." %} <i class="fa fa-spinner fa-pulse fa-3x"></i></h2>
-            </div>
-        </div>
-
-        <div class="wrapperOnList" ng-if="categoryLoad">
-
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
-                            <h1 id="test">{% trans "List of categories" %}</h1>
-                        </div>
-                        <div class="button-add-something col-lg-6 col-md-3 col-sm-3 col-xs-12">
-                            <a href="{% url 'categories_add' %}"
-                               class="btn btn-warning pull-right">{% trans "Add category" %}</a>
-                        </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
+                        <h1 id="test">{% trans "List of categories" %}</h1>
+                    </div>
+                    <div class="button-add-something col-lg-6 col-md-3 col-sm-3 col-xs-12">
+                        <a href="{% url 'categories_add' %}"
+                           class="btn btn-warning pull-right">{% trans "Add category" %}</a>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <ol class="breadcrumb">
-                <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-                <li class="active">{% trans "List of categories" %}</li>
-            </ol>
-            <hr>
+        <!-- breadcrumb -->
+        <ol class="breadcrumb">
+            <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+            <li class="active">{% trans "List of categories" %}</li>
+        </ol>
+        <hr>
 
+        <!-- success messages -->
+        {% include 'products/partials/success_message.html' %}
+        <!-- !success messages -->
+
+        <!-- preloader -->
+        <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-if="!categoryLoad">
+                    <h2>{% trans "Loading..." %} <i class="fa fa-spinner fa-pulse fa-3x"></i></h2>
+                </div>
+            </div>
+
+        <div class="wrapperOnList" ng-if="categoryLoad">
+
+            <!-- ng cloak -->
             <div class="row" ng-cloak>
-                <!-- Preloader -->
+
+                <!-- Preloader ng-cloak -->
                 <div class="splash" ng-cloak>
                     <p>{% trans "Loading" %}</p>
                 </div>
 
+                <!-- Angular filter by name of category -->
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="categories.length">
                     <h4>
                         {% trans "Filter by name:" %}<input ng-model="search.name" type="text"/>
                     </h4>
                 </div>
 
+                <!-- ng-repeat -->
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div id="categoryList" class="main-list col-lg-4 col-ms-4 col-sm-6 col-xs-12"
-                         ng-repeat="category in categories | filter:search">
+                    <div id="categoryList" class="main-list col-lg-3 col-ms-3 col-sm-4 col-xs-12"
+                         ng-repeat="category in categories  | filter:search">
 
-                        <div class="notes">
+                        <div class="categories">
                             <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h2>{% trans "ID:" %}
-                                        <small>[[ category.id ]]</small>
-                                    </h2>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h3 style="word-break: break-all;">Name:
-                                        <small>[[ category.name]]</small>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left">
+                                    <h3>
+                                        <small>{% trans "ID:" %}[[ category.id ]]</small>
                                     </h3>
                                 </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                                    <h3 class="word-break">
+                                        [[ category.name]]
+                                    </h3>
+                                </div>
+
                             </div>
-                            <h3 ng-show="category.category_set.length">{% trans "Sub:" %}</h3>
-                            <ul>
-                                <li ng-repeat="sub in category.category_set">
-                                    [[ sub ]]
-                                </li>
-                            </ul>
+
+                            <!-- Sub category -->
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left">
+                                <ul>
+                                    <li ng-repeat="sub in category.category_set track by $index">
+                                        [[ sub ]]
+                                    </li>
+                                </ul>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-hide="categories.length">
+
+                <!-- Message if categories doesnt added  -->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="!categories.length">
                     {% trans "Categories doesn't add yeat." %}
                 </div>
             </div>

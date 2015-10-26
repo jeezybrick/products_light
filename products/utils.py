@@ -1,26 +1,15 @@
-
-from .models import Category
-
-""" parent category choices """
-
-
-def categories_as_choices():
-    return [[category.id, category.name] for category in Category.objects.filter(parent_category_id__isnull=True)]
-
+from django.utils.translation import ugettext_lazy as _
 
 """ return message depends on quantity item """
 
 
 def message_of_quantity_items(item):
-    try:
-        item.quantity
-    except:
-        return None
-    else:
+    if item.quantity is not None:
         if item.quantity == 0:
-            return 'The product is out of stock'
+            return _('The item is out of stock :(')
         if item.quantity < 10:
-            return 'The product ends'
+            return _('This item end soon! Hurry up!')
+    return None
 
 
 """ return item with percentage price """
@@ -30,3 +19,9 @@ def price_with_percent(item):
     if item.user.percentage_of_price:
         item.price = item.price * item.user.percentage_of_price / 100
     return item
+
+""" Min count of quantity items for quantity-message"""
+
+
+def get_min_quantity():
+    return 10
