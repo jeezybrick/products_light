@@ -6,25 +6,38 @@
 {% endblock %}
 {% block content %}
 
-    <h2>{{ title }}</h2>
+
     <div class="row" ng-controller="LoginCtrl">
-        <div class="col-md-10">
-            <section id="loginForm">
-                <hr/>
+        <div class="wrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>{{ title }}</h2>
 
-                {% crispy form %}
+            <div class="col-md-10">
+                <section id="loginForm">
+                    <hr/>
 
-                <h4 class="signup-decision">
-                    <a href="{% url 'register' %}">{% trans "Sign Up right now!" %}</a>
-                </h4>
-            </section>
+                    {% crispy form %}
+
+                    <h4 class="signup-decision">
+                        <a href="{% url 'register' %}">{% trans "Sign Up right now!" %}</a>
+                    </h4>
+                </section>
+            </div>
+            <div class="col-md-4 col-md-offset-1">
+                <section id="socialLoginForm" ng-hide="isUserClick">
+                    <a href="{%  url 'social:begin' 'facebook' %}" ng-click="isUserClick=true">
+                        <i class="fa fa-facebook-official fa-4x"></i>
+                    </a>
+                    <a href="{%  url 'social:begin' 'github' %}" ng-click="isUserClick=true">
+                        <i class="fa fa-github fa-4x"></i>
+                    </a>
+                </section>
+
+                <!-- Show spinner after click on social auth -->
+                <i class="fa fa-spinner fa-pulse fa-4x" ng-show="isUserClick"></i>
+
+            </div>
         </div>
-        <div class="col-md-4 col-md-offset-1">
-            <section id="socialLoginForm">
-                <a href="{%  url 'social:begin' 'facebook' %}"><i class="fa fa-facebook-official fa-4x"></i></a>
-                <a href="{%  url 'social:begin' 'github' %}"><i class="fa fa-github fa-4x"></i></a>
-            </section>
-        </div>
+
+
     </div>
-
 {% endblock %}

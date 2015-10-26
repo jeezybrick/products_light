@@ -465,3 +465,7 @@ md-content h1:first-child {
 md-content md-tabs md-tabs-wrapper span {
     color: #777;
 }
+
+#socialLoginForm > a{
+    margin-right: 10px;
+}
