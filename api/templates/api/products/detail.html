@@ -9,7 +9,7 @@
 <div class="wrapperOnList col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="itemDetailLoad">
     <div class="row">
 
-        <h1 class="item-detail-name">[[ itemDetail.name ]]</h1>
+        <h1 class="item-detail-name col-lg-12 col-md-12 col-sm-12 col-xs-12">[[ itemDetail.name ]]</h1>
 
         <!-- breadcrumb -->
         <ol class="breadcrumb">
@@ -24,7 +24,7 @@
             <md-tabs md-dynamic-height md-border-bottom>
 
                 <!-- Item-detail tab -->
-                <md-tab label="description" style="color: black">
+                <md-tab label="description">
                     <md-content class="md-padding">
                         <!-- ID block -->
                         <div class="col-lg-10 col-md-9 col-sm-9 col-xs-6">
@@ -151,7 +151,6 @@
                 <!-- Comments tab -->
                 <md-tab label="comments">
                     <md-content class="md-padding">
-                        <h1 class="md-display-2">Comments</h1>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
                             <!-- show comments if they exists for this item -->
@@ -174,7 +173,7 @@
                         <!-- ng-repeat comments -->
                         <div class="comments-wrapper">
                             <div class="comment-unit col-md-8 col-sm-10"
-                                 ng-repeat="comment in itemDetail.comments">
+                                 ng-repeat="comment in itemDetail.comments | startFrom:(currentPage - 1) * pageSize | limitTo:pageSize">
                                 <h4>
                                     [[ comment.username ]]
                                     <small>[[comment.created_at | date:'medium']]</small>
@@ -190,7 +189,7 @@
                         </div>
 
                         <!-- angular pagination for comments -->
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-show="isCommentsLengthBiggerThenPagesize()">
                             <pagination total-items="itemDetail.comments.length" ng-model="currentPage"
                                         items-per-page="pageSize"></pagination>
                         </div>

@@ -46,10 +46,12 @@
 
                 <!-- Button to trigger a default aside with a scope as an object {title:'', content:'', etc.} -->
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <button type="button" class="btn btn-md btn-primary" data-placement="left"
+                    <md-button class="md-primary" data-placement="left"
                             data-animation="am-slide-left"
-                            bs-aside="aside" data-template="/static/products/partials/category-list.html">Click to view categories
-                    </button>
+                            bs-aside="aside" data-template="/static/products/partials/category-list.html">
+                        <md-icon md-svg-src="{% static 'products/images/menu.svg' %}"></md-icon>
+                        {% trans "Click to view categories" %}
+                    </md-button>
                 </div>
 
                 <!-- Item list block -->

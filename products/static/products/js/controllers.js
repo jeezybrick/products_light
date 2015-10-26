@@ -203,6 +203,10 @@ function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, C
     $scope.maxx = 100;
     $scope.dynamic = 0;
 
+    //pagination for comments
+    $scope.pageSize = 4;
+    $scope.currentPage = 1;
+
     //rating
     $scope.max = 10;
     $scope.isReadonly = false;
@@ -221,9 +225,11 @@ function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, C
     /**
      * Get item detail
      */
-    $scope.itemDetail = Item.get({id: $routeParams.itemId}, function () {
+    $scope.itemDetail = Item.get({id: $routeParams.itemId}, function (response) {
 
         $scope.itemDetailLoad = true;
+        $scope.itemDetailComments = response.comments;
+
 
         /**
          * Add rate model
@@ -363,8 +369,13 @@ function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, C
       $anchorScroll();
    };
 
+     /**
+     * Return true if comments exists and number of comments bigger then pagesize
+     */
+    $scope.isCommentsLengthBiggerThenPagesize = function () {
 
-
+        return $scope.itemDetailComments.length > $scope.pageSize;
+    };
 }
 
 angular
@@ -594,80 +605,6 @@ angular
 function LoginCtrl($scope) {
 
 //
-
-}
-
-
-angular
-    .module('myApp')
-    .controller('CommentsController', CommentsController);
-
-function CommentsController($scope, $routeParams, Item, AuthUser, Comment, $location, $anchorScroll) {
-
-    // Init
-    $scope.id = $routeParams.itemId; // item id
-    $scope.AuthUserUsername = AuthUser.username; // Auth user username
-
-    //pagination for comments
-    $scope.pageSize = 4;
-    $scope.currentPage = 1;
-
-    //add pre-comment model
-    $scope.comment = {
-        username:'Ivan',
-        message:'Hello world!',
-        item: $routeParams.itemId
-    };
-
-    /**
-     * Get item detail
-     */
-    $scope.itemDetail = Item.get({id: $routeParams.itemId}, function () {
-
-        $scope.commentsLoad = true;
-
-    }, function (error) {
-
-        $scope.itemDetailLoadError = error.data.detail;
-    });
-
-
-    /**
-     * Add comment
-     */
-    $scope.addComment = function () {
-
-        $scope.commentObject = new Comment($scope.comment);
-
-        $scope.commentObject.$save(function (data) {
-
-            $scope.hideCommentForm = true;
-            $scope.appendComment = data;
-            $scope.errorComment = false;
-
-        }, function (error) {
-
-            $scope.errorComment = error;
-        });
-
-    };
-
-    /**
-     * Scroll to add comments form
-     */
-    $scope.scrollTo = function(id) {
-      $location.hash(id);
-      $anchorScroll();
-   };
-
-    /**
-     * Return true if comments exists and number of comments bigger then pagesize
-     */
-    $scope.isCommentsExistsAndCommentsLengthBiggerThenPagesize = function () {
-
-        return $scope.itemDetail.comments.length && $scope.itemDetail.comments.length > $scope.pageSize;
-
-    };
 
 }
 
