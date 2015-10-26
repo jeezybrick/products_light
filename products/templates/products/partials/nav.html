@@ -20,11 +20,7 @@
 
                 <ul id="login_nav" class="nav navbar-nav hidden-lg hidden-md hidden-sm pull-right">
                     <li id="cart-on-nav-xs" class="nav-cart">
-                        <a href="{% url 'cart_list' %}"
-                                {% if request.session.in_cart %}
-                           class="animated infinite pulse"
-                           style="color: #7DDE7D;"
-                                {% endif %}>
+                        <a href="{% url 'cart_list' %}">
                             <i class="fa fa-shopping-cart fa-3x"></i>
                             <span class="badge">{{ request.session.in_cart|wordcount }}</span>
                         </a>
@@ -62,11 +58,7 @@
                     <li id="cart-on-nav" class="nav-cart hidden-xs{% ifactive "cart_list" %} active {% endifactive %}">
 
                     <!-- if item exists in cart - add animated pulse-->
-                        <a href="{% url 'cart_list' %}"
-                                {% if request.session.in_cart %}
-                                   class="animated infinite pulse"
-                                   style="color: #7DDE7D;"
-                                {% endif %}>
+                        <a href="{% url 'cart_list' %}">
                             <i class="fa fa-shopping-cart fa-3x"></i>
                             <span class="badge">{{ request.session.in_cart|wordcount }}</span>
                         </a>
@@ -74,7 +66,7 @@
                     </li>
 
                     <li role="presentation" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;" role="button" aria-haspopup="true"
                            aria-expanded="false">
                             {{ user.username }} <span class="caret"></span>
                         </a>

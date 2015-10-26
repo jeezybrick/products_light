@@ -97,8 +97,6 @@
 <!-- ui bootstrap -->
 <script src="{% static 'products/js/ui-bootstrap.min.js' %}"></script>
 
-
-
 <script>
   // This allows you to access the current user id in your angular controllers.
   angular
@@ -111,6 +109,13 @@
       });
 </script>
 
+<!-- Add color and pulse class if current user have items in cart -->
+{% if request.session.in_cart %}
+    <script>
+        $('#cart-on-nav').find('> a').css('color', '#7DDE7D').addClass('animated infinite pulse');
+        $('#cart-on-nav-xs').find('> a').css('color', '#7DDE7D').addClass('animated infinite pulse');
+    </script>
+{% endif %}
 
 </body>
 </html>
