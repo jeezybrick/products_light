@@ -1,4 +1,4 @@
-{% extends 'products/layout.html' %}
+{% extends 'layout.html' %}
 {% load i18n %}
 {% load staticfiles %}
 {% load bootstrap3 %}
@@ -10,7 +10,7 @@
 {% block content %}
         <div class="row">
             <div class="item-detail-header col-lg-10 col-md-9 col-sm-9 col-xs-12">
-                <h1 class="detail-item-attr">{{ item.name }}</h1>
+                <h1 class="detail-item-attr">{{ item.name }} <small>{{ message | default:'' }}</small></h1>
             </div>
             <div class="button-add-something col-lg-2 col-md-3 col-sm-3 col-xs-12">
                 <a href="{% url 'products_edit' item.id %}"
@@ -35,7 +35,8 @@
                     ID:{{ item.id }}
                 </h3>
                 <h3>{% trans "Name" %}:{{ item.name }}</h3>
-                <h3>{% trans "price" %}:{{ item.price }} грн.</h3>
+                <h3>{% trans "Price" %}:{{ item.price }} $.</h3>
+                <h3>{% trans "Available" %}:<small>{{ item.quantity | default:'Not indicated' }}</small></h3>
                 <pre>{{ item.description }}</pre>
 
                 <h3>

@@ -1,24 +1,28 @@
-__author__ = 'user'
-from .models import Category, Item, Rate, Comment
-from products import cache
+
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.db import models
+from .models import Item, Rate, Comment, Action
+from categories.models import Category
+from products import cache
+from categories.cache import CategoryCache
 from haystack import signals
+from my_auth.models import MyUser
+from my_auth.cache import ShopDetailCache
 
 invalidate_signals = [post_delete, post_save]
 
 
 @receiver(invalidate_signals, sender=Category)
 def invalidate_category(sender, instance, **kwargs):
-    cache.CategoryCache().invalidate(parent_category_id__isnull=True)
+    CategoryCache().invalidate(parent_category_id__isnull=True)
 
 
 @receiver(invalidate_signals, sender=Item)
 def invalidate_item(sender, instance, **kwargs):
     cache.ProductCache().invalidate(pk=instance.pk)
-    # doesnt work
-    cache.ProductDetailCache().invalidate(id=instance.pk)
+    # for item-detail
+    cache.ProductDetailCache().invalidate(id=str(instance.pk))
 
 
 @receiver(post_save, sender=Rate)
@@ -29,6 +33,11 @@ def invalidate_rate(sender, instance, **kwargs):
 @receiver(post_save, sender=Comment)
 def invalidate_comment(sender, instance, **kwargs):
     cache.CommentCache().invalidate()
+
+
+@receiver(post_save, sender=MyUser)
+def invalidate_shop(sender, instance, **kwargs):
+    ShopDetailCache().invalidate(id=str(instance.pk))
 
 
 class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
@@ -46,16 +55,42 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
             )
 
     def handle_category_update(self, sender, instance, **kwargs):
-        for item in Item.objects.filter(id=instance.id):
+        for item in Item.objects.filter(categories__in=str(instance.id)):
             super(RateOnlySignalProcessor, self).handle_save(
                 Item, item, **kwargs
             )
 
+    def handle_action_update(self, sender, instance, **kwargs):
+        for item in Item.objects.filter(action=instance.id):
+            super(RateOnlySignalProcessor, self).handle_save(
+                Item, item, **kwargs
+            )
+
+    def handle_category_m2m_update(self, sender, instance, **kwargs):
+
+        item = Item.objects.get(id=instance.id)
+        super(RateOnlySignalProcessor, self).handle_save(
+                Item, item, **kwargs
+            )
+
+    def test(self, sender, instance, **kwargs):
+
+        item = Item.objects.get(id=instance.id)
+        super(RateOnlySignalProcessor, self).handle_delete(
+                Item, item, **kwargs
+            )
+
     def setup(self, **kwargs):
+        """Listen for all model saves and some m2m saves"""
+
+        models.signals.m2m_changed.connect(self.handle_category_m2m_update, sender=Item.categories.through)
         models.signals.post_save.connect(self.handle_save, sender=Item)
-        models.signals.post_save.connect(
-            self.handle_category_update, sender=Item)
         models.signals.post_delete.connect(self.handle_delete, sender=Item)
+        models.signals.pre_delete.connect(self.test, sender=Item)
+        models.signals.post_save.connect(
+            self.handle_category_update, sender=Category)
+        models.signals.post_delete.connect(
+            self.handle_category_update, sender=Category)
         models.signals.post_save.connect(self.handle_rate_update, sender=Rate)
         models.signals.post_delete.connect(
             self.handle_rate_update, sender=Rate)
@@ -63,14 +98,27 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
             self.handle_comment_update, sender=Comment)
         models.signals.post_delete.connect(
             self.handle_comment_update, sender=Comment)
+        models.signals.post_save.connect(
+            self.handle_action_update, sender=Action)
+        models.signals.post_delete.connect(
+            self.handle_action_update, sender=Action)
+        models.signals.post_save.connect(
+            self.handle_action_update, sender=MyUser)
+        models.signals.post_delete.connect(
+            self.handle_action_update, sender=MyUser)
 
         super(RateOnlySignalProcessor, self).setup()
 
     def teardown(self):
+        """Disconnect signals"""
+
+        models.signals.m2m_changed.disconnect(self.handle_category_m2m_update, sender=Item.categories.through)
         models.signals.post_save.disconnect(self.handle_save, sender=Item)
         models.signals.post_delete.disconnect(self.handle_delete, sender=Item)
         models.signals.post_save.disconnect(
-            self.handle_category_update, sender=Item)
+            self.handle_category_update, sender=Category)
+        models.signals.post_delete.disconnect(
+            self.handle_category_update, sender=Category)
         models.signals.post_save.disconnect(
             self.handle_rate_update, sender=Rate)
         models.signals.post_delete.disconnect(
@@ -79,5 +127,13 @@ class RateOnlySignalProcessor(signals.RealtimeSignalProcessor):
             self.handle_comment_update, sender=Comment)
         models.signals.post_delete.disconnect(
             self.handle_comment_update, sender=Comment)
+        models.signals.post_save.disconnect(
+            self.handle_action_update, sender=Action)
+        models.signals.post_delete.disconnect(
+            self.handle_action_update, sender=Action)
+        models.signals.post_save.disconnect(
+            self.handle_action_update, sender=MyUser)
+        models.signals.post_delete.disconnect(
+            self.handle_action_update, sender=MyUser)
 
         super(RateOnlySignalProcessor, self).teardown()

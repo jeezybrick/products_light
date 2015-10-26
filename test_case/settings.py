@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.8/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
-
+# -*- coding: utf-8 -*-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import djcelery
@@ -33,6 +33,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    # django admin-bootstrap
+    'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +43,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     # my apps
+    'my_auth',
+    'categories',
+    'cart',
     'api',
     'products',
     # third party apps
@@ -105,7 +110,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EET'
 
 USE_I18N = True
 
@@ -119,6 +124,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+# Cache
 CACHES = {
     "default": {
         "BACKEND": "redis_cache.cache.RedisCache",
@@ -128,6 +135,8 @@ CACHES = {
         }
     }
 }
+
+# haystack
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
@@ -140,4 +149,8 @@ HAYSTACK_SIGNAL_PROCESSOR = 'products.signals.RateOnlySignalProcessor'
 
 CELERY_ALWAYS_EAGER = True
 
+# bootstrap3 for crispy forms
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# Default auth model
+AUTH_USER_MODEL = 'my_auth.MyUser'

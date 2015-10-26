@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+{% load staticfiles %}
+{% block title %}
+    {{ foo }} {% trans "action" %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h1>{{ foo }} {% trans "action" %}</h1>
+            <ol class="breadcrumb">
+                <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
+                <li><a href="#">{% trans "Items" %}</a></li>
+                <li class="active">{{ foo }} {% trans "action" %}</li>
+            </ol>
+            <hr>
+            <div class="col-md-8 col-sm-10">
+
+                {% crispy form %}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

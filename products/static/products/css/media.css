@@ -1,20 +1,37 @@
 /* Large desktops and laptops */
 @media (min-width: 1200px) {
 
+    .main-greet {
+        font-size: 46px;
+        letter-spacing: 0.01em;
+    }
+
 }
 
 /* Landscape tablets and medium desktops */
 @media (min-width: 992px) and (max-width: 1199px) {
+
+    .main-greet {
+        font-size: 40px;
+    }
 
 }
 
 /* Portrait tablets and small desktops */
 @media (min-width: 768px) and (max-width: 991px) {
 
+    .main-greet {
+        font-size: 36px;
+    }
+
 }
 
 /* Landscape phones and portrait tablets */
 @media (max-width: 767px) {
+
+    .main-greet {
+        letter-spacing: 0.05em;
+    }
 
 }
 
@@ -23,6 +40,10 @@
 
     #editItemSuccessMessage {
         margin: 55px 0 0 0;
+    }
+
+    .main-greet {
+        letter-spacing: 0.02em;
     }
 
 }

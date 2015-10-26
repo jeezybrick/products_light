@@ -1,6 +1,7 @@
-__author__ = 'user'
+
 from django.core.exceptions import ImproperlyConfigured
-from products.models import Item, Category, Rate, Comment
+from django.shortcuts import get_object_or_404
+from products.models import Item, Rate, Comment
 from cacheback.base import Job
 
 
@@ -32,8 +33,6 @@ class ProductCache(BaseModelJob):
 
 class ProductDetailCache(BaseModelJob):
 
-    lifetime = 1
-
     def fetch(self, **kwargs):
         if not self.model:
             raise ImproperlyConfigured(
@@ -42,14 +41,10 @@ class ProductDetailCache(BaseModelJob):
                 }
             )
 
-        obj = self.model.objects.get(**kwargs)
+        obj = get_object_or_404(self.model, **kwargs)
         return obj
 
     model = Item
-
-
-class CategoryCache(BaseModelJob):
-    model = Category
 
 
 class CommentCache(BaseModelJob):

@@ -1,4 +1,4 @@
-{% extends 'products/layout.html' %}
+{% extends 'layout.html' %}
 {% load i18n %}
 {% load staticfiles %}
 {% block title %}
@@ -6,155 +6,12 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row" ng-controller="itemCtrl" ng-cloak>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="row">
-                <div class="col-lg-6 col-md-9 col-sm-9 col-xs-12">
-                    <h1 id="test">{% trans "list of items" %}</h1>
-                </div>
-                <div class="button-add-something col-lg-6 col-md-3 col-sm-3 col-xs-12">
-                    <a href="{% url 'products_add' %}"
-                       class="btn btn-warning pull-right" ng-hide="showDetailOfItem">{% trans "Add item" %}</a>
-                </div>
-            </div>
-        </div>
 
-        <ol class="breadcrumb">
-            <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-            <li><a href="{% url 'products_list_ang' %}"
-                   ng-click="showDetailOfItem=false">{% trans "List of items" %}</a></li>
-            <li ng-show="showDetailOfItem" class="active">{% trans "Detail of items" %}</li>
-        </ol>
-        <hr>
-        {% verbatim %}
+        <!-- success messages -->
+        {% include 'products/partials/success_message.html' %}
+        <!-- !success messages -->
 
-        <div class="col-lg-12" ng-show="items.results.length" ng-hide="showDetailOfItem">
-            <!-- Preloader -->
-            <div class="splash" ng-cloak>
-                <p>Loading</p>
-            </div>
-            <!-- Accordion for sort by category -->
-            <accordion close-others="oneAtATime">
-                <accordion-group heading="Category filter" is-open="status.isFirstOpen"
-                                 is-disabled="status.isFirstDisabled" popover="Click to sort by category"
-                                 popover-trigger="mouseenter">
-                    <ul>
-                        <li class="all-categories-list"><a href="javascript:;" ng-click="showAllItems()">All categories</a></li>
-                        <li ng-repeat="category in categories | limitTo:5">
-                            <a href="javascript:;" ng-click="sortByCategory(category.name)">{{ category.name }} <span class="badge">{{ category.count }}</span></a>
-                            <ul>
-                                <li ng-repeat="sub in category.category_set| limitTo:5">
-                                    <a href="javascript:;" ng-click="sortByCategory(sub)">{{ sub }}</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </accordion-group>
-            </accordion>
-        </div>
-
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.results.length">
-            <h4>
-                Sort by: <a href="javascript:;" ng-click="changeSortState(price)">price</a>
-                <span ng-show="!reverse" class="glyphicon glyphicon-triangle-top"
-                      aria-hidden="true"></span>
-                <span ng-show="reverse" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-
-            </h4>
-        </div>
-
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.results.length">
-            <h4>
-                Category filter (angular filter):<input ng-model="search.categories" type="text"/>
-            </h4>
-        </div>
-
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.results.length">
-            <h4>
-                Category filter (http get filter):
-                <input type="text" ng-model="asyncSelected" placeholder="Items loaded via $http"
-                       typeahead="name for name in getLocation($viewValue)" typeahead-loading="loadingLocations"
-                       typeahead-no-results="noResults" class="form-control">
-                <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
-
-                <div ng-show="noResults">
-                    <i class="glyphicon glyphicon-remove"></i> No Results Found
-                </div>
-            </h4>
-        </div>
-
+        <!-- Ng-view -->
         <div ng-view></div>
 
-        <!-- Preloader for load list -->
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" ng-hide="itemLoad">
-            <h2>Loading items... <i class="fa fa-spinner fa-pulse fa-3x"></i></h2>
-        </div>
-
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <h2 ng-hide="items.results.length">No match:( <a href="javascript:;" ng-click="showAllItems()">Show all items.</a></h2>
-        </div>
-
-        <div class="wrapperOnList hidden col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="main-list col-lg-4 col-ms-4 col-sm-6 col-xs-12" ng-hide="showDetailOfItem"
-                 ng-repeat="item in items.results | filter:search | orderBy:sortField:reverse ">
-
-                <div class="notes">
-                    <div class="row">
-                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
-                            <h2>ID:{{ item.pk}}</h2>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-7 col-xs-6">
-                            <h2><a ng-href="#/{{ item.pk }}"  ng-click="showItem()">Details</a></h2>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <h4 class="word-break">Name:{{ item.name}}</h4>
-                        </div>
-
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <h4 class="word-break">Price:{{ item.price | currency:"₴" }}</h4>
-                        </div>
-
-                        <div ng-show="item.image_url" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <h4 class="word-break">image_url: {{ item.image_url }}</h4>
-                        </div>
-
-                        <div ng-show="item.url" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <h4 class="word-break">url: {{ item.url }}</h4>
-                        </div>
-
-                        <div ng-show="item.categories.length" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <h4 class="word-break">Categories: </h4>
-                        </div>
-
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <ul>
-                                <li ng-repeat="category in item.categories">
-                                    {{ category }}
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="item.rate">
-                            <h4>Rating:{{ item.rate | limitTo:3 }}</h4>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-hide="showDetailOfItem" ng-show="items.results.length">
-            <nav>
-                <ul class="pager">
-                    <li ng-class="{disabled:isItemsNotPrevious(items)}">
-                        <a href="javascript:void(0);" ng-click="pagination(items.previous)">Previous</a>
-                    </li>
-                    <li ng-class="{disabled:IsItemsNotNext(items)}">
-                        <a href="javascript:void(0);" ng-click="pagination(items.next)">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-        {% endverbatim %}
 {% endblock %}

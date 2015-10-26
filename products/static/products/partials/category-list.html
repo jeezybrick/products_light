@@ -1,0 +1,32 @@
+
+<div class="aside bs-docs-aside" tabindex="-1" role="dialog">
+    <div class="aside-dialog">
+        <div class="aside-content">
+            <div class="aside-header text-center" ng-show="title">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="aside-title" ng-bind-html="title">Categories</h4>
+            </div>
+            <div class="aside-body bs-sidebar text-center" ng-click="$hide();">
+
+                <ul class="category-filter-list text-left" ng-if="categories.length">
+
+                    <li id="parent_category" class="all-categories-list">
+                        <a href="javascript:;" ng-click="showAllItems()">All categories</a>
+                    </li>
+
+                    <li ng-repeat="category in categories track by $index | limitTo:5">
+                        <a href="javascript:;" ng-click="sortByCategory(category.name)">[[ category.name]]
+                            <span class="badge">[[ category.count ]]</span>
+                        </a>
+
+                        <ul>
+                            <li ng-repeat="sub in category.category_set track by $index| limitTo:5">
+                                <a href="javascript:;" ng-click="sortByCategory(sub)">[[ sub ]]</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

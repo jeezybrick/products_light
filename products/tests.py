@@ -1,48 +1,111 @@
 # Create your tests here.
 
-import factory
-import random
-import string
-from products import models
-from factory.django import DjangoModelFactory
+from django.test import Client, TestCase
+from .models import Item
+from my_auth.models import MyUser
+from django.core.urlresolvers import reverse
 
 
-def random_string(length=100):
-    return u''.join(random.choice(string.ascii_letters) for x in range(length))
+class SimpleTest(TestCase):
 
+    def setUp(self):
+        # User objects
+        self.user1 = MyUser.objects.create_user(
+            'temporary', 'temporary@gmail.com', 'temporary', is_shop=False)
+        self.user2 = MyUser.objects.create_user(
+            'temporary2', 'temporary_second@gmail.com', 'temporary', is_shop=False)
+        # Shop-user
+        self.user_shop = MyUser.objects.create_user(
+            'temporary3', 'temporary_shop@gmail.com', 'temporary', is_shop=True)
+        # Item object
+        self.item = Item(name='Phone 8080', price='1234', image_url='http://127.0.0.1:8000/products_ang/',
+                         description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum'
+                                     ' hendrerit ullamcorper. Nam ultrices sapien sit amet velit feugiat condimentum '
+                                     'at in arcu. Donec ac ligula accumsan, consequat ligula a, ultrices ligula. '
+                                     'Vivamus rutrum, eros a elementum ultrices, leo ipsum sollicitudin metus, nec '
+                                     'aliquet leo magna nec orci. Nulla neque dui, suscipit ac consequat ac, rutrum nec '
+                                     'sem. Duis quis velit id justo accumsan suscipit sit amet vel sem. Sed at porttitor '
+                                     'odio, vel feugiat lectus. Integer et ex vitae elit hendrerit aliquet. Pellentesque'
+                                     ' pulvinar, justo quis tristique dignissim, ex lorem convallis erat, at consectetur'
+                                     ' mi justo at arcu. Ut tristique facilisis magna interdum malesuada. Interdum et malesuada '
+                                     'fames ac ante ipsum primis in faucibus. Duis sed commodo arcu. Nullam a orci imperdiet, '
+                                     'pulvinar orci id, pretium augue.',
+                         quantity=4, user=self.user1)
+        self.item.save()
+        # non exists item id
+        self.fake_item_id = 9999
+        self.client = Client()
 
-class UserFactory(DjangoModelFactory):
-    class Meta:
-        model = models.User
+    def tearDown(self):
+        self.user1.delete()
+        self.user2.delete()
+        self.user_shop.delete()
+        self.item.delete()
 
-    first_name = 'John'
-    last_name = 'Doe'
+    def test_home(self):
+        url = reverse('home')
 
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
-class ItemFactory(factory.Factory):
-    class Meta:
-        model = models.Item
+    def test_login_get(self):
+        url = reverse('login')
 
-    name = factory.Sequence(lambda n: 'item-{0}'.format(n))
-    price = factory.Sequence(lambda n: '123-{0}'.format(n))
-    image_url = 'https://github.com/jeezybrick/products_light'
-    description = factory.LazyAttribute(lambda t: random_string())
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
+    def test_login_post(self):
+        url = reverse('login')
+        post = {'username': 'john', 'password': 'smith'}
 
-users = UserFactory.build_batch(10000, first_name="Joe")
-items = ItemFactory.create_batch(1000)
+        response = self.client.post(url, post)
+        self.assertEqual(response.status_code, 200)
 
-print([user.first_name for user in users])
-print([item.description for item in items])
+    def test_register_get(self):
+        url = reverse('register')
 
-'''
-#/////////////////////////////////////////////////////////
-i = 0
-while i < 1000:
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
-    item = models.Item.objects.create(name='PC', price=11111, image_url='https://github.com/jeezybrick/products_light',
-                                      description='1ddddddddddddddddddddddddddddddddddddddddddddddddddddddd23')
-    item.save()
-    print('item saved!')
-    i += 1
-'''
+    def test_register_post(self):
+        url = reverse('register')
+        post = {'username': 'john', 'password': 'smith'}
+
+        response = self.client.post(url, post)
+        self.assertEqual(response.status_code, 200)
+
+    """ Detail of item """
+    def test_item_detail(self):
+        url = reverse('products_show', args=(self.item.id, ))
+        url_with_fake_id = reverse('products_show', args=(self.fake_item_id, ))
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get(url_with_fake_id)
+        self.assertEqual(response.status_code, 404)
+
+    """
+    test adding item
+    Item can add only shop-users
+    """
+    def test_item_add(self):
+        url = reverse('products_add')
+        post = {'username': 'john', 'password': 'smith'}
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+
+        self.client.login(username='temporary', password='temporary')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+        response = self.client.post(url, post)
+        self.assertEqual(response.status_code, 403)
+
+        self.client.login(username='temporary3', password='temporary')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(url, post)
+        self.assertEqual(response.status_code, 200)

@@ -3,3 +3,5 @@
 {{ object.description }}
 {{ object.image_url }}
 {{ object.categories }}
+{{ object.quantity }}
+{{ object.user }}

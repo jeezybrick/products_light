@@ -1,15 +1,15 @@
+# -*- coding: utf-8 -*-
 
 from django.contrib.auth.forms import AuthenticationForm
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.forms.extras.widgets import SelectDateWidget
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field, Fieldset
 from crispy_forms.bootstrap import PrependedText
-from .cache import Item
-from .models import Comment, Rate, Category
-from .utils import categories_as_choices
+from products import models
+from my_auth.models import MyUser
 
 
 class MyLoginForm(AuthenticationForm):
@@ -66,7 +66,7 @@ class MyRegForm(UserCreationForm):
                                      css_class='btn btn-default btn-md col-md-offset-5'))
 
     class Meta:
-        model = User
+        model = MyUser
         fields = ('last_name', 'first_name', 'username',
                   'email', 'password1', 'password2',)
 
@@ -83,7 +83,7 @@ class AddComment(forms.ModelForm):
     message = forms.CharField(widget=forms.Textarea, label=_('comment'))
 
     class Meta:
-        model = Comment
+        model = models.Comment
         fields = ('username', 'message', )
 
 
@@ -91,7 +91,7 @@ class AddRate(forms.ModelForm):
     value = forms.IntegerField(max_value=10, min_value=1, label=_('rate item'))
 
     class Meta:
-        model = Rate
+        model = models.Rate
         fields = ('value', )
 
 
@@ -100,6 +100,9 @@ class ModifyItem(forms.ModelForm):
         max_value=10000000, min_value=0, label=_('Price'))
     description = forms.CharField(
         widget=forms.Textarea, label=_('Description'))
+
+    quantity = forms.IntegerField(
+        min_value=0, label=_('Quantity'), required=False)
 
     def __init__(self, *args, **kwargs):
         super(ModifyItem, self).__init__(*args, **kwargs)
@@ -120,24 +123,26 @@ class ModifyItem(forms.ModelForm):
                 'image_url',
                 'categories',
                 'description',
+                'quantity',
             ),
             PrependedText(
-                'price', 'грн.'
+                'price', '$'
             ),
 
         )
 
     class Meta:
-        model = Item
-        fields = ('name', 'price', 'image_url', 'categories', 'description', )
+        model = models.Item
+        fields = ('name', 'price', 'image_url',
+                  'categories', 'description', 'quantity')
 
 
-class AddCategory(forms.ModelForm):
+class ModifyAction(forms.ModelForm):
+    period_from = forms.DateTimeField(widget=SelectDateWidget())
+    period_to = forms.DateTimeField(widget=SelectDateWidget())
 
     def __init__(self, *args, **kwargs):
-        super(AddCategory, self).__init__(*args, **kwargs)
-        self.fields['parent_category'].choices = categories_as_choices()
-        self.fields['parent_category'].initial = 'default'
+        super(ModifyAction, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_method = 'post'
@@ -146,17 +151,10 @@ class AddCategory(forms.ModelForm):
         self.helper.label_class = 'col-md-2'
         self.helper.field_class = 'col-md-7'
 
-        self.helper.add_input(Submit('submit', _('Add/edit category'),
+        self.helper.add_input(Submit('submit', _('Add/edit action'),
                                      css_class='btn btn-default btn-md col-md-offset-5'))
 
     class Meta:
-        model = Category
-        fields = ('name', 'parent_category', )
-
-        help_texts = {
-            'parent_category': _('Choose parent category if you want.'),
-        }
-
-        labels = {
-            'parent_category': _('Parent Category'),
-        }
+        model = models.Action
+        fields = ('item', 'shop', 'description',
+                  'new_price', 'period_from', 'period_to', )
