@@ -2,7 +2,6 @@
 {% load staticfiles %}
 
 <!-- Preloader for load detail -->
-
 <div layout="row" layout-sm="column" layout-align="space-around" ng-if="!itemDetailLoad">
     <md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>
@@ -109,14 +108,7 @@
         </div>
 
         <!-- Categories -->
-        <div class="item-detail-categories-list col-lg-12 col-md-12 col-sm-12 col-xs-12"
-             ng-show="itemDetail.categories.length">
-            <ul>
-                <li ng-repeat="category in itemDetail.categories">
-                    [[ category ]]
-                </li>
-            </ul>
-        </div>
+        <md-chips ng-model="itemDetail.categories" readonly="true"></md-chips>
 
         <!-- Price without action -->
         <div ng-hide="itemDetail.action">
