@@ -364,10 +364,13 @@ function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, C
     /**
      * Scroll to add comments form
      */
-    $scope.scrollTo = function(id) {
-      $location.hash(id);
-      $anchorScroll();
-   };
+    $scope.scrollTo = function (id) {
+        var old = $location.hash();
+        $location.hash(id);
+        $anchorScroll();
+        //reset to old to keep any additional routing logic from kicking in
+        $location.hash(old);
+    };
 
      /**
      * Return true if comments exists and number of comments bigger then pagesize
