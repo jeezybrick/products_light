@@ -212,6 +212,7 @@ function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, C
     $scope.isReadonly = false;
     $scope.itemDetailLoadError = false;
     $scope.successMessageEditItem = 'Item edit successfuly!<strong> Click</strong> to item page.';
+    $scope.successMessageAddComment = 'Thanks for comment!';
 
 
     //add pre-comment model
@@ -353,6 +354,7 @@ function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, C
             $scope.hideCommentForm = true;
             $scope.appendComment = data;
             $scope.errorComment = false;
+            Flash.create('success', $scope.successMessageAddComment, 'flash-message-edit-item');
 
         }, function (error) {
 
