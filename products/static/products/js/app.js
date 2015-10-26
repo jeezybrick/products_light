@@ -10,7 +10,8 @@ angular
         'ngResource',
         'myApp.services',
         'flash',
-        'mgcrea.ngStrap'
+        'mgcrea.ngStrap',
+        'ngMaterial'
     ])
     .config(function ($httpProvider, $resourceProvider, $interpolateProvider, $routeProvider, $compileProvider) {
 
