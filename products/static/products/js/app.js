@@ -12,13 +12,15 @@ angular
         'flash',
         'mgcrea.ngStrap'
     ])
-    .config(function ($httpProvider, $resourceProvider, $interpolateProvider, $routeProvider) {
+    .config(function ($httpProvider, $resourceProvider, $interpolateProvider, $routeProvider, $compileProvider) {
 
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 
         $resourceProvider.defaults.stripTrailingSlashes = false;
         $interpolateProvider.startSymbol('[[').endSymbol(']]');
+
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
 
         $routeProvider.
             when('/', {

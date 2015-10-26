@@ -179,7 +179,7 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash, $aside) {
     };
 
     $scope.aside = {
-        "title": "Categories",
+        "title": "Categories"
     };
 
 }
