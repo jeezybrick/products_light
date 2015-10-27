@@ -76,8 +76,8 @@
                         </ul>
                     </li>
                 {% else %}
-                    <li class="{% ifactive "login" %} active {% endifactive %}">
-                        <a href="{% url 'login' %}">{% trans "Sign In" %}</a>
+                    <li ui-sref-active="active">
+                        <a ui-sref="auth-login">{% trans "Sign In" %}</a>
                     </li>
                 {% endif %}
             </ul>

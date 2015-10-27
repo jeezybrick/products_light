@@ -14,7 +14,8 @@ angular
         'mgcrea.ngStrap',
         'ngMaterial',
         'angular-loading-bar',
-        'angular.filter'
+        'angular.filter',
+
     ])
     .config(function ($locationProvider, $httpProvider, $resourceProvider, $interpolateProvider, $routeProvider,
                       $compileProvider, $stateProvider, $urlRouterProvider) {
@@ -39,6 +40,11 @@ angular
         // Routing
         $urlRouterProvider.otherwise('/');
         $stateProvider
+            .state('auth-login', {
+                url: '/login',
+                templateUrl: '/static/my_auth/partials/login.html',
+                controller: 'LoginCtrl'
+            })
             .state('home', {
                 url: '/',
                 templateUrl: '/static/products/partials/home.html',
