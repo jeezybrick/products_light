@@ -4,6 +4,25 @@
 
 angular
     .module('myApp')
+    .controller('HomeController', HomeController);
+
+function HomeController($scope, $timeout, AuthUser) {
+    $scope.user = AuthUser; // Auth user username
+    $scope.startPageLoad = false; // Auth user username
+
+    $scope.delay = $timeout(function () {
+
+        $scope.startPageLoad = true;
+
+    }, 400);
+
+    $scope.isUserAuth = function () {
+        return $scope.user.id;
+    };
+}
+
+angular
+    .module('myApp')
     .controller('HeaderController', HeaderController);
 
 function HeaderController($scope, $location)
@@ -12,6 +31,7 @@ function HeaderController($scope, $location)
         return viewLocation === $location.path();
     };
 }
+
 
 angular
     .module('myApp')

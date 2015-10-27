@@ -5,6 +5,7 @@
 angular
     .module('myApp', [
         'ngRoute',
+        'ui.router',
         'ui.bootstrap',
         'ngAnimate',
         'ngResource',
@@ -13,16 +14,20 @@ angular
         'mgcrea.ngStrap',
         'ngMaterial'
     ])
-    .config(function ($httpProvider, $resourceProvider, $interpolateProvider, $routeProvider, $compileProvider) {
+    .config(function ($httpProvider, $resourceProvider, $interpolateProvider, $routeProvider, $compileProvider, $stateProvider, $urlRouterProvider) {
 
+        // CSRF Support
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 
         $resourceProvider.defaults.stripTrailingSlashes = false;
+
+        // Force angular to use square brackets for template tag
+        // The alternative is using {% verbatim %}
         $interpolateProvider.startSymbol('[[').endSymbol(']]');
 
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
-
+        /*
         $routeProvider.
             when('/', {
                 templateUrl: '/products_ang/list/',
@@ -47,6 +52,26 @@ angular
             otherwise({
                 redirectTo: '/'
             });
+        */
+
+        // Routing
+        $urlRouterProvider.otherwise('/');
+        $stateProvider
+            .state('home', {
+                url: '/',
+                templateUrl: 'static/products/partials/home.html',
+                controller: 'HomeController'
+            })
+            .state('products-list', {
+                url: '/products',
+                templateUrl: '/products_ang/list/',
+                controller: 'itemCtrl'
+            })
+            .state('products-detail', {
+                url: '/profile/:userId',
+                templateUrl: 'static/tweeter/partials/profile.html',
+                controller: 'UserCtrl'
+            })
 
     });
 

@@ -1,0 +1,24 @@
+<!-- Preloader ng-if items load  -->
+<div layout="row" layout-sm="column" layout-align="space-around" ng-if="!startPageLoad">
+    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
+
+
+<div class="starter-template" ng-if="startPageLoad">
+    <p class="lead animated zoomIn">
+
+    <h2 class="main-greet animated fadeInUp">
+        <span ng-show="isUserAuth()">Hello,[[ user.username ]]!</span>
+
+        <div ng-hide="isUserAuth()">
+            Welcome!<br>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 animated fadeInUp">
+                <a href="{% url 'register' %}">Sign Up</a> or
+                <a href="{% url 'login' %}">Sign In</a> on web site.
+            </div>
+        </div>
+
+    </h2>
+    </p>
+</div>
