@@ -12,9 +12,11 @@ angular
         'myApp.services',
         'flash',
         'mgcrea.ngStrap',
-        'ngMaterial'
+        'ngMaterial',
+        'angular-loading-bar'
     ])
-    .config(function ($locationProvider, $httpProvider, $resourceProvider, $interpolateProvider, $routeProvider, $compileProvider, $stateProvider, $urlRouterProvider) {
+    .config(function ($locationProvider, $httpProvider, $resourceProvider, $interpolateProvider, $routeProvider,
+                      $compileProvider, $stateProvider, $urlRouterProvider) {
 
         // CSRF Support
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
@@ -31,6 +33,7 @@ angular
         // enable html5Mode for pushstate ('#'-less URLs)
         $locationProvider.html5Mode(true);
         $locationProvider.hashPrefix('!');
+
 
         // Routing
         $urlRouterProvider.otherwise('/');

@@ -634,6 +634,7 @@ angular
     .controller('ShopDetailController', ShopDetailController);
 
 function ShopDetailController($scope, AuthUser, Shop, $stateParams) {
+
     $scope.user = AuthUser; // Auth user
 
     /**
