@@ -41,27 +41,27 @@ angular
                 controller: 'HomeController'
             })
             .state('products-list', {
-                url: '/products',
+                url: '/products/',
                 templateUrl: '/products_ang/list/',
                 controller: 'ItemController'
             })
             .state('products-detail', {
-                url: '/products/:itemId',
+                url: '/products/:itemId/',
                 templateUrl: '/products_ang/show/',
                 controller: 'ItemDetailController'
             })
             .state('categories-list', {
-                url: '/categories',
+                url: '/categories/',
                 templateUrl: '/categories_ang/',
                 controller: 'CategoryListController'
             })
             .state('shop-list', {
-                url: '/shops',
+                url: '/shops/',
                 templateUrl: '/static/products/partials/shop-list.html',
                 controller: 'ShopListController'
             })
             .state('shop-detail', {
-                url: '/shops/:id',
+                url: '/shops/:id/',
                 templateUrl: '/static/products/partials/shop-detail.html',
                 controller: 'ShopDetailController'
             })

@@ -197,10 +197,10 @@ angular
     .module('myApp')
     .controller('ItemDetailController', ItemDetailController);
 
-function ItemDetailController($scope, $routeParams, $location, Item, Rate, AuthUser, Comment, Flash, $anchorScroll) {
+function ItemDetailController($scope, $location, Item, Rate, AuthUser, Comment, Flash, $anchorScroll, $stateParams) {
 
     // Init
-    $scope.id = $routeParams.itemId; // item id
+    $scope.id = $stateParams.itemId; // item id
     $scope.AuthUserUsername = AuthUser.username; // Auth user username
     $scope.showDetailOfItem = true;
     $scope.itemDetailLoad = false;
@@ -228,14 +228,14 @@ function ItemDetailController($scope, $routeParams, $location, Item, Rate, AuthU
     $scope.comment = {
         username:'Ivan',
         message:'Hello world!',
-        item: $routeParams.itemId
+        item: $stateParams.itemId
     };
 
 
     /**
      * Get item detail
      */
-    $scope.itemDetail = Item.get({id: $routeParams.itemId}, function (response) {
+    $scope.itemDetail = Item.get({id: $stateParams.itemId}, function (response) {
 
         $scope.itemDetailLoad = true;
         $scope.itemDetailComments = response.comments;
@@ -246,7 +246,7 @@ function ItemDetailController($scope, $routeParams, $location, Item, Rate, AuthU
          */
         $scope.rate = {
             value: $scope.itemDetail.rates,
-            item: $routeParams.itemId
+            item: $stateParams.itemId
         };
 
     }, function (error) {
@@ -260,7 +260,7 @@ function ItemDetailController($scope, $routeParams, $location, Item, Rate, AuthU
      */
      $scope.rate = {
         value: $scope.itemDetail.user_rate,
-        item: $routeParams.itemId
+        item: $stateParams.itemId
     };
 
     /**
@@ -633,16 +633,15 @@ angular
     .module('myApp')
     .controller('ShopDetailController', ShopDetailController);
 
-function ShopDetailController($scope, AuthUser, Shop, $routeParams) {
+function ShopDetailController($scope, AuthUser, Shop, $stateParams) {
     $scope.user = AuthUser; // Auth user
 
     /**
      * Get shop detail
      */
-    $scope.shopDetail = Shop.get({id: $routeParams.id}, function (response) {
+    $scope.shopDetail = Shop.get({id: $stateParams.id}, function () {
 
         $scope.shopDetailLoad = true;
-        $scope.shopDetail = response.results[0];
 
     }, function (error) {
 

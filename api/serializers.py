@@ -155,6 +155,8 @@ class ShopSerializer(serializers.Serializer):
 
 class ShopDetailSerializer(serializers.ModelSerializer):
 
+    items = ItemDetailSerializer(many=True, read_only=True)
+
     class Meta:
         model = MyUser
         fields = ('id', 'username', 'email', 'items', )

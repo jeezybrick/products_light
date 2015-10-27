@@ -1,98 +1,99 @@
+<div class="row" ng-if="shopDetailLoad">
+    <div class="item-detail-header col-lg-10 col-md-9 col-sm-9 col-xs-12">
+        <h1 class="detail-item-attr">[[ shopDetail.username ]]</h1>
+    </div>
 
-    <div class="row" ng-if="shopDetailLoad">
-        <div class="item-detail-header col-lg-10 col-md-9 col-sm-9 col-xs-12">
-            <h1 class="detail-item-attr">[[ shopDetail.username ]]</h1>
-        </div>
+    <div class="col-lg-12 col-md--12 col-sm-12 col-xs-12">
+
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb">
+            <li><a ui-sref="home">Home</a></li>
+            <li><a ui-sref="shop-list">List of shops</a></li>
+            <li class="active">Shop detail</li>
+        </ol>
+        <hr>
 
         <div class="col-lg-12 col-md--12 col-sm-12 col-xs-12">
+            <h3 class="detail-item-attr">
+                <small>ID:[[ shopDetail.id ]]</small>
+            </h3>
+        </div>
 
-            <!-- Breadcrumb -->
-            <ol class="breadcrumb">
-                <li><a ui-sref="home">Home</a></li>
-                <li><a ui-sref="shop-list">List of shops</a></li>
-                <li class="active">Shop detail</li>
-            </ol>
-            <hr>
+        <!-- Image of shop -->
+        <div class="col-lg-3 col-md-46 col-sm-4 col-xs-12 text-center">
+            <img src="http://light-it.net/wp-content/uploads/light_it_logo.png" class="img-responsive"
+                 alt="Light IT">
+        </div>
 
-            <div class="col-lg-12 col-md--12 col-sm-12 col-xs-12">
-                <h3 class="detail-item-attr">
-                    <small>ID:[[ shopDetail.pk ]]</small>
-                </h3>
-            </div>
-
-            <!-- Image of shop -->
-            <div class="col-lg-3 col-md-46 col-sm-4 col-xs-12 text-center">
-                <img src="http://light-it.net/wp-content/uploads/light_it_logo.png" class="img-responsive"
-                     alt="Light IT">
-            </div>
-
-            <!-- Name and collapse button with items belongs to this shop -->
-            <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 text-left">
-                <h2>Shop name:
-                    <small>[[ shopDetail.username ]]</small>
-                </h2>
-                <div class="row">
-                    <div class="col-lg-5 col-md-6 col-sm-7">
-                        <button class="btn btn-primary btn-lg btn-block" type="button" data-toggle="collapse"
-                                data-target="#collapseExample"
-                                aria-expanded="false" aria-controls="collapseExample">
-                            Show items
-                        </button>
-                    </div>
+        <!-- Name and collapse button with items belongs to this shop -->
+        <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12 text-left">
+            <h2>Shop name:
+                <small>[[ shopDetail.username ]]</small>
+            </h2>
+            <div class="row">
+                <div class="col-lg-5 col-md-6 col-sm-7">
+                    <button class="btn btn-primary btn-lg btn-block" type="button" data-toggle="collapse"
+                            data-target="#collapseExample"
+                            aria-expanded="false" aria-controls="collapseExample">
+                        Show items
+                    </button>
                 </div>
             </div>
+        </div>
 
-            <!-- Collapse of items -->
-            <div class="collapse" id="collapseExample">
-                         <div class="main-list col-lg-4 col-ms-4 col-sm-6 col-xs-12">
+        <!-- Collapse of items -->
+        <div class="collapse" id="collapseExample">
+            <div class="main-list col-lg-4 col-ms-4 col-sm-6 col-xs-12" ng-repeat="item in shopDetail.items">
 
-                    <div class="notes">
-                        <div class="row">
-                            <div class="main-list-top col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                <h2>ID:[[ item.id ]]</h2>
-                            </div>
+                <div class="notes">
+                    <div class="row">
+                        <div class="main-list-top col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                            <h2>ID:[[ item.id ]]</h2>
+                        </div>
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <h4 class="word-break">name:[[ item.name ]]</h4>
-                            </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h4 class="word-break">name:[[ item.name ]]</h4>
+                        </div>
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <h4 class="word-break">price:[[ item.price ]]
-                                    $.</h4>
-                            </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h4 class="word-break">price:[[ item.price ]]
+                                $.</h4>
+                        </div>
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <h4 class="word-break">image_url: [[ item.image_url ]]</h4>
-                            </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h4 class="word-break">image_url: [[ item.image_url ]]</h4>
+                        </div>
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <ul>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <ul>
 
-                                        <li>[[ category ]]</li>
+                                <li>[[ category ]]</li>
 
-                                        <small>Categories doesn't picked.</small>
+                                <small>Categories doesn't picked.</small>
 
-                                </ul>
+                            </ul>
 
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <h4>
-                                    <a href="{% url 'products_show' item.id %}">Details</a>
-                                </h4>
-                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h4>
+                                <a href="{% url 'products_show' item.id %}">Details</a>
+                            </h4>
                         </div>
                     </div>
                 </div>
-
-                        <h3><small>This shop doesn't add items</small></h3>
-
             </div>
-            <hr/>
+
+            <h3>
+                <small>This shop doesn't add items</small>
+            </h3>
+
         </div>
-
+        <hr/>
     </div>
 
-    <!-- Preloader ng-if items load  -->
-    <div layout="row" layout-sm="column" layout-align="space-around" ng-if="!shopDetailLoad">
-        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
-    </div>
+</div>
+
+<!-- Preloader ng-if items load  -->
+<div layout="row" layout-sm="column" layout-align="space-around" ng-if="!shopDetailLoad">
+    <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+</div>
