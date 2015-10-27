@@ -15,7 +15,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <ol class="breadcrumb">
                 <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-                <li><a href="{% url 'products_index_ang' %}#/products">{% trans "List of items" %}</a></li>
+                <li><a ui-sref="products-list">{% trans "List of items" %}</a></li>
                 <li class="active">{% trans "Detail of item" %}</li>
             </ol>
         </div>

@@ -7,8 +7,8 @@ angular
     .controller('HomeController', HomeController);
 
 function HomeController($scope, $timeout, AuthUser) {
-    $scope.user = AuthUser; // Auth user username
-    $scope.startPageLoad = false; // Auth user username
+    $scope.user = AuthUser; // Auth user object
+    $scope.startPageLoad = false;
 
     $scope.delay = $timeout(function () {
 
@@ -21,23 +21,12 @@ function HomeController($scope, $timeout, AuthUser) {
     };
 }
 
-angular
-    .module('myApp')
-    .controller('HeaderController', HeaderController);
-
-function HeaderController($scope, $location)
-{
-    $scope.isActive = function (viewLocation) {
-        return viewLocation === $location.path();
-    };
-}
-
 
 angular
     .module('myApp')
-    .controller('itemCtrl', itemCtrl);
+    .controller('ItemController', ItemController);
 
-function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
+function ItemController($scope, $http, Item, Category, Cart, Flash) {
 
     // sort init
     $scope.sortField = '-pk';
@@ -206,9 +195,9 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
 
 angular
     .module('myApp')
-    .controller('ItemDetailCtrl', ItemDetailCtrl);
+    .controller('ItemDetailController', ItemDetailController);
 
-function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, Comment, Flash, $anchorScroll) {
+function ItemDetailController($scope, $routeParams, $location, Item, Rate, AuthUser, Comment, Flash, $anchorScroll) {
 
     // Init
     $scope.id = $routeParams.itemId; // item id
@@ -405,9 +394,9 @@ function ItemDetailCtrl($scope, $routeParams, $location, Item, Rate, AuthUser, C
 
 angular
     .module('myApp')
-    .controller('CategoryListCtrl', CategoryListCtrl);
+    .controller('CategoryListController', CategoryListController);
 
-function CategoryListCtrl($scope, Category, Flash) {
+function CategoryListController($scope, Category, Flash) {
 
 
     /**
@@ -619,8 +608,46 @@ function ActionCtrl($scope, $routeParams, $location, Action, AuthUser, Flash) {
 
     };
 
+}
 
+angular
+    .module('myApp')
+    .controller('ShopListController', ShopListController);
 
+function ShopListController($scope, AuthUser, Shop) {
+    $scope.user = AuthUser; // Auth user
+
+    /**
+     * Get list of shops
+     */
+    $scope.shops = Shop.query(function () {
+
+        $scope.shopsLoad = true;
+
+    }, function () {
+        $scope.shopsLoadError = true;
+    });
+}
+
+angular
+    .module('myApp')
+    .controller('ShopDetailController', ShopDetailController);
+
+function ShopDetailController($scope, AuthUser, Shop, $routeParams) {
+    $scope.user = AuthUser; // Auth user
+
+    /**
+     * Get shop detail
+     */
+    $scope.shopDetail = Shop.get({id: $routeParams.id}, function (response) {
+
+        $scope.shopDetailLoad = true;
+        $scope.shopDetail = response.results[0];
+
+    }, function (error) {
+
+        $scope.shopDetailLoadError = error.data.detail;
+    });
 }
 
 angular

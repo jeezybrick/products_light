@@ -1,13 +1,8 @@
-{% extends 'layout.html' %}
+
 {% load i18n %}
 {% load staticfiles %}
-{% block title %}
-    {% trans "List of categories" %}
-{% endblock %}
 
-{% block content %}
-
-    <div ng-controller="CategoryListCtrl as category">
+    <div ng-controller="CategoryListController as category">
 
         <!-- Flash messages -->
         <div flash-message="4000" ></div>
@@ -106,4 +101,3 @@
 
         </div>
     </div>
-{% endblock %}

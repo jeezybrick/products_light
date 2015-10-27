@@ -17,10 +17,10 @@
     <!-- breadcrumb -->
     <ol class="breadcrumb">
         <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-        <li><a href="{% url 'products_index_ang' %}#/products">
+        <li><a ui-sref="products-list">
             {% trans "List of items" %}</a></li>
         <li>
-            <a ng-href="#/products/[[ itemId ]]">{% trans "Detail of item" %}</a>
+            <a ui-sref="products-detail({ itemId:item.pk})">{% trans "Detail of item" %}</a>
         </li>
         <li class="active">{% trans "Modify action" %}</li>
     </ol>

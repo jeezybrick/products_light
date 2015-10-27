@@ -4,6 +4,9 @@
 <!DOCTYPE html>
 <html lang="" ng-app="myApp">
 <head>
+    <!-- Angular HTML5 mode -->
+    <base href="/" />
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -48,14 +51,17 @@
         <script src="https://cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://cdn.jsdelivr.net/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
 </head>
 
 <body>
-<div ng-controller="HeaderController">
 
+<div>
     <!-- Navbar -->
    {% include 'products/partials/nav.html' %}
+
 </div>
+
 <div class="container-fluid main-content">
 
   <div ui-view></div>

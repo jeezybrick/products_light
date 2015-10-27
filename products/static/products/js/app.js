@@ -14,7 +14,7 @@ angular
         'mgcrea.ngStrap',
         'ngMaterial'
     ])
-    .config(function ($httpProvider, $resourceProvider, $interpolateProvider, $routeProvider, $compileProvider, $stateProvider, $urlRouterProvider) {
+    .config(function ($locationProvider, $httpProvider, $resourceProvider, $interpolateProvider, $routeProvider, $compileProvider, $stateProvider, $urlRouterProvider) {
 
         // CSRF Support
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
@@ -27,51 +27,45 @@ angular
         $interpolateProvider.startSymbol('[[').endSymbol(']]');
 
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
-        /*
-        $routeProvider.
-            when('/', {
-                templateUrl: '/products_ang/list/',
-                controller: 'itemCtrl'
-            }).
-            when('/products', {
-                templateUrl: '/products_ang/list/',
-                controller: 'itemCtrl'
-            }).
-            when('/products/:itemId', {
-                templateUrl: '/products_ang/show/',
-                controller: 'ItemDetailCtrl'
-            }).
-            when('/products/:itemId/edit', {
-                templateUrl: '/products_ang/edit/',
-                controller: 'ItemDetailCtrl'
-            }).
-            when('/products/:itemId/action/add', {
-                templateUrl: '/products_ang/action/add/',
-                controller: 'ActionCtrl'
-            }).
-            otherwise({
-                redirectTo: '/'
-            });
-        */
+
+        // enable html5Mode for pushstate ('#'-less URLs)
+        $locationProvider.html5Mode(true);
+        $locationProvider.hashPrefix('!');
 
         // Routing
         $urlRouterProvider.otherwise('/');
         $stateProvider
             .state('home', {
                 url: '/',
-                templateUrl: 'static/products/partials/home.html',
+                templateUrl: '/static/products/partials/home.html',
                 controller: 'HomeController'
             })
             .state('products-list', {
                 url: '/products',
                 templateUrl: '/products_ang/list/',
-                controller: 'itemCtrl'
+                controller: 'ItemController'
             })
             .state('products-detail', {
-                url: '/profile/:userId',
-                templateUrl: 'static/tweeter/partials/profile.html',
-                controller: 'UserCtrl'
+                url: '/products/:itemId',
+                templateUrl: '/products_ang/show/',
+                controller: 'ItemDetailController'
             })
+            .state('categories-list', {
+                url: '/categories',
+                templateUrl: '/categories_ang/',
+                controller: 'CategoryListController'
+            })
+            .state('shop-list', {
+                url: '/shops',
+                templateUrl: '/static/products/partials/shop-list.html',
+                controller: 'ShopListController'
+            })
+            .state('shop-detail', {
+                url: '/shops/:id',
+                templateUrl: '/static/products/partials/shop-detail.html',
+                controller: 'ShopDetailController'
+            })
+
 
     });
 

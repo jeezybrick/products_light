@@ -41,5 +41,12 @@ angular.module('myApp.services', ['ngResource'])
             'get': {method: 'GET'},
             'query': {method: 'GET', isArray: false}
         });
-    });
+    })
+    .factory('Shop', function ($resource) {
+            return $resource('/api/shops/:id/', {id: '@id'}, {
+                'update': {method: 'PUT'},
+                'get': {method: 'GET'},
+                'query': {method: 'GET', isArray: false}
+            });
+        });
 

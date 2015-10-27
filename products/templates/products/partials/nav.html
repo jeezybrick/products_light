@@ -35,16 +35,16 @@
                     <a ui-sref="home">{% trans "Home" %}</a>
                 </li>
 
-                <li class="{% ifactive "shop_list" %} active {% endifactive %}">
-                    <a href="{% url 'shop_list' %}">{% trans "Shops" %}</a>
+                <li ui-sref-active="active">
+                    <a ui-sref="shop-list">{% trans "Shops" %}</a>
                 </li>
 
                 <li ui-sref-active="active">
-                    <a ui-sref="products-list">{% trans "Items-Angular" %}</a>
+                    <a ui-sref="products-list">{% trans "Items" %}</a>
                 </li>
 
-                <li class="{% ifactive "categories_list_ang" %} active {% endifactive %}">
-                    <a href="{% url 'categories_list_ang' %}">{% trans "Categories-Angular" %}</a>
+                <li ui-sref-active="active">
+                    <a ui-sref="categories-list">{% trans "Categories" %}</a>
                 </li>
                 {% if user.is_staff %}
                     <li class="hidden-sm"><a href="/admin/">Admin</a>
