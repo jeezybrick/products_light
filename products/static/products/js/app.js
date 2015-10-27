@@ -13,7 +13,8 @@ angular
         'flash',
         'mgcrea.ngStrap',
         'ngMaterial',
-        'angular-loading-bar'
+        'angular-loading-bar',
+        'angular.filter'
     ])
     .config(function ($locationProvider, $httpProvider, $resourceProvider, $interpolateProvider, $routeProvider,
                       $compileProvider, $stateProvider, $urlRouterProvider) {

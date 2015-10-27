@@ -61,6 +61,8 @@ INSTALLED_APPS = (
     'activelink',
     'crispy_forms',
     'social.apps.django_app.default',
+    'rest_framework.authtoken',
+    'rest_auth'
 
 )
 

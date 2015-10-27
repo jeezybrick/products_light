@@ -2,7 +2,6 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import permissions
 from api.utils import is_safe_method
 from products.models import Item, Action
-from products.utils import get_min_quantity
 
 """ check if auth user is author to this item """
 

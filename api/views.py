@@ -66,7 +66,6 @@ class ItemDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
         obj = cache.ProductDetailCache().get(id=filter_kwargs['pk'])
-        #obj = Item.objects.get(id=filter_kwargs['pk'])
         self.check_object_permissions(self.request, obj)
 
         return obj

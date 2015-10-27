@@ -32,7 +32,10 @@ urlpatterns = [
     url(r'^', include('api.urls')),
 
     # Social
-    url('', include('social.apps.django_app.urls', namespace='social'))
+    url('', include('social.apps.django_app.urls', namespace='social')),
+
+    # Auth api
+    url(r'^rest-auth/', include('rest_auth.urls')),
 
 
 ]
