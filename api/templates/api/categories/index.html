@@ -64,6 +64,29 @@
 
                 <!-- ng-repeat -->
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                    <!-- pagination -->
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="categories.previous || categories.next">
+                        <nav>
+                            <ul class="pager">
+
+                                <!-- disabled if item list has no previous page -->
+                                <li>
+                                    <button ng-click="pagination(categories.previous)"
+                                            ng-class="{disabled:isCategoriesNotPrevious()}">{% trans "Previous" %}
+                                    </button>
+                                </li>
+
+                                <!-- disabled if item list has no next page -->
+                                <li>
+                                    <button ng-click="pagination(categories.next)"
+                                            ng-class="{disabled:IsCategoriesNotNext()}">{% trans "Next" %}
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
                     <div id="categoryList" class="main-list col-lg-3 col-ms-3 col-sm-4 col-xs-12"
                          ng-repeat="category in categories.results  | filter:search">
 

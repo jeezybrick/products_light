@@ -90,12 +90,13 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
 
     $scope.pagination = function (page) {
 
-        $http.get(page, {cache: true}).success(function (data) {
+        if (page !== null) {
+            $http.get(page, {cache: true}).success(function (data) {
 
-            $scope.items = data;
+                $scope.items = data;
 
-        });
-
+            });
+        }
     };
 
     /**
@@ -450,11 +451,14 @@ function CategoryListCtrl($scope, $http, Category, Flash) {
      */
     $scope.pagination = function (page) {
 
-        $http.get(page, {cache: true}).success(function (data) {
+        if (page !== null) {
 
-            $scope.categories = data;
+            $http.get(page, {cache: true}).success(function (data) {
 
-        });
+                $scope.categories = data;
+
+            });
+        }
 
     };
 

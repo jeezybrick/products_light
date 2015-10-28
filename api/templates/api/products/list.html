@@ -80,6 +80,30 @@
                     <!-- ng-repeat -->
                     <div class="main-list-wrapper col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="row">
+
+                            <!-- pagination -->
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-hide="showDetailOfItem"
+                                 ng-if="items.previous || items.next">
+                                <nav>
+                                    <ul class="pager">
+
+                                        <!-- disabled if item list has no previous page -->
+                                        <li>
+                                            <button ng-click="pagination(items.previous)"
+                                                    ng-class="{disabled:isItemsNotPrevious(items)}">{% trans "Previous" %}
+                                            </button>
+                                        </li>
+
+                                        <!-- disabled if item list has no next page -->
+                                        <li>
+                                            <button ng-click="pagination(items.next)"
+                                                    ng-class="{disabled:IsItemsNotNext(items)}">{% trans "Next" %}
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+
                             <div class="main-list col-lg-3 col-md-4 col-sm-4 col-xs-12" ng-hide="showDetailOfItem"
                                  ng-repeat="item in items.results | filter:search "
                                  ng-class="{'zero-quantity-item' : isQuantityOfItemIsZero(item)}">
