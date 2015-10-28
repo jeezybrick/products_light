@@ -30,11 +30,11 @@ angular.module('myApp.services', ['ngResource'])
                 id: '@id'
             },
             {
-                update: {
-                    method: 'PUT'
-                }
-            }
-        )
+                'update': {method: 'PUT'},
+                'query': {method: 'GET', isArray: false},
+                'get': {method: 'GET', cache: false}
+            });
+
     }).factory('Action', function ($resource) {
         return $resource('/api/action/:item_id/', {item_id: '@item_id'}, {
             'update': {method: 'PUT'},

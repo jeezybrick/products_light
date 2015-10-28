@@ -28,6 +28,22 @@
     <hr>
 
     <div class="row" ng-controller="CartCtrl as cart">
+[[ itemListForOrder ]]
+
+        <md-list ng-cloak>
+            <md-subheader class="md-no-sticky">{% trans "Items in cart" %}</md-subheader>
+            <md-list-item id="item_[[ cart.item.id ]]" ng-repeat="cartt in cartObject.results">
+
+                <md-checkbox ng-click="cart.addItemToOrder(cartt.item.id)"></md-checkbox>
+                <img alt="[[ cartt.item.name ]]" ng-src="[[ cartt.item.image_url ]]" class="md-avatar" />
+                <p> [[ cart.item.name ]] </p>
+                <a href="javascript:void(0);" class="trash-icon pull-right"
+                                   ng-click="cart.deleteItemInCart( cartt.item.id )">
+                    <i class="fa fa-trash-o fa-2x"></i>
+                </a>
+            </md-list-item>
+        </md-list>
+
         {%  if cart %}
             <div class="cart-choose-button col-lg-6 col-md-6 col-sm-6 col-xs-6">
                 <div class="btn-group">
@@ -56,27 +72,27 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
             {% for cart in cart %}
-                <div id="item_{{ cart.item.id }}" ng-class="{'panel-primary-active' : allItemActive}"
+                <div id="item_[[ cart.item.id ]]" ng-class="{'panel-primary-active' : allItemActive}"
                      class="cart-panel panel panel-primary">
                     <div class="row">
                         <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                            <img class="img-responsive img-rounded" src="{{ cart.item.image_url }}" alt="Item image">
+                            <img class="img-responsive img-rounded" ng-src="[[ cart.item.image_url ]]" alt="Item image">
                         </div>
                         <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
 
                             <div class="panel-body">
-                                {{ cart.item.name }}
+                                [[ cart.item.name ]]
                                 <a href="javascript:void(0);" class="trash-icon pull-right"
-                                   ng-click="cart.deleteItemInCart({{ cart.item.id }})">
+                                   ng-click="cart.deleteItemInCart([[ cart.item.id ]])">
                                     <i class="fa fa-trash-o fa-3x"></i>
                                 </a>
                                 <a href="javascript:void(0);" class="hand-icon pull-right"
-                                   ng-click="cart.chooseItem({{ cart.item.id }})">
+                                   ng-click="cart.chooseItem([[ cart.item.id ]])">
                                     <i class="fa fa-hand-pointer-o fa-3x"></i>
                                 </a>
                             </div>
                             <div class="panel-footer">
-                                <pre>{{ cart.item.description }}</pre>
+                                <pre>[[ cart.item.description ]]</pre>
                                 <button class="btn btn-success" type="button" data-toggle="modal"
                                         data-target="#myModal">
                                     <i class="fa fa-plus"></i> {% trans "Buy this item" %}

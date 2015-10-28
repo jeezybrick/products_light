@@ -433,6 +433,21 @@ function CartCtrl($scope, $timeout, Cart) {
     vm.chooseAll = chooseAll;
     vm.chooseNothing = chooseNothing;
     vm.makeOrder = makeOrder;
+    vm.addItemToOrder = addItemToOrder;
+
+    $scope.itemListForOrder = [];
+
+
+    /**
+     * Get list of items in the cart of the current auth user
+     */
+    $scope.cartObject = Cart.query(function () {
+
+        $scope.cartLoad = true;
+
+    }, function () {
+        $scope.cartLoadError = true;
+    });
 
 
     /**
@@ -448,6 +463,22 @@ function CartCtrl($scope, $timeout, Cart) {
         });
 
     }
+
+     /**
+     * Add item to order for purchase
+     */
+    function addItemToOrder(item) {
+         var index = $scope.itemListForOrder.indexOf(item);
+
+        if(index > -1){
+            $scope.itemListForOrder.splice(index);
+        }else{
+           $scope.itemListForOrder.push(item);
+        }
+
+
+    }
+
 
 
     /**

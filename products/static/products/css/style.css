@@ -474,3 +474,6 @@ md-content md-tabs md-tabs-wrapper span {
 #socialLoginForm > a{
     margin-right: 10px;
 }
+.trash-icon{
+    color: red;
+}
