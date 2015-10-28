@@ -139,10 +139,11 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
 
         $scope.cart = new Cart();
         $scope.cart.item = itemId;
-        $scope.itemLoad = false;
+
 
         $scope.cart.$save(function () {
 
+            $scope.itemLoad = false;
             $scope.items = Item.query(function(){
                 $scope.itemLoad = true;
             });
@@ -152,9 +153,9 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
 
         }, function (error) {
 
+            console.log('error');
             $scope.itemInCartError = error.data.detail;
             Flash.create('danger', $scope.itemInCartError, 'flash-message-item-list');
-            $scope.itemLoad = true;
 
         });
 
@@ -166,10 +167,12 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
      */
     $scope.deleteItemInCart = function (itemId) {
 
-        $scope.itemLoad = false;
-        Cart.delete({id: itemId}, function () {
 
-            $scope.items = Item.query();
+        Cart.delete({id: itemId}, function () {
+            $scope.itemLoad = false;
+            $scope.items = Item.query(function(){
+                $scope.itemLoad = true;
+            });
 
             $scope.itemLoad = true;
             Flash.create('info', $scope.deleteItemFromCartMessageSuccess, 'flash-message-item-list');
