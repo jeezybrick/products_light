@@ -28,10 +28,10 @@ def random_item_for_action():
 
 # count of objects
 count_of_users = 10
-count_of_parent_categories = 10
-count_of_sub_categories = 50
-count_of_items = 100
-count_of_comments = 50
+count_of_parent_categories = 50
+count_of_sub_categories = 200
+count_of_items = 300
+count_of_comments = 100
 count_of_actions = int(count_of_items/2)
 
 

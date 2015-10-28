@@ -152,15 +152,18 @@
                     <!-- Comments tab -->
                     <md-tab label="comments">
                         <md-content class="md-padding">
+                            
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                                    <!-- show comments if they exists for this item -->
+                                    <h3 id="comments" ng-show="itemDetail.comments.length">{% trans "Comments" %}</h3>
+                                </div>
+                                <div class="button-add-something col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+                                    <button ng-click="scrollTo('add-comment-form')"
+                                            class="btn btn-default">{% trans "Add comment" %}</button>
+                                </div>
+                            </div>
 
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
-                                <!-- show comments if they exists for this item -->
-                                <h3 id="comments" ng-show="itemDetail.comments.length">{% trans "Comments" %}</h3>
-                            </div>
-                            <div class="button-add-something col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
-                                <button ng-click="scrollTo('add-comment-form')"
-                                        class="btn btn-default">{% trans "Add comment" %}</button>
-                            </div>
 
                             <!-- block for new comment posting by user -->
                             <div class="comment-unit col-md-8 col-sm-10 animated slideInUp" ng-show="appendComment">
