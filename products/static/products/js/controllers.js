@@ -91,9 +91,12 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
     $scope.pagination = function (page) {
 
         if (page !== null) {
+
+            $scope.itemLoad = false;
             $http.get(page, {cache: true}).success(function (data) {
 
                 $scope.items = data;
+                $scope.itemLoad = true;
 
             });
         }
@@ -452,10 +455,12 @@ function CategoryListCtrl($scope, $http, Category, Flash) {
     $scope.pagination = function (page) {
 
         if (page !== null) {
+            $scope.categoryLoad = false;
 
             $http.get(page, {cache: true}).success(function (data) {
 
                 $scope.categories = data;
+                $scope.categoryLoad = true;
 
             });
         }
