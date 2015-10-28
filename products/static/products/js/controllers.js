@@ -152,7 +152,6 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
 
         }, function (error) {
 
-            console.log('error');
             $scope.itemInCartError = error.data.detail;
             Flash.create('danger', $scope.itemInCartError, 'flash-message-item-list');
 
@@ -171,7 +170,7 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
             $scope.items = Item.query(function(){
                 $scope.itemLoad = true;
             });
-            
+
             Flash.create('info', $scope.deleteItemFromCartMessageSuccess, 'flash-message-item-list');
 
         }, function(error){
@@ -649,6 +648,9 @@ function ActionCtrl($scope, $routeParams, $location, Action, AuthUser, Flash) {
 
     };
 
+    /**
+     * Delete action
+     */
     $scope.deleteAction = function () {
 
         bootbox.confirm('Are you sure you want to delete this action?', function (answer) {
@@ -676,6 +678,36 @@ angular
 function LoginCtrl($scope) {
 
 //
+
+}
+
+angular
+    .module('myApp')
+    .controller('TestController', TestController);
+
+function TestController($scope, Upload, $timeout) {
+
+    /**
+     * Function for upload image files
+     */
+    $scope.uploadPic = function (file) {
+        file.upload = Upload.upload({
+            url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+            data: {file: file, username: $scope.username}
+        });
+
+        file.upload.then(function (response) {
+            $timeout(function () {
+                file.result = response.data;
+            });
+        }, function (response) {
+            if (response.status > 0)
+                $scope.errorMsg = response.status + ': ' + response.data;
+        }, function (evt) {
+            // Math.min is to fix IE which reports 200% sometimes
+            file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+        });
+    }
 
 }
 

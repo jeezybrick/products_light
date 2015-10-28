@@ -11,7 +11,8 @@ angular
         'myApp.services',
         'flash',
         'mgcrea.ngStrap',
-        'ngMaterial'
+        'ngMaterial',
+        'ngFileUpload'
     ])
     .config(function ($httpProvider, $resourceProvider, $interpolateProvider, $routeProvider, $compileProvider) {
 

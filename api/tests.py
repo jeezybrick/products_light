@@ -43,16 +43,18 @@ class SimpleTest(TestCase):
         self.user_shop.delete()
         self.item.delete()
 
-    """ List of items """
-
+    #################
+    # List of items #
+    #################
     def test_item_list(self):
         url = reverse('item_list_api')
 
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-    """ Detail of item """
-
+    ##################
+    # Detail of item #
+    ##################
     def test_item_detail(self):
         url = reverse('item_detail_api', args=(self.item.id,))
         url_with_fake_id = reverse('item_detail_api', args=(self.fake_id,))
@@ -63,8 +65,9 @@ class SimpleTest(TestCase):
         response = self.client.get(url_with_fake_id)
         self.assertEqual(response.status_code, 404)
 
-    """ test add item """
-
+    ##################
+    # test add item  #
+    ##################
     def test_item_add(self):
         url = reverse('item_list_api')
         post = {'username': 'john', 'password': 'smith'}
@@ -73,8 +76,11 @@ class SimpleTest(TestCase):
         # no post method allowed
         self.assertEqual(response.status_code, 405)
 
-    """ test edit item with permission to edit and delete only owner """
+    """  """
 
+    ################################################################
+    # test edit item with permission to edit and delete only owner #
+    ################################################################
     def test_item_edit(self):
         url = reverse('item_detail_api', args=(self.item.id,))
         post = {'name': 'john', 'price': 322}
@@ -102,8 +108,9 @@ class SimpleTest(TestCase):
         response = self.client.delete(url)
         self.assertEqual(response.status_code, 204)
 
-    """ List of action """
-
+    ##################
+    # List of action #
+    ##################
     def test_action_list(self):
         url = reverse('action_list_api')
 
@@ -146,7 +153,9 @@ class SimpleTest(TestCase):
         response = self.client.post(url, post)
         self.assertEqual(response.status_code, 403)
 
-    """ Delete action """
+    ##################
+    # Delete action  #
+    ##################
     def test_delete_action(self):
         url_list = reverse('action_list_api')
         url_detail = reverse('action_detail_api', args=(self.item.id,))
@@ -168,8 +177,9 @@ class SimpleTest(TestCase):
         response = self.client.delete(url_detail)
         self.assertEqual(response.status_code, 204)
 
-    """ Add category(no post method) """
-
+    #################################
+    # Add category(no post method)  #
+    #################################
     def test_add_category(self):
         url = reverse('category_list_api')
         post = {'username': 'john', 'password': 'smith'}
@@ -178,8 +188,9 @@ class SimpleTest(TestCase):
         # no post method allowed
         self.assertEqual(response.status_code, 405)
 
-    """ Add comment by auth and no auth user """
-
+    #########################################
+    # Add comment by auth and no auth user  #
+    #########################################
     def test_add_comment(self):
         url = reverse('comment_list_api')
         post = {'username': 'john', 'message': 'smith', 'item': self.item.id}
@@ -192,8 +203,9 @@ class SimpleTest(TestCase):
         response = self.client.post(url, post_with_fake_id)
         self.assertEqual(response.status_code, 400)
 
-    """ Add rating to item by AUTH user """
-
+    ####################################
+    # Add rating to item by AUTH user  #
+    ####################################
     def test_add_rate(self):
         url = reverse('rate_list_api')
         post = {'value': 5, 'item': self.item.id}
@@ -212,8 +224,9 @@ class SimpleTest(TestCase):
         response = self.client.post(url, post_with_error)
         self.assertEqual(response.status_code, 400)
 
-    """ Shop list """
-
+    ##############
+    # Shop list  #
+    ##############
     def test_shop_list(self):
         url = reverse('shop_list_api')
         post = {'test': 5}
@@ -225,8 +238,9 @@ class SimpleTest(TestCase):
         response = self.client.post(url, post)
         self.assertEqual(response.status_code, 405)
 
-    """ Shop detail """
-
+    ###############
+    # Shop detail #
+    ###############
     def test_shop_detail(self):
         url = reverse('shop_detail_api', args=(self.user_shop.id,))
         post = {'test': 5}
@@ -238,8 +252,9 @@ class SimpleTest(TestCase):
         response = self.client.post(url, post)
         self.assertEqual(response.status_code, 405)
 
-    """ List of item added by current auth user in the cart """
-
+    ########################################################
+    # List of item added by current auth user in the cart  #
+    ########################################################
     def test_cart_list(self):
         url = reverse('cart_list_api')
         post = {'item': self.item.id}
@@ -266,8 +281,9 @@ class SimpleTest(TestCase):
         response = self.client.post(url, post_with_fake_id)
         self.assertEqual(response.status_code, 400)
 
-    """ Detail of item in the cart """
-
+    ###############################
+    # Detail of item in the cart  #
+    ###############################
     def test_cart_detail(self):
         url_detail = reverse('cart_detail_api', args=(self.item.id,))
         url_detail_with_fake_id = reverse('cart_detail_api', args=(self.fake_id,))
