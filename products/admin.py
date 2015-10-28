@@ -5,7 +5,7 @@ from products import models
 
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ("name", "price", "created_at", 'updated')
+    list_display = ("id", "name", "price", "created_at", 'updated')
 
 
 class CommentAdmin(admin.ModelAdmin):

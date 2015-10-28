@@ -139,10 +139,13 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
 
         $scope.cart = new Cart();
         $scope.cart.item = itemId;
+        $scope.itemLoad = false;
 
         $scope.cart.$save(function () {
 
-            $scope.items = Item.query();
+            $scope.items = Item.query(function(){
+                $scope.itemLoad = true;
+            });
             $scope.itemInCartSuccess = true;
             Flash.create('success', $scope.addItemToCartMessageSuccess, 'flash-message-item-list');
 
@@ -150,7 +153,8 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
         }, function (error) {
 
             $scope.itemInCartError = error.data.detail;
-            Flash.create('warning', $scope.itemInCartError, 'flash-message-item-list');
+            Flash.create('danger', $scope.itemInCartError, 'flash-message-item-list');
+            $scope.itemLoad = true;
 
         });
 
@@ -162,11 +166,18 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
      */
     $scope.deleteItemInCart = function (itemId) {
 
+        $scope.itemLoad = false;
         Cart.delete({id: itemId}, function () {
 
             $scope.items = Item.query();
+
+            $scope.itemLoad = true;
             Flash.create('info', $scope.deleteItemFromCartMessageSuccess, 'flash-message-item-list');
 
+        }, function(error){
+            $scope.deleteItemfromCartError = error;
+            Flash.create('danger', $scope.deleteItemfromCartError, 'flash-message-item-list');
+            $scope.itemLoad = true;
         });
     };
 
@@ -516,6 +527,14 @@ function CartCtrl($scope, $timeout, Cart) {
         var myEl = angular.element(document.querySelector('#item_' + itemId));
         myEl.toggleClass('panel-primary-active');
 
+        var index = $scope.itemListForOrder.indexOf(itemId);
+
+        if(index > -1){
+            $scope.itemListForOrder.splice(index);
+        }else{
+           $scope.itemListForOrder.push(itemId);
+        }
+
     }
 
     /**
@@ -524,6 +543,7 @@ function CartCtrl($scope, $timeout, Cart) {
     function toggleAll() {
 
         $scope.allItemActive = !$scope.allItemActive;
+        $scope.itemListForOrder = !$scope.itemListForOrder;
 
     }
 
@@ -542,6 +562,7 @@ function CartCtrl($scope, $timeout, Cart) {
     function chooseNothing() {
 
         $scope.allItemActive = false;
+        $scope.itemListForOrder = [];
 
     }
 

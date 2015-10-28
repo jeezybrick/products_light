@@ -163,7 +163,7 @@ class ShopDetailSerializer(serializers.ModelSerializer):
 class CartSerializer(serializers.ModelSerializer):
 
     user = serializers.StringRelatedField(read_only=True)
-    item = ItemDetailSerializer()
+    # item = ItemDetailSerializer()
 
     class Meta:
         model = Cart
