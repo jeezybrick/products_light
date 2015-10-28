@@ -71,6 +71,10 @@
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.92), 0 5px 9px rgba(0, 0, 0, 0.92);
 }
 
+.main-list-actions{
+    padding: 0;
+}
+
 .main-list-actions > a {
     color: black;
 }

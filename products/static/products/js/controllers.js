@@ -9,7 +9,9 @@ angular
 function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
 
     // sort init
-    $scope.sortField = '-pk';
+    $scope.sortField = 'price';
+    $scope.reverseSortFieldByPrice = '-price';
+    $scope.sortFieldByPrice = 'price';
     $scope.reverse = true;
     $scope.showTriangle = false;
 
@@ -99,10 +101,16 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
     /**
      * For sorting by price
      */
-    $scope.changeSortState = function (status) {
-        $scope.sortField = status;
+    $scope.changeSortState = function () {
         $scope.reverse = !$scope.reverse;
-        $scope.showTriangle = !$scope.showTriangle;
+
+        if(angular.equals($scope.sortField, $scope.sortFieldByPrice)) {
+            return $scope.sortField = '-price'
+        }
+
+        if(angular.equals($scope.sortField, $scope.reverseSortFieldByPrice)) {
+            return $scope.sortField = 'price'
+        }
     };
 
     /**
@@ -162,14 +170,32 @@ function itemCtrl($scope, $http, Item, Category, Cart, Flash) {
         });
     };
 
+
+    /**
+     * Check if quantity of item is zero
+     */
     $scope.isQuantityOfItemIsZero = function(item){
 
         return angular.equals($scope.zeroQuantityOfItem, item.quantity);
     };
 
+    // title for aside nav
     $scope.aside = {
         "title": "Categories"
     };
+
+
+    $scope.sortBy = function () {
+
+        $scope.itemLoad=false;
+
+        $scope.items = Item.query(
+            params = {sort: $scope.sortField},function(){
+                $scope.itemLoad=true;
+            }
+        );
+    };
+
 
 }
 

@@ -38,13 +38,15 @@ class ItemList(generics.GenericAPIView):
 
     def get(self, request):
 
+        sort = request.GET.get('sort', '-id')
+
         try:
             request.GET["category"]
         except MultiValueDictKeyError:
-            queryset = SearchQuerySet().models(Item).order_by('-id')
+            queryset = SearchQuerySet().models(Item).order_by(sort)
         else:
             queryset = SearchQuerySet().models(Item).filter(
-                categories__in=[request.GET["category"]])
+                categories__in=[request.GET["category"]]).order_by('-id')
 
         page = self.paginate_queryset(queryset)
         if page is not None:
