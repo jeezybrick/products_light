@@ -15,7 +15,14 @@ angular.module('myApp.services', ['ngResource'])
         return $resource('/api/users/:id/');
     })
     .factory('Category', function ($resource) {
-        return $resource('/api/categories/:id/');
+        return $resource('/api/categories/:id/',
+            {
+                id: '@id'
+            },
+        {
+            'query': {method: 'GET', isArray: false}
+        }
+        );
     })
     .factory('Rate', function ($resource) {
         return $resource('/api/rates/:id/');

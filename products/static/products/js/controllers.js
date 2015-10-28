@@ -411,7 +411,7 @@ angular
     .module('myApp')
     .controller('CategoryListCtrl', CategoryListCtrl);
 
-function CategoryListCtrl($scope, Category, Flash) {
+function CategoryListCtrl($scope, $http, Category, Flash) {
 
 
     /**
@@ -421,10 +421,42 @@ function CategoryListCtrl($scope, Category, Flash) {
 
         $scope.categoryLoad = true;
 
+         /**
+         * Function for check if previous page exists
+         */
+        $scope.isCategoriesNotPrevious = function () {
+
+            return !$scope.categories.previous;
+
+        };
+
+        /**
+         * Function for check if next page exists
+         * @return {boolean}
+         */
+        $scope.IsCategoriesNotNext = function () {
+
+            return !$scope.categories.next;
+        };
+
     }, function (error) {
         $scope.categoryLoadError = error.data.detail;
         Flash.create('warning', $scope.categoryLoadError, 'flash-message-item-list');
     });
+
+
+    /**
+     * Pagination
+     */
+    $scope.pagination = function (page) {
+
+        $http.get(page, {cache: true}).success(function (data) {
+
+            $scope.categories = data;
+
+        });
+
+    };
 
 }
 

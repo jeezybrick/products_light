@@ -68,18 +68,26 @@ class ItemDetail(generics.RetrieveAPIView, generics.UpdateAPIView,
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
         filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
         obj = cache.ProductDetailCache().get(id=filter_kwargs['pk'])
-        #obj = Item.objects.get(id=filter_kwargs['pk'])
         self.check_object_permissions(self.request, obj)
 
         return obj
 
 
 # list of categories
-class CategoryList(APIView):
+class CategoryList(generics.GenericAPIView):
+
+    pagination_class = StandardResultsSetPagination
+    serializer_class = serializers.CategorySerializer
 
     def get(self, request):
-        categories = CategoryCache().get(parent_category_id__isnull=True)
-        serializer = serializers.CategorySerializer(categories, many=True)
+
+        queryset = CategoryCache().get(parent_category_id__isnull=True)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = serializers.ItemSerializer(queryset, many=True)
         return Response(serializer.data)
 
 
